@@ -1,16 +1,9 @@
-function horner(x, coeffs)
-    s = coeffs[end]
-    for k in length(coeffs)-1:-1:1
-        s = coeffs[k] + x * s
-    end
-    return s
-end
-
-
 # Returns the real dilogarithm of a real number of type `Float64`.
 # Author: Alexander Voigt
 # License: MIT
 function li2(x::Float64)::Float64
+    horner(x, coeffs) = foldr((u, v) -> u + x * v, coeffs; init = 0.0)
+
     cp = (
         1.0706105563309304277e+0,
        -4.5353562730201404017e+0,
