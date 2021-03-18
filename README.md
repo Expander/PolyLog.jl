@@ -1,7 +1,7 @@
 PolyLog.jl
 ==========
 
-The PolyLog.jl package provides Rust implementations of real and
+The PolyLog.jl package provides Julia implementations of real and
 complex polylogarithms.
 
 
