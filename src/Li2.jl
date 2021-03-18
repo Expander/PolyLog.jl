@@ -10,7 +10,7 @@ end
 # Returns the real dilogarithm of a real number of type `Float64`.
 # Author: Alexander Voigt
 # License: MIT
-function Li2(x::Float64)::Float64
+function li2(x::Float64)::Float64
     cp = (
         1.0706105563309304277e+0,
        -4.5353562730201404017e+0,
