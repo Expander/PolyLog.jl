@@ -20,7 +20,7 @@ Notes
 
 The implementation of the complex dilogarithm has been inspired by the
 implementation in [SPheno](https://spheno.hepforge.org) and has been
-translated to Rust.
+translated to Julia.
 
 
 Copying
