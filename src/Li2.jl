@@ -56,3 +56,72 @@ function li2(x::Float64)::Float64
 
     return r + s*y*p/q
 end
+
+
+# Returns the complex dilogarithm of a complex number of type `Float64`.
+# Author: Alexander Voigt
+# License: MIT
+function li2(z::ComplexF64)::ComplexF64
+
+    bf = (
+        - 1.0/4.0,
+          1.0/36.0,
+        - 1.0/3600.0,
+          1.0/211680.0,
+        - 1.0/10886400.0,
+          1.0/526901760.0,
+        - 4.0647616451442255e-11,
+          8.9216910204564526e-13,
+        - 1.9939295860721076e-14,
+          4.5189800296199182e-16,
+    )
+
+    rz = real(z)
+    iz = imag(z)
+
+    if iz == 0.0
+        if rz <= 1.0
+            return li2(rz)
+        else # rz > 1.
+            return li2(rz) - pi*log(rz)*1im
+        end
+    end
+
+    nz = rz*rz + iz*iz
+
+    if nz < eps(Float64)
+        return z
+    end
+
+    (u, rest, sgn) = if rz <= 0.5
+        if nz > 1.0
+            l = log(-z)
+            (-log(1. - 1. / z), -0.5 * l * l - pi * pi / 6.0, -1.0)
+        else # nz <= 1.
+            (-log(1. - z), 0.0, 1.0)
+        end
+    else # rz > 0.5
+        if nz <= 2.0*rz
+            l = -log(z)
+            (l, l * log(1. - z) + pi * pi / 6.0, -1.0)
+        else # nz > 2.0*rz
+            l = log(-z)
+            (-log(1.0 - 1.0 / z), -0.5 * l * l - pi * pi / 6.0, -1.0)
+        end
+    end
+
+    u2 = u*u
+    u4 = u2*u2
+    sum =
+        u +
+        u2 * (bf[1] +
+        u  * (bf[2] +
+        u2 * (
+            bf[3] +
+            u2*bf[4] +
+            u4*(bf[5] + u2*bf[6]) +
+            u4*u4*(bf[7] + u2*bf[8] + u4*(bf[9] + u2*bf[10]))
+        )))
+
+    return sgn * sum + rest
+end
