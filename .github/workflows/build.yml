@@ -11,7 +11,7 @@ jobs:
       matrix:
         arch: [x64]
         os: [ubuntu-latest, macOS-latest, Windows-latest]
-        version: [1]
+        version: [1.0, 1]
 
     steps:
       - uses: actions/checkout@v2
