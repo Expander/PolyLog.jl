@@ -7,7 +7,7 @@ data = (z_max - z_min)*rand(ComplexF64, n) + z_min*(1.0 + 1.0im)*ones(n)
 
 println("Benchmarking li2::ComplexF64")
 
-li2(1.0 + 1.0im) # trigger compilation
+map(li2, data)       # trigger compilation
 @time map(li2, data)
 @time map(li2, data)
 @time map(li2, data)
