@@ -56,6 +56,24 @@ function li2(x::Float64)::Float64
 end
 
 
+function knuth(z::ComplexF64, coeffs, nstart)::ComplexF64
+   rz::Float64 = real(z)
+   iz::Float64 = imag(z)
+   r::Float64 = rz + rz
+   s::Float64 = rz * rz + iz * iz
+   a::Float64 = coeffs[end]
+   b::Float64 = coeffs[end - 1]
+
+   for i = length(coeffs)-2:-1:nstart
+      t = a;
+      a = b + r * a
+      b = coeffs[i] - s * t
+   end
+
+   return rz * a + b + iz * a * 1.0im
+end
+
+
 # Returns the complex dilogarithm of a complex number of type `ComplexF64`.
 # Author: Alexander Voigt
 # License: MIT
@@ -108,17 +126,6 @@ function li2(z::ComplexF64)::ComplexF64
     end
 
     u2 = u*u
-    u4 = u2*u2
-    sum =
-        u +
-        u2 * (bf[1] +
-        u  * (bf[2] +
-        u2 * (
-            bf[3] +
-            u2*bf[4] +
-            u4*(bf[5] + u2*bf[6]) +
-            u4*u4*(bf[7] + u2*bf[8] + u4*(bf[9] + u2*bf[10]))
-        )))
 
-    return sgn * sum + rest
+    return sgn*(u + u2*(bf[1] + u*knuth(u2, bf, 2))) + rest
 end
