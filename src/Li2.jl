@@ -86,7 +86,7 @@ function li2(z::ComplexF64)::ComplexF64
         end
     end
 
-    nz = rz*rz + iz*iz
+    nz = abs2(z)
 
     if nz < eps(Float64)
         return z
