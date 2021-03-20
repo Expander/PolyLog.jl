@@ -56,7 +56,7 @@ function li2(x::Float64)::Float64
 end
 
 
-function knuth(z::ComplexF64, coeffs, nstart)::ComplexF64
+function knuth(z::ComplexF64, coeffs, nstart::UInt)::ComplexF64
    rz::Float64 = real(z)
    iz::Float64 = imag(z)
    r::Float64 = rz + rz
@@ -127,5 +127,5 @@ function li2(z::ComplexF64)::ComplexF64
 
     u2 = u*u
 
-    return sgn*(u + u2*(bf[1] + u*knuth(u2, bf, 2))) + rest
+    return sgn*(u + u2*(bf[1] + u*knuth(u2, bf, UInt(2)))) + rest
 end
