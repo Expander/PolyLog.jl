@@ -62,6 +62,7 @@ end
 # Author: Alexander Voigt
 # License: MIT
 function li2(z::ComplexF64)::ComplexF64
+    clog(z) = 0.5*log(abs2(z)) + angle(z)*1im
 
     bf = (
         - 1.0/4.0,
@@ -95,18 +96,18 @@ function li2(z::ComplexF64)::ComplexF64
 
     (u, rest, sgn) = if rz <= 0.5
         if nz > 1.0
-            l = log(-z)
-            (-log(1. - 1. / z), -0.5 * l * l - pi * pi / 6.0, -1.0)
+            l = clog(-z)
+            (-clog(1. - 1. / z), -0.5 * l * l - pi * pi / 6.0, -1.0)
         else # nz <= 1.
-            (-log(1. - z), 0.0, 1.0)
+            (-clog(1. - z), 0.0, 1.0)
         end
     else # rz > 0.5
         if nz <= 2.0*rz
-            l = -log(z)
-            (l, l * log(1. - z) + pi * pi / 6.0, -1.0)
+            l = -clog(z)
+            (l, l * clog(1. - z) + pi * pi / 6.0, -1.0)
         else # nz > 2.0*rz
-            l = log(-z)
-            (-log(1.0 - 1.0 / z), -0.5 * l * l - pi * pi / 6.0, -1.0)
+            l = clog(-z)
+            (-clog(1.0 - 1.0 / z), -0.5 * l * l - pi * pi / 6.0, -1.0)
         end
     end
 
