@@ -58,7 +58,7 @@ function li2(x::Float64)::Float64
 end
 
 
-# Returns the complex dilogarithm of a complex number of type `Float64`.
+# Returns the complex dilogarithm of a complex number of type `ComplexF64`.
 # Author: Alexander Voigt
 # License: MIT
 function li2(z::ComplexF64)::ComplexF64
