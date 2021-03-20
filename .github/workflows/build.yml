@@ -1,0 +1,25 @@
+name: test
+
+on: [push]
+
+jobs:
+  test:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        arch: [x64]
+        os: [ubuntu-latest, macOS-latest, Windows-latest]
+        version: [1]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - name: test
+        run: julia test/Test.jl
+      - name: benchmark
+        run: julia test/Bench.jl
