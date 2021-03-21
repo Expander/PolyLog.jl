@@ -1,6 +1,17 @@
-# Returns the real dilogarithm of a real number of type `Float64`.
-# Author: Alexander Voigt
-# License: MIT
+"""
+    li2(x::Float64)::Float64
+
+Returns the real dilogarithm of a real number of type `Float64`.
+
+Author: Alexander Voigt
+
+License: MIT
+
+# Example
+```julia
+li2(1.0)
+```
+"""
 function li2(x::Float64)::Float64
     horner(x, coeffs) = foldr((u, v) -> u + x * v, coeffs; init = 0.0)
 
@@ -56,9 +67,20 @@ function li2(x::Float64)::Float64
 end
 
 
-# Returns the complex dilogarithm of a complex number of type `ComplexF64`.
-# Author: Alexander Voigt
-# License: MIT
+"""
+    li2(x::ComplexF64)::ComplexF64
+
+Returns the complex dilogarithm of a complex number of type `ComplexF64`.
+
+Author: Alexander Voigt
+
+License: MIT
+
+# Example
+```julia
+li2(1.0 + 1.0im)
+```
+"""
 function li2(z::ComplexF64)::ComplexF64
     clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
 
