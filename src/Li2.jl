@@ -48,11 +48,11 @@ function li2(x::Float64)::Float64
         return 0.0
     elseif x < 0.5
         (x, 0.0, 1.0)
-    elseif x < 1.
+    elseif x < 1.0
         (1.0 - x, pi*pi/6.0 - log(x)*log(1.0 - x), -1.0)
-    elseif x == 1.
+    elseif x == 1.0
         return pi*pi/6.0
-    elseif x < 2.
+    elseif x < 2.0
         l = log(x)
         (1.0 - 1.0/x, pi*pi/6.0 - l*(log(1.0 - 1.0/x) + 0.5*l), 1.0)
     else
@@ -116,14 +116,14 @@ function li2(z::ComplexF64)::ComplexF64
 
     (u::ComplexF64, rest::ComplexF64, sgn::Float64) = if rz <= 0.5
         if nz > 1.0
-            (-clog(1. - 1. / z), -0.5 * clog(-z)^2 - pi * pi / 6.0, -1.0)
+            (-clog(1.0 - 1.0 / z), -0.5 * clog(-z)^2 - pi * pi / 6.0, -1.0)
         else # nz <= 1.
-            (-clog(1. - z), 0.0 + 0.0im, 1.0)
+            (-clog(1.0 - z), 0.0 + 0.0im, 1.0)
         end
     else # rz > 0.5
         if nz <= 2.0*rz
             l = -clog(z)
-            (l, l * clog(1. - z) + pi * pi / 6.0, -1.0)
+            (l, l * clog(1.0 - z) + pi * pi / 6.0, -1.0)
         else # nz > 2.0*rz
             (-clog(1.0 - 1.0 / z), -0.5 * clog(-z)^2 - pi * pi / 6.0, -1.0)
         end
