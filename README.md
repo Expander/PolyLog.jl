@@ -45,3 +45,11 @@ Copying
 -------
 
 PolyLog.jl is licenced under the MIT License.
+
+
+Links
+-----
+
+Refer to the package
+[Polylogarithms.jl](https://github.com/mroughan/Polylogarithms.jl) for
+a Julia implementation of polylogarithm of arbitrary order.
