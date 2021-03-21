@@ -1,7 +1,7 @@
 """
     li2(x::Float64)::Float64
 
-Returns the real dilogarithm of a real number of type `Float64`.
+Returns the real dilogarithm of a real number `x` of type `Float64`.
 
 Author: Alexander Voigt
 
@@ -68,9 +68,9 @@ end
 
 
 """
-    li2(x::ComplexF64)::ComplexF64
+    li2(z::ComplexF64)::ComplexF64
 
-Returns the complex dilogarithm of a complex number of type `ComplexF64`.
+Returns the complex dilogarithm of a complex number `z` of type `ComplexF64`.
 
 Author: Alexander Voigt
 
