@@ -14,13 +14,8 @@ li3(1.0 + 1.0im)
 """
 function li3(z::ComplexF64)::ComplexF64
     function clog(z)
-        rz::Float64 = real(z)
-        iz::Float64 = imag(z)
         az::Float64 = angle(z)
-        if iz == 0.0 && az < 0.0
-            az = -az
-        end
-        return 0.5*log(rz^2 + iz^2) + az*1.0im
+        return 0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
     end
 
     z2::Float64 = 1.6449340668482264
