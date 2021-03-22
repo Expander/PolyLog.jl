@@ -84,11 +84,11 @@ function li3(z::ComplexF64)::ComplexF64
     u4::ComplexF64 = u2*u2
     u8::ComplexF64 = u4*u4
 
-    return rest +
-        u*bf[1] +
-        u2*(bf[2] + u*bf[3]) +
-        u4*(bf[4] + u*bf[5] + u2*(bf[6] + u*bf[7])) +
-        u8*(bf[8] + u*bf[9] + u2*(bf[10] + u*bf[11]) +
-            u4*(bf[12] + u*bf[13] + u2*(bf[14] + u*bf[15]))) +
-        u8*u8*(bf[16] + u*bf[17] + u2*bf[18])
+    rest +
+    u*bf[1] +
+    u2*(bf[2] + u*bf[3]) +
+    u4*(bf[4] + u*bf[5] + u2*(bf[6] + u*bf[7])) +
+    u8*(bf[8] + u*bf[9] + u2*(bf[10] + u*bf[11]) +
+        u4*(bf[12] + u*bf[13] + u2*(bf[14] + u*bf[15]))) +
+    u8*u8*(bf[16] + u*bf[17] + u2*bf[18])
 end

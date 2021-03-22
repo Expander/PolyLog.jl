@@ -66,7 +66,7 @@ function li2(x::Float64)::Float64
     q = cq[1] + z * cq[2] + z2 * (cq[3] + z * cq[4]) +
         z4 * (cq[5] + z * cq[6] + z2 * (cq[7] + z * cq[8]))
 
-    return r + s*y*p/q
+    r + s*y*p/q
 end
 
 
@@ -145,5 +145,5 @@ function li2(z::ComplexF64)::ComplexF64
             u4*u4*(bf[7] + u2*bf[8] + u4*(bf[9] + u2*bf[10]))
         )))
 
-    return sgn * sum + rest
+    sgn * sum + rest
 end
