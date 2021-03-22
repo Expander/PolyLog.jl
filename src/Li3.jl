@@ -14,13 +14,13 @@ li3(1.0 + 1.0im)
 """
 function li3(z::ComplexF64)::ComplexF64
     function clog(z)
-        rz = real(z)
-        iz = imag(z)
-        pz = angle(z)
-        if iz == 0.0 && pz < 0.0
-            pz = -pz
+        rz::Float64 = real(z)
+        iz::Float64 = imag(z)
+        az::Float64 = angle(z)
+        if iz == 0.0 && az < 0.0
+            az = -az
         end
-        return 0.5*log(rz^2 + iz^2) + pz*1.0im
+        return 0.5*log(rz^2 + iz^2) + az*1.0im
     end
 
     z2::Float64 = 1.6449340668482264
@@ -56,12 +56,12 @@ function li3(z::ComplexF64)::ComplexF64
     lnz::Float64 = 0.5*log(nz)
 
     if lnz*lnz + pz*pz < 1.0 # |log(z)| < 1
-        u  = lnz + pz*im
-        u2 = u*u
-        u4 = u2*u2
-        u8 = u4*u4
-        c0::ComplexF64 = z3 + u*(z2 - u2/12.0)
-        c1::ComplexF64 = 0.25 * (3.0 - 2.0*clog(-u))
+        v::ComplexF64  = lnz + pz*im
+        v2::ComplexF64 = v*v
+        v4::ComplexF64 = v2*v2
+        v8::ComplexF64 = v4*v4
+        c0::ComplexF64 = z3 + v*(z2 - v2/12.0)
+        c1::ComplexF64 = 0.25 * (3.0 - 2.0*clog(-v))
 
         cs = (
             -3.4722222222222222e-03, 1.1574074074074074e-05,
@@ -70,11 +70,11 @@ function li3(z::ComplexF64)::ComplexF64
             -3.9828977769894877e-15
         )
 
-        return c0 +                                            
-            c1*u2 +                                         
-            u4*(cs[1] + u2*cs[2]) +                         
-            u8*(cs[3] + u2*cs[4] + u4*(cs[5] + u2*cs[6])) + 
-            u8*u8*cs[7]
+        return c0 +
+            c1*v2 +
+            v4*(cs[1] + v2*cs[2]) +
+            v8*(cs[3] + v2*cs[4] + v4*(cs[5] + v2*cs[6])) +
+            v8*v8*cs[7]
     end
 
     (u::ComplexF64, rest::ComplexF64) = if nz <= 1.0
@@ -89,11 +89,11 @@ function li3(z::ComplexF64)::ComplexF64
     u4::ComplexF64 = u2*u2
     u8::ComplexF64 = u4*u4
 
-    return rest +                                                 
-        u*bf[1] +                                              
-        u2*(bf[2] + u*bf[3]) +                                 
-        u4*(bf[4] + u*bf[5] + u2*(bf[6] + u*bf[7])) +          
-        u8*(bf[8] + u*bf[9] + u2*(bf[10] + u*bf[11]) +         
-            u4*(bf[12] + u*bf[13] + u2*(bf[14] + u*bf[15]))) + 
+    return rest +
+        u*bf[1] +
+        u2*(bf[2] + u*bf[3]) +
+        u4*(bf[4] + u*bf[5] + u2*(bf[6] + u*bf[7])) +
+        u8*(bf[8] + u*bf[9] + u2*(bf[10] + u*bf[11]) +
+            u4*(bf[12] + u*bf[13] + u2*(bf[14] + u*bf[15]))) +
         u8*u8*(bf[16] + u*bf[17] + u2*bf[18])
 end
