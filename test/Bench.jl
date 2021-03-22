@@ -1,4 +1,4 @@
-include("../src/Li2.jl")
+include("../src/PolyLog.jl")
 
 n = 10_000_000
 z_min = -5
@@ -19,3 +19,10 @@ map(li2, cmpl_data)       # trigger compilation
 @time map(li2, cmpl_data)
 @time map(li2, cmpl_data)
 @time map(li2, cmpl_data)
+
+println("Benchmarking li3::ComplexF64")
+
+map(li3, cmpl_data)       # trigger compilation
+@time map(li3, cmpl_data)
+@time map(li3, cmpl_data)
+@time map(li3, cmpl_data)
