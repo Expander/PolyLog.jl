@@ -13,8 +13,6 @@ li3(1.0 + 1.0im)
 ```
 """
 function li3(z::ComplexF64)::ComplexF64
-    # clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
-
     function clog(z)
         rz = real(z)
         iz = imag(z)
@@ -25,8 +23,8 @@ function li3(z::ComplexF64)::ComplexF64
         return 0.5*log(rz^2 + iz^2) + pz*1.0im
     end
 
-    z2  = 1.6449340668482264
-    z3  = 1.2020569031595943
+    z2::Float64 = 1.6449340668482264
+    z3::Float64 = 1.2020569031595943
     bf  = (
         1.0, -3.0/8.0, 17.0/216.0, -5.0/576.0,
         1.2962962962962963e-04,  8.1018518518518519e-05,
@@ -53,17 +51,17 @@ function li3(z::ComplexF64)::ComplexF64
         end
     end
 
-    nz  = abs2(z)
-    pz  = angle(z)
-    lnz = 0.5*log(nz)
+    nz::Float64  = abs2(z)
+    pz::Float64  = angle(z)
+    lnz::Float64 = 0.5*log(nz)
 
     if lnz*lnz + pz*pz < 1.0 # |log(z)| < 1
         u  = lnz + pz*im
         u2 = u*u
         u4 = u2*u2
         u8 = u4*u4
-        c0 = z3 + u*(z2 - u2/12.0)
-        c1 = 0.25 * (3.0 - 2.0*clog(-u))
+        c0::ComplexF64 = z3 + u*(z2 - u2/12.0)
+        c1::ComplexF64 = 0.25 * (3.0 - 2.0*clog(-u))
 
         cs = (
             -3.4722222222222222e-03, 1.1574074074074074e-05,
@@ -79,17 +77,17 @@ function li3(z::ComplexF64)::ComplexF64
             u8*u8*cs[7]
     end
 
-    (u, rest) = if nz <= 1.0
+    (u::ComplexF64, rest::ComplexF64) = if nz <= 1.0
         (-clog(1.0 - z), 0.0 + 0.0im)
     else # nz > 1.0
-        arg = pz > 0.0 ? pz - pi : pz + pi
-        lmz = lnz + arg*im # clog(z)
+        arg::Float64 = pz > 0.0 ? pz - pi : pz + pi
+        lmz::ComplexF64 = lnz + arg*im # clog(z)
         (-clog(1.0 - 1.0/z), -lmz*(lmz*lmz/6.0 + z2))
     end
 
-    u2 = u*u
-    u4 = u2*u2
-    u8 = u4*u4
+    u2::ComplexF64 = u*u
+    u4::ComplexF64 = u2*u2
+    u8::ComplexF64 = u4*u4
 
     return rest +                                                 
         u*bf[1] +                                              
