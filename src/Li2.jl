@@ -13,8 +13,6 @@ li2(1.0)
 ```
 """
 function li2(x::Float64)::Float64
-    horner(x, coeffs) = foldr((u, v) -> u + x * v, coeffs; init = 0.0)
-
     cp = (
         1.0706105563309304277e+0,
        -4.5353562730201404017e+0,
@@ -60,8 +58,13 @@ function li2(x::Float64)::Float64
     end
 
     z = y - 0.25
-    p = horner(z, cp)
-    q = horner(z, cq)
+    z2 = z*z
+    z4 = z2*z2
+
+    p = cp[1] + z * cp[2] + z2 * (cp[3] + z * cp[4]) +
+        z4 * (cp[5] + z * cp[6] + z2 * (cp[7] + z * cp[8]))
+    q = cq[1] + z * cq[2] + z2 * (cq[3] + z * cq[4]) +
+        z4 * (cq[5] + z * cq[6] + z2 * (cq[7] + z * cq[8]))
 
     return r + s*y*p/q
 end
