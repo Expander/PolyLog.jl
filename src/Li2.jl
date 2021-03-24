@@ -132,9 +132,10 @@ function li2(z::ComplexF64)::ComplexF64
         end
     end
 
-    u2 = u*u
-    u4 = u2*u2
-    sum =
+    u2::ComplexF64 = u*u
+    u4::ComplexF64 = u2*u2
+
+    rest + sgn * (
         u +
         u2 * (bf[1] +
         u  * (bf[2] +
@@ -144,6 +145,5 @@ function li2(z::ComplexF64)::ComplexF64
             u4*(bf[5] + u2*bf[6]) +
             u4*u4*(bf[7] + u2*bf[8] + u4*(bf[9] + u2*bf[10]))
         )))
-
-    sgn * sum + rest
+    )
 end
