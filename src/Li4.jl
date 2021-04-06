@@ -18,8 +18,6 @@ function li4(z::ComplexF64)::ComplexF64
         return 0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
     end
 
-    # z2::Float64 = 1.6449340668482264
-    # z3::Float64 = 1.2020569031595943
     z4::Float64 = 1.0823232337111382
     bf = (
         1.0                   , -7.0/16.0              ,
