@@ -11,7 +11,7 @@ trilogarithm.
 Example
 -------
 
-```
+```.jl
 include("src/PolyLog.jl")
 
 println(li2(1.0))
