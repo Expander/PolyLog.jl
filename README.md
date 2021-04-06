@@ -32,7 +32,7 @@ translated to Julia.
 Citation
 --------
 
-~~~
+~~~.bibtex
 @software{PolyLog.jl,
     author       = {{Alexander Voigt}},
     title        = {{PolyLog.jl}},
