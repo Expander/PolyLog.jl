@@ -26,3 +26,10 @@ map(li3, cmpl_data)       # trigger compilation
 @time map(li3, cmpl_data)
 @time map(li3, cmpl_data)
 @time map(li3, cmpl_data)
+
+println("Benchmarking li4::ComplexF64")
+
+map(li4, cmpl_data)       # trigger compilation
+@time map(li4, cmpl_data)
+@time map(li4, cmpl_data)
+@time map(li4, cmpl_data)

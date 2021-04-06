@@ -17,6 +17,7 @@ include("src/PolyLog.jl")
 println(li2(1.0))
 println(li2(1.0 + 1.0im))
 println(li3(1.0 + 1.0im))
+println(li4(1.0 + 1.0im))
 ```
 
 
