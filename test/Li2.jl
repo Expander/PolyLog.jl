@@ -4,7 +4,7 @@ using DelimitedFiles
 include("Common.jl")
 include("../src/Li2.jl")
 
-li2_data = open(readdlm, "test/data/Li2.txt")
+li2_data = open(readdlm, "data/Li2.txt")
 
 for r in 1:size(li2_data, 1)
     row = li2_data[r, :]
