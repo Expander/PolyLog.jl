@@ -12,4 +12,4 @@ DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "DelimitedFiles"]
+test = ["Test", "DelimitedFiles", "BenchmarkTools"]
