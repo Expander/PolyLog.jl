@@ -1,8 +1,8 @@
 @testset "li4" begin
-    li4_data = open(readdlm, joinpath(@__DIR__, "data", "Li4.txt"))
+    data = open(readdlm, joinpath(@__DIR__, "data", "Li4.txt"))
 
-    for r in 1:size(li4_data, 1)
-        row = li4_data[r, :]
+    for r in 1:size(data, 1)
+        row = data[r, :]
 
         z            = row[1] + row[2]*1im
         li4_expected = row[3] + row[4]*1im
