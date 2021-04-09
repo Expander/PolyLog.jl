@@ -37,7 +37,7 @@ function li5(z::ComplexF64)::ComplexF64
             return 0.0 + 0.0im
         end
         if real(z) == 1.0
-            return z4 + 0.0im
+            return z5 + 0.0im
         end
         if real(z) == -1.0
             return -15.0/16.0*z5 + 0.0im
@@ -51,49 +51,47 @@ function li5(z::ComplexF64)::ComplexF64
     if lnz*lnz + pz*pz < 1.0 # |log(z)| < 1
         v::ComplexF64  = lnz + pz*im
         v2::ComplexF64 = v*v
-        v4::ComplexF64 = v2*v2
-        v8::ComplexF64 = v4*v4
-        c1::Float64 = 1.2020569031595943 # zeta(3)
-        c2::Float64 = 0.82246703342411322
-        c3::ComplexF64 = (11.0/6.0 - clog(-v))/6.0
-        c4::Float64 = -1.0/48.0
+        c1::Float64 = 1.0823232337111382 # zeta(4)
+        c2::Float64 = 0.60102845157979714 # zeta(3)/2
+        c3::Float64 = 0.27415567780803774
+        c4::ComplexF64 = (25.0/12.0 - clog(-v))/24.0
+        c5::Float64 = -1.0/240.0
 
         cs = (
-            -6.9444444444444444e-04, 1.6534391534391534e-06,
-            -1.0935444136502338e-08, 1.0438378493934049e-10,
-            -1.2165942300622435e-12, 1.6130006528350101e-14,
-            -2.3428810452879340e-16
+            -1.1574074074074074e-04, 2.0667989417989418e-07,
+            -1.0935444136502338e-09, 8.6986487449450412e-12,
+            -8.6899587861588824e-14, 1.0081254080218813e-15
         )
 
-        return z4 + v2 * (c2 + v2 * c4) +
-            v * (
-                c1 +
-                c3*v2 +
-                v4*(cs[1] + v2*cs[2]) +
-                v8*(cs[3] + v2*cs[4] + v4*(cs[5] + v2*cs[6])) +
-                v8*v8*cs[7]
-            )
+        return z5 + v * c1 +
+            v2 * (c2 + v * c3 +
+            v2 * (c4 + v * c5 +
+            v2 * (cs[1] +
+            v2 * (cs[2] +
+            v2 * (cs[3] +
+            v2 * (cs[4] +
+            v2 * (cs[5] +
+            v2 * (cs[6]))))))))
     end
 
-    (u::ComplexF64, rest::ComplexF64, sgn::Float64) = if nz <= 1.0
-        (-clog(1.0 - z), 0.0 + 0.0im, 1.0)
+    (u::ComplexF64, rest::ComplexF64) = if nz <= 1.0
+        (-clog(1.0 - z), 0.0 + 0.0im)
     else # nz > 1.0
         arg::Float64 = pz > 0.0 ? pz - pi : pz + pi
         lmz::ComplexF64 = lnz + arg*im # clog(z)
         lmz2::ComplexF64 = lmz*lmz
-        (-clog(1.0 - 1.0/z), 1.0/360.0*(-7.0*pi^4 + lmz2*(-30.0*pi^2 - 15.0*lmz2)), -1.0)
+        (-clog(1.0 - 1.0/z), -1.0/360.0*lmz*(7.0*pi^4 + lmz2*(10.0*pi^2 + 3.0*lmz2)))
     end
 
     u2::ComplexF64 = u*u
     u4::ComplexF64 = u2*u2
     u8::ComplexF64 = u4*u4
 
-    rest + sgn * (
-       u*bf[1] +
-       u2*(bf[2] + u*bf[3]) +
-       u4*(bf[4] + u*bf[5] + u2*(bf[6] + u*bf[7])) +
-       u8*(bf[8] + u*bf[9] + u2*(bf[10] + u*bf[11]) +
-           u4*(bf[12] + u*bf[13] + u2*(bf[14] + u*bf[15]))) +
-       u8*u8*(bf[16] + u*bf[17] + u2*bf[18])
-    )
+    rest +
+    u*bf[1] +
+    u2*(bf[2] + u*bf[3]) +
+    u4*(bf[4] + u*bf[5] + u2*(bf[6] + u*bf[7])) +
+    u8*(bf[8] + u*bf[9] + u2*(bf[10] + u*bf[11]) +
+        u4*(bf[12] + u*bf[13] + u2*(bf[14] + u*bf[15]))) +
+    u8*u8*(bf[16] + u*bf[17] + u2*(bf[18] + u*bf[19]))
 end
