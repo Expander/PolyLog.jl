@@ -1,4 +1,4 @@
-li2_data = open(readdlm, "data/Li2.txt")
+li2_data = open(readdlm, joinpath(@__DIR__, "data", "Li2.txt"))
 
 for r in 1:size(li2_data, 1)
     row = li2_data[r, :]
