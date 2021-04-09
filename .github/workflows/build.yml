@@ -22,4 +22,6 @@ jobs:
       - uses: julia-actions/julia-buildpkg@latest
       - uses: julia-actions/julia-runtest@latest
       - name: Benchmark
-        run: julia --project test/Bench.jl
+        run: |
+          julia --project test/Bench.jl
+          julia --project test/Bench2.jl
