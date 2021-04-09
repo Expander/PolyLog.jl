@@ -24,5 +24,4 @@ jobs:
       - name: Benchmark
         run: |
           julia --project test/Bench.jl
-          julia --project -e 'import Pkg; Pkg.add("BenchmarkTools")'
-          julia --project test/Bench2.jl
+          julia --project -e 'import Pkg; Pkg.add("BenchmarkTools"); include("test/Bench2.jl")'
