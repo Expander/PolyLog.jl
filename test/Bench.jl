@@ -40,3 +40,10 @@ map(PolyLog.li5, cmpl_data)       # trigger compilation
 @time map(PolyLog.li5, cmpl_data)
 @time map(PolyLog.li5, cmpl_data)
 @time map(PolyLog.li5, cmpl_data)
+
+println("Benchmarking li6::ComplexF64")
+
+map(PolyLog.li6, cmpl_data)       # trigger compilation
+@time map(PolyLog.li6, cmpl_data)
+@time map(PolyLog.li6, cmpl_data)
+@time map(PolyLog.li6, cmpl_data)
