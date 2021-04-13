@@ -57,4 +57,4 @@ Links
 
 Refer to the package
 [Polylogarithms.jl](https://github.com/mroughan/Polylogarithms.jl) for
-a Julia implementation of polylogarithm of arbitrary order.
+a Julia implementation of polylogarithms of arbitrary order.
