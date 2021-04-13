@@ -1,6 +1,6 @@
 using Test
 using DelimitedFiles
-using PolyLog
+import PolyLog
 
 include("Common.jl")
 

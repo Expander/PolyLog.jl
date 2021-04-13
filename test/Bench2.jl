@@ -1,5 +1,5 @@
 using BenchmarkTools
-using PolyLog
+import PolyLog
 
 function benchmark_and_print(f, z, str)
     println("----------------------------")
