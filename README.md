@@ -12,14 +12,14 @@ Example
 -------
 
 ```.jl
-include("src/PolyLog.jl")
+using PolyLog
 
-println(li2(1.0))
-println(li2(1.0 + 1.0im))
-println(li3(1.0 + 1.0im))
-println(li4(1.0 + 1.0im))
-println(li5(1.0 + 1.0im))
-println(li6(1.0 + 1.0im))
+li2(1.0)
+li2(1.0 + 1.0im)
+li3(1.0 + 1.0im)
+li4(1.0 + 1.0im)
+li5(1.0 + 1.0im)
+li6(1.0 + 1.0im)
 ```
 
 
