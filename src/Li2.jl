@@ -88,7 +88,6 @@ function li2(z::ComplexF64)::ComplexF64
     clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
 
     bf = (
-        - 1.0/4.0,
           1.0/36.0,
         - 1.0/3600.0,
           1.0/211680.0,
@@ -133,17 +132,6 @@ function li2(z::ComplexF64)::ComplexF64
     end
 
     u2::ComplexF64 = u*u
-    u4::ComplexF64 = u2*u2
 
-    rest + sgn * (
-        u +
-        u2 * (bf[1] +
-        u  * (bf[2] +
-        u2 * (
-            bf[3] +
-            u2*bf[4] +
-            u4*(bf[5] + u2*bf[6]) +
-            u4*u4*(bf[7] + u2*bf[8] + u4*(bf[9] + u2*bf[10]))
-        )))
-    )
+    return rest + sgn * (u - 0.25*u2 + u*u2*evalpoly(u2, bf))
 end
