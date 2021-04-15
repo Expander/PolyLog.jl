@@ -80,15 +80,19 @@ function li3(z::ComplexF64)::ComplexF64
         (-clog(1.0 - 1.0/z), -lmz*(lmz*lmz/6.0 + z2))
     end
 
-    u2::ComplexF64 = u*u
-    u4::ComplexF64 = u2*u2
-    u8::ComplexF64 = u4*u4
+    @static if VERSION >= v"1.4"
+        rest + u * evalpoly(u, bf)
+    else
+        u2::ComplexF64 = u*u
+        u4::ComplexF64 = u2*u2
+        u8::ComplexF64 = u4*u4
 
-    rest +
-    u*bf[1] +
-    u2*(bf[2] + u*bf[3]) +
-    u4*(bf[4] + u*bf[5] + u2*(bf[6] + u*bf[7])) +
-    u8*(bf[8] + u*bf[9] + u2*(bf[10] + u*bf[11]) +
-        u4*(bf[12] + u*bf[13] + u2*(bf[14] + u*bf[15]))) +
-    u8*u8*(bf[16] + u*bf[17] + u2*bf[18])
+        rest +
+        u*bf[1] +
+        u2*(bf[2] + u*bf[3]) +
+        u4*(bf[4] + u*bf[5] + u2*(bf[6] + u*bf[7])) +
+        u8*(bf[8] + u*bf[9] + u2*(bf[10] + u*bf[11]) +
+            u4*(bf[12] + u*bf[13] + u2*(bf[14] + u*bf[15]))) +
+        u8*u8*(bf[16] + u*bf[17] + u2*bf[18])
+    end
 end
