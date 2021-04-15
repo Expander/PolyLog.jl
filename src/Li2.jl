@@ -133,5 +133,5 @@ function li2(z::ComplexF64)::ComplexF64
 
     u2::ComplexF64 = u*u
 
-    return rest + sgn * (u + u2 * (-0.25 + u * evalpoly(u2, bf)))
+    rest + sgn * (u + u2 * (-0.25 + u * evalpoly(u2, bf)))
 end
