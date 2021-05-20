@@ -101,7 +101,7 @@ function li2(z::ComplexF64)::ComplexF64
     nz = abs2(z)
 
     if nz < eps(Float64)
-        return z
+        return z*(1.0 + 0.25*z)
     end
 
     (u::ComplexF64, rest::ComplexF64, sgn::Float64) = if rz <= 0.5
