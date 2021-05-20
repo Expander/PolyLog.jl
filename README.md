@@ -39,7 +39,7 @@ Citation
     author       = {{Alexander Voigt}},
     title        = {{PolyLog.jl}},
     year         = "2021",
-    version      = {1.6.0},
+    version      = {1.6.1},
     url          = {https://github.com/Expander/PolyLog.jl},
     note         = "[License: MIT]"
 }
