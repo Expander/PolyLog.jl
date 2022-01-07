@@ -6,6 +6,6 @@
         z        = row[1] + row[2]*1im
         expected = row[3] + row[4]*1im
 
-        @test is_equal(PolyLog.li4(z), expected, 1e-14)
+        @test PolyLog.li4(z) ≈ expected atol=1e-14
     end
 end

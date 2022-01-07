@@ -7,10 +7,10 @@
         expected = row[3] + row[4]*1im
 
         if imag(z) == 0.0
-            @test is_equal(PolyLog.li2(real(z)), real(expected), 1e-14)
+            @test PolyLog.li2(real(z)) ≈ real(expected) atol=1e-14
         end
 
-        @test is_equal(PolyLog.li2(z), expected, 1e-14)
+        @test PolyLog.li2(z) ≈ expected atol=1e-14
     end
 
     @test PolyLog.li2(1.0) == 1.6449340668482264
