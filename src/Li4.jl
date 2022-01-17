@@ -1,4 +1,42 @@
 """
+    li4(x::Float64)::Float64
+
+Returns the real 4th order polylogarithm
+``\\Re[\\operatorname{Li}_4(x)]`` of a real number ``x`` of type
+`Float64`.
+
+Author: Alexander Voigt
+
+License: MIT
+
+# Example
+```jldoctest; setup = :(using PolyLog)
+julia> li4(1.0)
+1.0823232337111381
+```
+"""
+function li4(x::Float64)::Float64
+    z4::Float64 = pi^4/90
+
+    (y, r, s) = if x < -1.0
+        (inv(x), 0.0, -1.0) # todo: rest
+    elseif x == -1.0
+        return -7/8*z4
+    elseif x < 1.0
+        (x, 0.0, 1.0)
+    elseif x == 1.0
+        return z4
+    else # x > 1.0
+        (inv(x), 0.0, -1.0) # todo: rest
+    end
+
+    p = 0.0
+    q = 1.0
+
+    return r + s*y*p/q
+end
+
+"""
     li4(z::ComplexF64)::ComplexF64
 
 Returns the complex 4th order polylogarithm
