@@ -1,4 +1,4 @@
-# -Li3(x) for x in [-1,0]
+# Li3(x) for x in [-1,0]
 function li3_neg(x::Float64)::Float64
     cp = (
         0.9999999999999999795, -2.0281801754117129576,
@@ -20,7 +20,7 @@ function li3_neg(x::Float64)::Float64
     q = cq[1] + x * cq[2] + x2 * (cq[3] + x * cq[4]) +
         x4 * (cq[5] + x * cq[6] + x2 * cq[7])
 
-    return -x*p/q
+    return x*p/q
 end
 
 # Li3(x) for x in [0,1/2]
@@ -93,7 +93,7 @@ function li3(x::Float64)::Float64
         (0.0, li3_pos(inv(x)), -1.0, l*(2*z2 - 1/6*l*l))
     end
 
-    r + s*(neg - pos)
+    r - s*(neg + pos)
 end
 
 """
