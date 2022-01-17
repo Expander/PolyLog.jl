@@ -1,3 +1,101 @@
+# Li3(x) for x in [-1,0]
+function li3_neg(x::Float64)::Float64
+    cp = (
+        0.9999999999999999795e+0, -2.0281801754117129576e+0,
+        1.4364029887561718540e+0, -4.2240680435713030268e-1,
+        4.7296746450884096877e-2, -1.3453536579918419568e-3
+    )
+    cq = (
+        1.0000000000000000000e+0, -2.1531801754117049035e+0,
+        1.6685134736461140517e+0, -5.6684857464584544310e-1,
+        8.1999463370623961084e-2, -4.0756048502924149389e-3,
+        3.4316398489103212699e-5
+    )
+
+    x2 = x*x
+    x4 = x2*x2
+
+    p = cp[1] + x * cp[2] + x2 * (cp[3] + x * cp[4]) +
+        x4 * (cp[5] + x * cp[6])
+    q = cq[1] + x * cq[2] + x2 * (cq[3] + x * cq[4]) +
+        x4 * (cq[5] + x * cq[6] + x2 * cq[7])
+
+    return x*p/q
+end
+
+# Li3(x) for x in [0,1/2]
+function li3_pos(x::Float64)::Float64
+    cp = (
+        0.9999999999999999893e+0, -2.5224717303769789628e+0,
+        2.3204919140887894133e+0, -9.3980973288965037869e-1,
+        1.5728950200990509052e-1, -7.5485193983677071129e-3
+    )
+    cq = (
+        1.0000000000000000000e+0, -2.6474717303769836244e+0,
+        2.6143888433492184741e+0, -1.1841788297857667038e+0,
+        2.4184938524793651120e-1, -1.8220900115898156346e-2,
+        2.4927971540017376759e-4
+    )
+
+    x2 = x*x
+    x4 = x2*x2
+
+    p = cp[1] + x * cp[2] + x2 * (cp[3] + x * cp[4]) +
+        x4 * (cp[5] + x * cp[6])
+    q = cq[1] + x * cq[2] + x2 * (cq[3] + x * cq[4]) +
+        x4 * (cq[5] + x * cq[6] + x2 * cq[7])
+
+    return x*p/q
+end
+
+"""
+    li3(x::Float64)::Float64
+
+Returns the real trilogarithm of a real number `x` of type `Float64`.
+
+Author: Alexander Voigt
+
+License: MIT
+
+# Example
+```julia
+li3(1.0)
+```
+"""
+function li3(x::Float64)::Float64
+    z2::Float64 = 1.6449340668482264
+    z3::Float64 = 1.2020569031595943
+
+    # transformation to [-1,0] and [0,1/2]
+    (neg, pos, s, r) = if x < -1.0
+        l = log(-x)
+        (li3_neg(inv(x)), 0.0, 1.0, -l*(z2 + 1/6*l*l))
+    elseif x == -1.0
+        return -0.75*z3
+    elseif x < 0.0
+        (li3_neg(x), 0.0, 1.0, 0.0)
+    elseif x == 0.0
+        return 0.0
+    elseif x < 0.5
+        (0.0, li3_pos(x), 1.0, 0.0)
+    elseif x == 0.5
+        return 0.53721319360804020
+    elseif x < 1.0
+        l = log(x)
+        (li3_neg((x - 1.0)/x), li3_pos(1.0 - x), -1.0, z3 + l*(z2 + l*(-0.5*log(1.0 - x) + 1/6*l)))
+    elseif x == 1.0
+        return z3
+    elseif x < 2.0
+        l = log(x)
+        (li3_neg(1.0 - x), li3_pos((x - 1.0)/x), -1.0, z3 + l*(z2 + l*(-0.5*log(x - 1.0) + 1/6*l)))
+    else # x >= 2.0
+        l = log(x)
+        (0.0, li3_pos(inv(x)), 1.0, l*(2*z2 - 1/6*l*l))
+    end
+
+    r + s*(neg + pos)
+end
+
 """
     li3(z::ComplexF64)::ComplexF64
 
