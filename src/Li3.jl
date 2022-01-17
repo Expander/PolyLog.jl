@@ -98,6 +98,38 @@ const CB = (
     -0.00000000000000000000000000000000002
 )
 
+function li3_neg(y::Float64)::Float64
+    HA = -2.0*y - 1.0
+    ALFAA = HA + HA
+    BA0 = 0.0
+    BA1 = 0.0
+    BA2 = 0.0
+
+    for I in length(CA):-1:1
+        BA0 = CA[I] + ALFAA*BA1 - BA2
+        BA2 = BA1
+        BA1 = BA0
+    end
+
+    BA0 - HA*BA2
+end
+
+function li3_pos(z::Float64)::Float64
+    HB = 2.0*z
+    ALFAB = HB + HB
+    BB0 = 0.0
+    BB1 = 0.0
+    BB2 = 0.0
+
+    for I in length(CB):-1:1
+        BB0 = CB[I] + ALFAB*BB1 - BB2
+        BB2 = BB1
+        BB1 = BB0
+    end
+
+    BB0 - HB*BB2
+end
+
 """
     li3(z::Float64)::Float64
 
@@ -161,18 +193,7 @@ function li3(x::Float64)::Float64
         r = l*(2*z2 - 1/6*l*l)
     end
 
-    HA = -2.0*y - 1.0 ; HB = 2.0*z
-    ALFAA = HA + HA ; ALFAB = HB + HB
-
-    BA0 = 0.0; BA1 = 0.0; BA2 = 0.0
-    BB0 = 0.0; BB1 = 0.0; BB2 = 0.0
-
-    for I in length(CA):-1:1
-       BA0 = CA[I] + ALFAA*BA1 - BA2 ; BA2 = BA1 ; BA1 = BA0
-       BB0 = CB[I] + ALFAB*BB1 - BB2 ; BB2 = BB1 ; BB1 = BB0
-    end
-
-    r + s * ( (BA0 - HA*BA2) + (BB0 - HB*BB2) )
+    r + s*(li3_neg(y) + li3_pos(z))
 end
 
 """
