@@ -98,6 +98,7 @@ const CB = (
     -0.00000000000000000000000000000000002
 )
 
+# Li3(y) for y in [-1,0]
 function li3_neg(y::Float64)::Float64
     HA = -2.0*y - 1.0
     ALFAA = HA + HA
@@ -114,6 +115,7 @@ function li3_neg(y::Float64)::Float64
     BA0 - HA*BA2
 end
 
+# Li3(z) for z in [0,1/2]
 function li3_pos(z::Float64)::Float64
     HB = 2.0*z
     ALFAB = HB + HB
@@ -148,7 +150,7 @@ function li3(x::Float64)::Float64
     z2::Float64 = 1.6449340668482264
     z3::Float64 = 1.2020569031595943
 
-    # transformation y in [-1,0] and z in [0,1/2]
+    # transformation so that y in [-1,0] and z in [0,1/2]
     if x < -1.0
         l = log(-x)
         y = inv(x);
