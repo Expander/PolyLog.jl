@@ -12,7 +12,57 @@ License: MIT
 li3(1.0)
 ```
 """
-function li3(z::Float64)::Float64
+function li3(x::Float64)::Float64
+    z2::Float64 = 1.6449340668482264
+    z3::Float64 = 1.2020569031595943
+
+    # transformation y in [-1,0] and z in [0,1/2]
+    if x < -1.0
+        y = inv(x);
+        z = 0.0
+        s = -1.0
+        r = -log(-x)*(z2 + 1/6*log(-x)^2)
+    elseif x == -1.0
+        return -0.75*z3 # todo: necessary?
+    elseif x < 0.0
+        y = x
+        z = 0.0
+        s = -1.0
+        r = 0.0
+    elseif x == 0.0
+        return 0.0 # todo: necessary?
+    elseif x < 0.5
+        y = 0.0
+        z = x
+        s = -1.0
+        r = 0.0
+    elseif x == 0.5
+        return 0.53721319360804020 # todo necessary?
+    elseif x < 1.0
+        y = (x - 1.0)/x
+        z = 1.0 - x
+        s = 1.0
+        r = z3 + z2*log(x) - 0.5*(log(1.0 - x)*log(x)^2) + 1/6*log(x)^3 # todo
+    elseif x == 1.0
+        return z3 # todo: necessary?
+    elseif x < 2.0
+        y = 1.0 - x
+        z = (x - 1.0)/x
+        s = 1.0
+        r = z3 + z2*log(x) - 0.5*(log(x - 1.0)*log(x)^2) + 1/6*log(x)^3 # todo
+    else # x >= 2.0
+        y = 0.0
+        z = 1.0/x
+        s = -1.0
+        r = 2*z2*log(x) - 1/6*log(x)^3 # todo
+    end
+
+    if !(-1.0 <= y && y <= 0.0 && 0 <= z && z <= 0.5)
+        throw(DomainError("y and z out of bounds"))
+    end
+
+    println("y = $(y), z = $(z)")
+
     return 0.0
 end
 
