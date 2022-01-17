@@ -151,48 +151,30 @@ function li3(x::Float64)::Float64
     z3::Float64 = 1.2020569031595943
 
     # transformation so that y in [-1,0] and z in [0,1/2]
-    if x < -1.0
+    (y, z, s, r) = if x < -1.0
         l = log(-x)
-        y = inv(x);
-        z = 0.0
-        s = -1.0
-        r = -l*(z2 + 1/6*l*l)
+        (inv(x), 0.0, -1.0, -l*(z2 + 1/6*l*l))
     elseif x == -1.0
         return -0.75*z3 # todo: necessary?
     elseif x < 0.0
-        y = x
-        z = 0.0
-        s = -1.0
-        r = 0.0
+        (x, 0.0, -1.0, 0.0)
     elseif x == 0.0
         return 0.0
     elseif x < 0.5
-        y = 0.0
-        z = x
-        s = -1.0
-        r = 0.0
+        (0.0, x, -1.0, 0.0)
     elseif x == 0.5
         return 0.53721319360804020 # todo necessary?
     elseif x < 1.0
         l = log(x)
-        y = (x - 1.0)/x
-        z = 1.0 - x
-        s = 1.0
-        r = z3 + l*(z2 + l*(-0.5*log(1.0 - x) + 1/6*l))
+        ((x - 1.0)/x, 1.0 - x, 1.0, z3 + l*(z2 + l*(-0.5*log(1.0 - x) + 1/6*l)))
     elseif x == 1.0
         return z3
     elseif x < 2.0
         l = log(x)
-        y = 1.0 - x
-        z = (x - 1.0)/x
-        s = 1.0
-        r = z3 + l*(z2 + l*(-0.5*log(x - 1.0) + 1/6*l))
+        (1.0 - x, (x - 1.0)/x, 1.0, z3 + l*(z2 + l*(-0.5*log(x - 1.0) + 1/6*l)))
     else # x >= 2.0
         l = log(x)
-        y = 0.0
-        z = inv(x)
-        s = -1.0
-        r = l*(2*z2 - 1/6*l*l)
+        (0.0, inv(x), -1.0, l*(2*z2 - 1/6*l*l))
     end
 
     r + s*(li3_neg(y) + li3_pos(z))
