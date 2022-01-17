@@ -1,15 +1,18 @@
 """
     li4(z::ComplexF64)::ComplexF64
 
-Returns the complex 4th order polylogarithm of a complex number `z` of type `ComplexF64`.
+Returns the complex 4th order polylogarithm
+``\\operatorname{Li}_4(z)`` of a complex number ``z`` of type
+`ComplexF64`.
 
 Author: Alexander Voigt
 
 License: MIT
 
 # Example
-```julia
-li4(1.0 + 1.0im)
+```jldoctest; setup = :(using PolyLog)
+julia> li4(1.0 + 1.0im)
+0.9593189135784193 + 1.1380391966769827im
 ```
 """
 function li4(z::ComplexF64)::ComplexF64

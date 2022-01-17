@@ -1,15 +1,18 @@
 """
     li6(z::ComplexF64)::ComplexF64
 
-Returns the complex 6th order polylogarithm of a complex number `z` of type `ComplexF64`.
+Returns the complex 6th order polylogarithm
+``\\operatorname{Li}_6(z)`` of a complex number ``z`` of type
+`ComplexF64`.
 
 Author: Alexander Voigt
 
 License: MIT
 
 # Example
-```julia
-li6(1.0 + 1.0im)
+```jldoctest; setup = :(using PolyLog)
+julia> li6(1.0 + 1.0im)
+0.996149796835317 + 1.0335544477237482im
 ```
 """
 function li6(z::ComplexF64)::ComplexF64

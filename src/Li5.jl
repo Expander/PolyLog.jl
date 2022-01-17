@@ -1,15 +1,18 @@
 """
     li5(z::ComplexF64)::ComplexF64
 
-Returns the complex 5th order polylogarithm of a complex number `z` of type `ComplexF64`.
+Returns the complex 5th order polylogarithm
+``\\operatorname{Li}_5(z)`` of a complex number ``z`` of type
+`ComplexF64`.
 
 Author: Alexander Voigt
 
 License: MIT
 
 # Example
-```julia
-li5(1.0 + 1.0im)
+```jldoctest; setup = :(using PolyLog)
+julia> li5(1.0 + 1.0im)
+0.9874666591701124 + 1.068441607107422im
 ```
 """
 function li5(z::ComplexF64)::ComplexF64

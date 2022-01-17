@@ -1,15 +1,17 @@
 """
     li2(x::Float64)::Float64
 
-Returns the real dilogarithm of a real number `x` of type `Float64`.
+Returns the real dilogarithm ``\\Re[\\operatorname{Li}_2(x)]`` of a
+real number ``x`` of type `Float64`.
 
 Author: Alexander Voigt
 
 License: MIT
 
 # Example
-```julia
-li2(1.0)
+```jldoctest; setup = :(using PolyLog)
+julia> li2(1.0)
+1.6449340668482264
 ```
 """
 function li2(x::Float64)::Float64
@@ -69,15 +71,17 @@ end
 """
     li2(z::ComplexF64)::ComplexF64
 
-Returns the complex dilogarithm of a complex number `z` of type `ComplexF64`.
+Returns the complex dilogarithm ``\\operatorname{Li}_2(z)`` of a
+complex number ``z`` of type `ComplexF64`.
 
 Author: Alexander Voigt
 
 License: MIT
 
 # Example
-```julia
-li2(1.0 + 1.0im)
+```jldoctest; setup = :(using PolyLog)
+julia> li2(1.0 + 1.0im)
+0.616850275068085 + 1.4603621167531196im
 ```
 """
 function li2(z::ComplexF64)::ComplexF64

@@ -51,15 +51,17 @@ end
 """
     li3(x::Float64)::Float64
 
-Returns the real trilogarithm of a real number `x` of type `Float64`.
+Returns the real trilogarithm ``\\Re[\\operatorname{Li}_3(x)]`` of a
+real number ``x`` of type `Float64`.
 
 Author: Alexander Voigt
 
 License: MIT
 
 # Example
-```julia
-li3(1.0)
+```jldoctest; setup = :(using PolyLog)
+julia> li3(1.0)
+1.2020569031595942
 ```
 """
 function li3(x::Float64)::Float64
@@ -99,15 +101,17 @@ end
 """
     li3(z::ComplexF64)::ComplexF64
 
-Returns the complex trilogarithm of a complex number `z` of type `ComplexF64`.
+Returns the complex trilogarithm ``\\operatorname{Li}_3(z)`` of a
+complex number ``z`` of type `ComplexF64`.
 
 Author: Alexander Voigt
 
 License: MIT
 
 # Example
-```julia
-li3(1.0 + 1.0im)
+```jldoctest; setup = :(using PolyLog)
+julia> li3(1.0 + 1.0im)
+0.8711588834109378 + 1.267083441888924im
 ```
 """
 function li3(z::ComplexF64)::ComplexF64
