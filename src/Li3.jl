@@ -157,12 +157,6 @@ function li3(x::Float64)::Float64
         r = 2*z2*log(x) - 1/6*log(x)^3 # todo
     end
 
-    if !(-1.0 <= y && y <= 0.0 && 0 <= z && z <= 0.5)
-        throw(DomainError("y and z out of bounds"))
-    end
-
-    println("y = $(y), z = $(z)")
-
     HA = -2.0*y - 1.0 ; HB = 2.0*z
     ALFAA = HA + HA ; ALFAB = HB + HB
 
