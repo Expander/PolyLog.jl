@@ -14,13 +14,14 @@ Example
 ```.jl
 using PolyLog
 
-li2(1.0)
-li2(1.0 + 1.0im)
-li3(1.0)
-li3(1.0 + 1.0im)
-li4(1.0 + 1.0im)
-li5(1.0 + 1.0im)
-li6(1.0 + 1.0im)
+li2(1.0)         # real polylogarithm of order 2 (dilogarithm)
+li3(1.0)         # real polylogarithm of order 3 (trilogarithm)
+
+li2(1.0 + 1.0im) # complex polylogarithm of order 2 (dilogarithm)
+li3(1.0 + 1.0im) # complex polylogarithm of order 3 (trilogarithm)
+li4(1.0 + 1.0im) # complex polylogarithm of order 4
+li5(1.0 + 1.0im) # complex polylogarithm of order 5
+li6(1.0 + 1.0im) # complex polylogarithm of order 6
 ```
 
 
