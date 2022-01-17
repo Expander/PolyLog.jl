@@ -71,7 +71,7 @@ function li3(x::Float64)::Float64
         l = log(-x)
         (li3_neg(inv(x)), 0.0, 1.0, -l*(z2 + 1/6*l*l))
     elseif x == -1.0
-        return -0.75*z3 # todo: necessary?
+        return -0.75*z3
     elseif x < 0.0
         (li3_neg(x), 0.0, 1.0, 0.0)
     elseif x == 0.0
@@ -79,7 +79,7 @@ function li3(x::Float64)::Float64
     elseif x < 0.5
         (0.0, li3_pos(x), 1.0, 0.0)
     elseif x == 0.5
-        return 0.53721319360804020 # todo necessary?
+        return 0.53721319360804020
     elseif x < 1.0
         l = log(x)
         (li3_neg((x - 1.0)/x), li3_pos(1.0 - x), -1.0, z3 + l*(z2 + l*(-0.5*log(1.0 - x) + 1/6*l)))
