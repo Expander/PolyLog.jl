@@ -7,7 +7,7 @@
         expected = row[3] + row[4]*1im
 
         if imag(z) == 0.0
-            @test PolyLog.li3(real(z)) ≈ real(expected) atol=1e-14
+            @test PolyLog.li2(real(z)) ≈ real(expected) atol=1e-14
         end
 
         @test PolyLog.li2(z) ≈ expected atol=1e-14
