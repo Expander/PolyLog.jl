@@ -20,6 +20,13 @@ map(PolyLog.li2, cmpl_data)       # trigger compilation
 @time map(PolyLog.li2, cmpl_data)
 @time map(PolyLog.li2, cmpl_data)
 
+println("Benchmarking li3::Float64")
+
+map(PolyLog.li3, real_data)       # trigger compilation
+@time map(PolyLog.li3, real_data)
+@time map(PolyLog.li3, real_data)
+@time map(PolyLog.li3, real_data)
+
 println("Benchmarking li3::ComplexF64")
 
 map(PolyLog.li3, cmpl_data)       # trigger compilation

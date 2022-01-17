@@ -1,4 +1,22 @@
 """
+    li3(z::Float64)::Float64
+
+Returns the real trilogarithm of a real number `z` of type `Float64`.
+
+Author: Alexander Voigt
+
+License: MIT
+
+# Example
+```julia
+li3(1.0)
+```
+"""
+function li3(z::Float64)::Float64
+    return 0.0
+end
+
+"""
     li3(z::ComplexF64)::ComplexF64
 
 Returns the complex trilogarithm of a complex number `z` of type `ComplexF64`.
