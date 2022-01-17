@@ -59,7 +59,7 @@ function li3_neg(y::Float64)::Float64
     BA0 - HA*BA2
 end
 
-# -Li3(x) for x in [0,1/2]
+# Li3(x) for x in [0,1/2]
 function li3_pos(x::Float64)::Float64
     cp = (
         0.9999999999999999893, -2.5224717303769789628,
@@ -81,7 +81,7 @@ function li3_pos(x::Float64)::Float64
     q = cq[1] + x * cq[2] + x2 * (cq[3] + x * cq[4]) +
         x4 * (cq[5] + x * cq[6] + x2 * cq[7])
 
-    return -x*p/q # todo: change sign
+    return x*p/q
 end
 
 """
@@ -129,7 +129,7 @@ function li3(x::Float64)::Float64
         (0.0, li3_pos(inv(x)), -1.0, l*(2*z2 - 1/6*l*l))
     end
 
-    r + s*(neg + pos)
+    r + s*(neg - pos)
 end
 
 """
