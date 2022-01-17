@@ -142,14 +142,14 @@ function li3(x::Float64)::Float64
         y = (x - 1.0)/x
         z = 1.0 - x
         s = 1.0
-        r = z3 + z2*log(x) - 0.5*(log(1.0 - x)*log(x)^2) + 1/6*log(x)^3 # todo
+        r = z3 + z2*log(x) - 0.5*log(1.0 - x)*log(x)^2 + 1/6*log(x)^3 # todo
     elseif x == 1.0
         return z3 # todo: necessary?
     elseif x < 2.0
         y = 1.0 - x
         z = (x - 1.0)/x
         s = 1.0
-        r = z3 + z2*log(x) - 0.5*(log(x - 1.0)*log(x)^2) + 1/6*log(x)^3 # todo
+        r = z3 + z2*log(x) - 0.5*log(x - 1.0)*log(x)^2 + 1/6*log(x)^3 # todo
     else # x >= 2.0
         y = 0.0
         z = inv(x)
