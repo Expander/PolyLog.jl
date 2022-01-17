@@ -165,7 +165,7 @@ function li3(x::Float64)::Float64
         s = -1.0
         r = 0.0
     elseif x == 0.0
-        return 0.0 # todo: necessary?
+        return 0.0
     elseif x < 0.5
         y = 0.0
         z = x
@@ -180,7 +180,7 @@ function li3(x::Float64)::Float64
         s = 1.0
         r = z3 + l*(z2 + l*(-0.5*log(1.0 - x) + 1/6*l))
     elseif x == 1.0
-        return z3 # todo: necessary?
+        return z3
     elseif x < 2.0
         l = log(x)
         y = 1.0 - x
