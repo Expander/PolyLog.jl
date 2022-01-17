@@ -49,9 +49,9 @@ function li3_pos(x::Float64)::Float64
 end
 
 """
-    li3(z::Float64)::Float64
+    li3(x::Float64)::Float64
 
-Returns the real trilogarithm of a real number `z` of type `Float64`.
+Returns the real trilogarithm of a real number `x` of type `Float64`.
 
 Author: Alexander Voigt
 
@@ -66,7 +66,7 @@ function li3(x::Float64)::Float64
     z2::Float64 = 1.6449340668482264
     z3::Float64 = 1.2020569031595943
 
-    # transformation so that y in [-1,0] and z in [0,1/2]
+    # transformation to [-1,0] and [0,1/2]
     (neg, pos, s, r) = if x < -1.0
         l = log(-x)
         (li3_neg(inv(x)), 0.0, 1.0, -l*(z2 + 1/6*l*l))

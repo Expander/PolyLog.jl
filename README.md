@@ -16,6 +16,7 @@ using PolyLog
 
 li2(1.0)
 li2(1.0 + 1.0im)
+li3(1.0)
 li3(1.0 + 1.0im)
 li4(1.0 + 1.0im)
 li5(1.0 + 1.0im)
