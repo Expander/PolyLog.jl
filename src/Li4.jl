@@ -90,7 +90,7 @@ function li4(x::Float64)::Float64
         r + s*p/q
     else # y <= 1.0
         l = log(y)
-        r + s*(z4 + l*(l*(pi^2/12 + l*(11/36 + l*(-1/48 + l*(-1/1440 + l^2/604800)) - log(abs(l))/6)) + z3))
+        r + s*(z4 + l*(l*(z2/2 + l*(11/36 + l*(-1/48 + l*(-1/1440 + 1//604800*l^2)) - 1/6*log(abs(l)))) + z3))
     end
 end
 
