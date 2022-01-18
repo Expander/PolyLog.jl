@@ -85,8 +85,12 @@ function li4(x::Float64)::Float64
             4.3364007973198649921e-1, -3.9535592340362510549e-2,
             5.7373431535336755591e-4
         )
-        p = evalpoly(y, cp)
-        q = evalpoly(y, cq)
+        y2 = y*y
+        y4 = y2*y2
+        p = cp[1] + y * cp[2] + y2 * (cp[3] + y * cp[4]) +
+            y4 * (cp[5] + y * cp[6] + y2 * cp[7])
+        q = cq[1] + y * cq[2] + y2 * (cq[3] + y * cq[4]) +
+            y4 * (cq[5] + y * cq[6] + y2 * cq[7])
         r + s*p/q
     elseif y < 0.9
         cp = (
