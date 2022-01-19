@@ -82,7 +82,7 @@ function li5(z::ComplexF64)::ComplexF64
         arg::Float64 = pz > 0.0 ? pz - pi : pz + pi
         lmz::ComplexF64 = lnz + arg*im # clog(z)
         lmz2::ComplexF64 = lmz*lmz
-        (-clog(1.0 - 1.0/z), -1.0/360.0*lmz*(7.0*pi^4 + lmz2*(10.0*pi^2 + 3.0*lmz2)))
+        (-clog(1.0 - 1.0/z), lmz*(-7/4*zeta4 - lmz2*(1/6*zeta2 + 1/120*lmz2)))
     end
 
     u2::ComplexF64 = u*u
