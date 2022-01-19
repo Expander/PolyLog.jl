@@ -66,13 +66,9 @@ end
 
 # Li4(x) for x in [8/10,1]
 function li4_one(x::Float64)::Float64
-    z2::Float64 = pi^2/6
-    z3::Float64 = 1.2020569031595943
-    z4::Float64 = pi^4/90
-
     l = log(x)
     l2 = l*l
-    z4 + l*(z3 + l*(z2/2 + l*(11/36 - 1/6*log(abs(l)) + l*(-1/48 + l*(-1/1440 + l2*(1/604800 - 1/91445760*l2))))))
+    zeta4 + l*(zeta3 + l*(zeta2/2 + l*(11/36 - 1/6*log(abs(l)) + l*(-1/48 + l*(-1/1440 + l2*(1/604800 - 1/91445760*l2))))))
 end
 
 """
@@ -93,22 +89,19 @@ julia> li4(1.0)
 ```
 """
 function li4(x::Float64)::Float64
-    z2::Float64 = pi^2/6
-    z4::Float64 = pi^4/90
-
     # transform so that y in [-1,1]
     (y, r, s) = if x < -1.0
         l = log(-x)^2
-        (inv(x), -7/4*z4 + l*(-z2/2 - 1/24*l), -1.0)
+        (inv(x), -7/4*zeta4 + l*(-zeta2/2 - 1/24*l), -1.0)
     elseif x == -1.0
-        return -7/8*z4
+        return -7/8*zeta4
     elseif x < 1.0
         (x, 0.0, 1.0)
     elseif x == 1.0
-        return z4
+        return zeta4
     else # x > 1.0
         l = log(x)^2
-        (inv(x), 2*z4 + l*(z2 - 1/24*l), -1.0)
+        (inv(x), 2*zeta4 + l*(zeta2 - 1/24*l), -1.0)
     end
 
     app = if y < 0.0
@@ -147,7 +140,6 @@ function li4(z::ComplexF64)::ComplexF64
         return 0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
     end
 
-    z4::Float64 = 1.0823232337111382
     bf = (
         1.0                   , -7.0/16.0              ,
         1.1651234567901235e-01, -1.9820601851851852e-02,
@@ -165,10 +157,10 @@ function li4(z::ComplexF64)::ComplexF64
             return 0.0 + 0.0im
         end
         if real(z) == 1.0
-            return z4 + 0.0im
+            return zeta4 + 0.0im
         end
         if real(z) == -1.0
-            return -7.0/8.0*z4 + 0.0im
+            return -7.0/8.0*zeta4 + 0.0im
         end
     end
 
@@ -193,7 +185,7 @@ function li4(z::ComplexF64)::ComplexF64
             -2.3428810452879340e-16
         )
 
-        return z4 + v2 * (c2 + v2 * c4) +
+        return zeta4 + v2 * (c2 + v2 * c4) +
             v * (
                 c1 +
                 c3*v2 +

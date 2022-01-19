@@ -21,7 +21,6 @@ function li6(z::ComplexF64)::ComplexF64
         return 0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
     end
 
-    z6::Float64 = 1.0173430619844491
     bf = (
         1.0                   , -31.0/64.0             ,
         1.5241340877914952e-01, -3.4365555877057613e-02,
@@ -39,10 +38,10 @@ function li6(z::ComplexF64)::ComplexF64
             return 0.0 + 0.0im
         end
         if real(z) == 1.0
-            return z6 + 0.0im
+            return zeta6 + 0.0im
         end
         if real(z) == -1.0
-            return -31.0/32.0*z6 + 0.0im
+            return -31.0/32.0*zeta6 + 0.0im
         end
     end
 
@@ -66,7 +65,7 @@ function li6(z::ComplexF64)::ComplexF64
             -5.7933058574392549e-15
         )
 
-        return z6 + v * c1 +
+        return zeta6 + v * c1 +
             v2 * (c2 + v * c3 +
             v2 * (c4 + v * c5 +
             v2 * (c6 +

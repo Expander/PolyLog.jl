@@ -21,7 +21,6 @@ function li5(z::ComplexF64)::ComplexF64
         return 0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
     end
 
-    z5::Float64 = 1.0369277551433699
     bf = (
         1.0                   , -15.0/32.0             ,
         1.3953189300411523e-01, -2.8633777006172840e-02,
@@ -40,10 +39,10 @@ function li5(z::ComplexF64)::ComplexF64
             return 0.0 + 0.0im
         end
         if real(z) == 1.0
-            return z5 + 0.0im
+            return zeta5 + 0.0im
         end
         if real(z) == -1.0
-            return -15.0/16.0*z5 + 0.0im
+            return -15.0/16.0*zeta5 + 0.0im
         end
     end
 
@@ -66,7 +65,7 @@ function li5(z::ComplexF64)::ComplexF64
             -8.6899587861588824e-14, 1.0081254080218813e-15
         )
 
-        return z5 + v * c1 +
+        return zeta5 + v * c1 +
             v2 * (c2 + v * c3 +
             v2 * (c4 + v * c5 +
             v2 * (cs[1] +

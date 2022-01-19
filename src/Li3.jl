@@ -65,15 +65,12 @@ julia> li3(1.0)
 ```
 """
 function li3(x::Float64)::Float64
-    z2::Float64 = 1.6449340668482264
-    z3::Float64 = 1.2020569031595943
-
     # transformation to [-1,0] and [0,1/2]
     (neg, pos, s, r) = if x < -1.0
         l = log(-x)
-        (li3_neg(inv(x)), 0.0, 1.0, -l*(z2 + 1/6*l*l))
+        (li3_neg(inv(x)), 0.0, 1.0, -l*(zeta2 + 1/6*l*l))
     elseif x == -1.0
-        return -0.75*z3
+        return -0.75*zeta3
     elseif x < 0.0
         (li3_neg(x), 0.0, 1.0, 0.0)
     elseif x == 0.0
@@ -84,15 +81,15 @@ function li3(x::Float64)::Float64
         return 0.53721319360804020
     elseif x < 1.0
         l = log(x)
-        (li3_neg((x - 1.0)/x), li3_pos(1.0 - x), -1.0, z3 + l*(z2 + l*(-0.5*log(1.0 - x) + 1/6*l)))
+        (li3_neg((x - 1.0)/x), li3_pos(1.0 - x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(1.0 - x) + 1/6*l)))
     elseif x == 1.0
-        return z3
+        return zeta3
     elseif x < 2.0
         l = log(x)
-        (li3_neg(1.0 - x), li3_pos((x - 1.0)/x), -1.0, z3 + l*(z2 + l*(-0.5*log(x - 1.0) + 1/6*l)))
+        (li3_neg(1.0 - x), li3_pos((x - 1.0)/x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(x - 1.0) + 1/6*l)))
     else # x >= 2.0
         l = log(x)
-        (0.0, li3_pos(inv(x)), 1.0, l*(2*z2 - 1/6*l*l))
+        (0.0, li3_pos(inv(x)), 1.0, l*(2*zeta2 - 1/6*l*l))
     end
 
     r + s*(neg + pos)
@@ -120,8 +117,6 @@ function li3(z::ComplexF64)::ComplexF64
         return 0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
     end
 
-    z2::Float64 = 1.6449340668482264
-    z3::Float64 = 1.2020569031595943
     bf = (
         1.0, -3.0/8.0, 17.0/216.0, -5.0/576.0,
         1.2962962962962963e-04,  8.1018518518518519e-05,
@@ -138,10 +133,10 @@ function li3(z::ComplexF64)::ComplexF64
             return 0.0 + 0.0im
         end
         if real(z) == 1.0
-            return z3 + 0.0im
+            return zeta3 + 0.0im
         end
         if real(z) == -1.0
-            return -0.75*z3 + 0.0im
+            return -0.75*zeta3 + 0.0im
         end
         if real(z) == 0.5
             return 0.53721319360804020 + 0.0im
@@ -157,7 +152,7 @@ function li3(z::ComplexF64)::ComplexF64
         v2::ComplexF64 = v*v
         v4::ComplexF64 = v2*v2
         v8::ComplexF64 = v4*v4
-        c0::ComplexF64 = z3 + v*(z2 - v2/12.0)
+        c0::ComplexF64 = zeta3 + v*(zeta2 - v2/12.0)
         c1::ComplexF64 = 0.25 * (3.0 - 2.0*clog(-v))
 
         cs = (
@@ -179,7 +174,7 @@ function li3(z::ComplexF64)::ComplexF64
     else # nz > 1.0
         arg::Float64 = pz > 0.0 ? pz - pi : pz + pi
         lmz::ComplexF64 = lnz + arg*im # clog(z)
-        (-clog(1.0 - 1.0/z), -lmz*(lmz*lmz/6.0 + z2))
+        (-clog(1.0 - 1.0/z), -lmz*(lmz*lmz/6.0 + zeta2))
     end
 
     u2::ComplexF64 = u*u
