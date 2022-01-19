@@ -35,8 +35,6 @@ function li4(x::Float64)::Float64
         (inv(x), 2*z4 + l*(z2 - 1/24*l), -1.0)
     end
 
-    println("x = $x, y = $y")
-
     if y < 0.0
         cp = (
             0.9999999999999999952e+0, -1.8532099956062184217e+0,
