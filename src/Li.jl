@@ -22,7 +22,7 @@ function li(n::Integer, x::Float64)::Float64
     end
 
     x == 1.0 && return zeta(n)
-    x == -1.0 && return -(1.0 - 2.0^(1 - n))*zeta(n)
+    x == -1.0 && return (2.0^(1 - n) - 1.0)*zeta(n)
 
     # transformation on [-1,1]
     (y, rest, sgn) = if (abs(x) < 1.0)
