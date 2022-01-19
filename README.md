@@ -16,6 +16,7 @@ using PolyLog
 
 li2(1.0)         # real polylogarithm of order 2 (dilogarithm)
 li3(1.0)         # real polylogarithm of order 3 (trilogarithm)
+li4(1.0)         # real polylogarithm of order 4
 
 li2(1.0 + 1.0im) # complex polylogarithm of order 2 (dilogarithm)
 li3(1.0 + 1.0im) # complex polylogarithm of order 3 (trilogarithm)
