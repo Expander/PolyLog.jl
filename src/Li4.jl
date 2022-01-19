@@ -111,15 +111,17 @@ function li4(x::Float64)::Float64
         (inv(x), 2*z4 + l*(z2 - 1/24*l), -1.0)
     end
 
-    if y < 0.0
-        r + s*li4_neg(y)
+    app = if y < 0.0
+        li4_neg(y)
     elseif y < 0.5
-        r + s*li4_half(y)
+        li4_half(y)
     elseif y < 0.8
-        r + s*li4_mid(y)
+        li4_mid(y)
     else # y <= 1.0
-        r + s*li4_one(y)
+        li4_one(y)
     end
+
+    r + s*app
 end
 
 """
