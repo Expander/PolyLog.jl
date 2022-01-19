@@ -11,12 +11,15 @@ function li4_neg(x::Float64)::Float64
         4.5822723996558783670e-2, -1.8023912938765272341e-3,
         1.0199621542882314929e-5
     )
+
     x2 = x*x
     x4 = x2*x2
+
     p = cp[1] + x * cp[2] + x2 * (cp[3] + x * cp[4]) +
         x4 * (cp[5] + x * cp[6])
     q = cq[1] + x * cq[2] + x2 * (cq[3] + x * cq[4]) +
         x4 * (cq[5] + x * cq[6] + x2 * cq[7])
+
     x*p/q
 end
 
@@ -32,12 +35,15 @@ function li4_half(x::Float64)::Float64
         1.5915688992789175941e+0, -5.0327641401677265813e-1,
         6.1467217495127095177e-2, -1.9061294280193280330e-3
     )
+
     x2 = x*x
     x4 = x2*x2
+
     p = cp[1] + x * cp[2] + x2 * (cp[3] + x * cp[4]) +
         x4 * (cp[5] + x * cp[6])
     q = cq[1] + x * cq[2] + x2 * (cq[3] + x * cq[4]) +
         x4 * (cq[5] + x * cq[6])
+
     x*p/q
 end
 
@@ -55,12 +61,15 @@ function li4_mid(x::Float64)::Float64
         4.3364007973198649921e-1, -3.9535592340362510549e-2,
         5.7373431535336755591e-4
     )
+
     x2 = x*x
     x4 = x2*x2
+
     p = cp[1] + x * cp[2] + x2 * (cp[3] + x * cp[4]) +
         x4 * (cp[5] + x * cp[6] + x2 * cp[7])
     q = cq[1] + x * cq[2] + x2 * (cq[3] + x * cq[4]) +
         x4 * (cq[5] + x * cq[6] + x2 * cq[7])
+
     p/q
 end
 
@@ -68,7 +77,14 @@ end
 function li4_one(x::Float64)::Float64
     l = log(x)
     l2 = l*l
-    zeta4 + l*(zeta3 + l*(zeta2/2 + l*(11/36 - 1/6*log(abs(l)) + l*(-1/48 + l*(-1/1440 + l2*(1/604800 - 1/91445760*l2))))))
+
+    zeta4 +
+    l*(zeta3 +
+    l*(zeta2/2 +
+    l*(11/36 - 1/6*log(abs(l)) +
+    l*(-1/48 +
+    l*(-1/1440 +
+    l2*(1/604800 - 1/91445760*l2))))))
 end
 
 """
@@ -90,7 +106,7 @@ julia> li4(1.0)
 """
 function li4(x::Float64)::Float64
     # transform so that y in [-1,1]
-    (y, r, s) = if x < -1.0
+    (y, rest, sgn) = if x < -1.0
         l = log(-x)^2
         (inv(x), -7/4*zeta4 + l*(-zeta2/2 - 1/24*l), -1.0)
     elseif x == -1.0
@@ -114,7 +130,7 @@ function li4(x::Float64)::Float64
         li4_one(y)
     end
 
-    r + s*app
+    rest + sgn*app
 end
 
 """

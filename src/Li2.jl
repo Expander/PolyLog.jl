@@ -34,7 +34,7 @@ function li2(x::Float64)::Float64
     )
 
     # transform to [0, 1/2]
-    (y, r, s) = if x < -1.0
+    (y, rest, sgn) = if x < -1.0
         l = log(1.0 - x)
         (1.0/(1.0 - x), -zeta2 + l*(0.5*l - log(-x)), 1.0)
     elseif x == -1.0
@@ -64,7 +64,7 @@ function li2(x::Float64)::Float64
     q = cq[1] + y * cq[2] + y2 * (cq[3] + y * cq[4]) +
         y4 * (cq[5] + y * cq[6] + y2 * cq[7])
 
-    r + s*y*p/q
+    rest + sgn*y*p/q
 end
 
 

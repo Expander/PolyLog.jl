@@ -20,7 +20,7 @@ function li3_neg(x::Float64)::Float64
     q = cq[1] + x * cq[2] + x2 * (cq[3] + x * cq[4]) +
         x4 * (cq[5] + x * cq[6] + x2 * cq[7])
 
-    return x*p/q
+    x*p/q
 end
 
 # Li3(x) for x in [0,1/2]
@@ -45,7 +45,7 @@ function li3_pos(x::Float64)::Float64
     q = cq[1] + x * cq[2] + x2 * (cq[3] + x * cq[4]) +
         x4 * (cq[5] + x * cq[6] + x2 * cq[7])
 
-    return x*p/q
+    x*p/q
 end
 
 """
@@ -66,7 +66,7 @@ julia> li3(1.0)
 """
 function li3(x::Float64)::Float64
     # transformation to [-1,0] and [0,1/2]
-    (neg, pos, s, r) = if x < -1.0
+    (neg, pos, sgn, rest) = if x < -1.0
         l = log(-x)
         (li3_neg(inv(x)), 0.0, 1.0, -l*(zeta2 + 1/6*l*l))
     elseif x == -1.0
@@ -92,7 +92,7 @@ function li3(x::Float64)::Float64
         (0.0, li3_pos(inv(x)), 1.0, l*(2*zeta2 - 1/6*l*l))
     end
 
-    r + s*(neg + pos)
+    rest + sgn*(neg + pos)
 end
 
 """
