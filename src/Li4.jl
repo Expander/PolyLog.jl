@@ -64,6 +64,17 @@ function li4_mid(x::Float64)::Float64
     p/q
 end
 
+# Li4(x) for x in [8/10,1]
+function li4_one(x::Float64)::Float64
+    z2::Float64 = pi^2/6
+    z3::Float64 = 1.2020569031595943
+    z4::Float64 = pi^4/90
+
+    l = log(x)
+    l2 = l*l
+    z4 + l*(z3 + l*(z2/2 + l*(11/36 - 1/6*log(abs(l)) + l*(-1/48 + l*(-1/1440 + l2*(1/604800 - 1/91445760*l2))))))
+end
+
 """
     li4(x::Float64)::Float64
 
@@ -108,9 +119,7 @@ function li4(x::Float64)::Float64
     elseif y < 0.8
         r + s*li4_mid(y)
     else # y <= 1.0
-        l = log(y)
-        l2 = l*l
-        r + s*(z4 + l*(z3 + l*(z2/2 + l*(11/36 - 1/6*log(abs(l)) + l*(-1/48 + l*(-1/1440 + l2*(1/604800 - 1/91445760*l2)))))))
+        r + s*li4_one(y)
     end
 end
 
