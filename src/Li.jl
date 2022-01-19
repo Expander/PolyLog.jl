@@ -28,5 +28,5 @@ function li(n::Integer, x::Float64)::Float64
         (inv(x), li_rest(n, x), iseven(n - 1) ? 1.0 : -1.0)
     end
 
-    li_series(n, y)
+    rest + sgn*li_series(n, y)
 end
