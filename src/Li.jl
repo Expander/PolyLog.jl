@@ -21,8 +21,11 @@ function li(n::Integer, x::Float64)::Float64
         throw(DomainError(n, "li(n,x) undefined for n < 1"))
     end
 
+    x == 1.0 && return zeta(n)
+    x == -1.0 && return -(1.0 - 2.0^(1 - n))*zeta(n)
+
     # transformation on [-1,1]
-    (y, rest, sgn) = if (abs(x) <= 1.0)
+    (y, rest, sgn) = if (abs(x) < 1.0)
         (x, 0.0, 1.0)
     else # abs(x) > 1
         (inv(x), li_rest(n, x), isodd(n) ? 1.0 : -1.0)
