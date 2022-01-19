@@ -94,7 +94,6 @@ julia> li4(1.0)
 """
 function li4(x::Float64)::Float64
     z2::Float64 = pi^2/6
-    z3::Float64 = 1.2020569031595943
     z4::Float64 = pi^4/90
 
     # transform so that y in [-1,1]
