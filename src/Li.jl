@@ -1,5 +1,10 @@
-# calculates remainder from inversion formula
-function li_rest(n::Integer, x::Float64)::Float64
+# calculates remainder from inversion formula for x < -1
+function li_neg_rest(n::Integer, x::Float64)::Float64
+    0.0
+end
+
+# calculates remainder from inversion formula for x > 1
+function li_pos_rest(n::Integer, x::Float64)::Float64
     0.0
 end
 
@@ -24,11 +29,13 @@ function li(n::Integer, x::Float64)::Float64
     x == 1.0 && return zeta(n)
     x == -1.0 && return (2.0^(1 - n) - 1.0)*zeta(n)
 
-    # transformation on [-1,1]
-    (y, rest, sgn) = if (abs(x) < 1.0)
+    # transformation of x to [-1,1]
+    (y, rest, sgn) = if x < -1.0
+        (inv(x), li_neg_rest(n, x), isodd(n) ? 1.0 : -1.0)
+    elseif x < 1.0
         (x, 0.0, 1.0)
-    else # abs(x) > 1
-        (inv(x), li_rest(n, x), isodd(n) ? 1.0 : -1.0)
+    else # x > 1.0
+        (inv(x), li_pos_rest(n, x), isodd(n) ? 1.0 : -1.0)
     end
 
     rest + sgn*li_series(n, y)
