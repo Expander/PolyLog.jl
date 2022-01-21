@@ -100,13 +100,25 @@ end
 # calculates remainder from inversion formula for x > 1
 function li_pos_rest(n::Integer, x::Float64)::Float64
     l = log(Complex(-x))
+    l2 = l*l
     sum = 0.0
 
-    for r in 1:(n÷2)
-        sum += l^(n - 2*r)/factorial(n - 2*r)*(2.0^(1 - 2*r) - 1.0)*zeta(2*r)
+    if iseven(n)
+        p = 1.0 # collects l^(2u)
+        for u in 0:(n÷2 - 1)
+            sum += p*inverse_factorial(2*u)*li_minus_1(n - 2*u)
+            p *= l2
+        end
+    else
+        k = (n - 1)÷2
+        p = l # collects l^(2u + 1)
+        for u in 0:(k - 1)
+            sum += p*inverse_factorial(2*u + 1)*li_minus_1(2*(k - u))
+            p *= l2
+        end
     end
 
-    real(2*sum - l^n/factorial(n))
+    real(2*sum - p*inverse_factorial(n))
 end
 
 function harmonic(n::Integer)
