@@ -87,10 +87,9 @@ function li_neg_rest(n::Integer, x::Float64)::Float64
             p *= l2
         end
     else
-        k = (n - 1)÷2
         p = l # collects l^(2u + 1)
-        for u in 0:(k - 1)
-            sum += p*inverse_factorial(2*u + 1)*li_minus_1(2*(k - u))
+        for u in 0:((n - 3)÷2)
+            sum += p*inverse_factorial(2*u + 1)*li_minus_1(n - 1 - 2*u)
             p *= l2
         end
     end
@@ -113,10 +112,9 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
             p *= mag2
         end
     else
-        k = (n - 1)÷2
         p = mag # collects mag^(2u + 1)
-        for u in 0:(k - 1)
-            sum += p*cos((2*u + 1)*arg)*inverse_factorial(2*u + 1)*li_minus_1(2*(k - u))
+        for u in 0:((n - 3)÷2)
+            sum += p*cos((2*u + 1)*arg)*inverse_factorial(2*u + 1)*li_minus_1(n - 1 - 2*u)
             p *= mag2
         end
     end
