@@ -14,6 +14,8 @@ Example
 ```.jl
 using PolyLog
 
+li0(1.0)         # real polylogarithm of order 0
+li1(1.0)         # real polylogarithm of order 1
 li2(1.0)         # real polylogarithm of order 2 (dilogarithm)
 li3(1.0)         # real polylogarithm of order 3 (trilogarithm)
 li4(1.0)         # real polylogarithm of order 4

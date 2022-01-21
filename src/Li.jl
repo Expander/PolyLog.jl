@@ -79,7 +79,7 @@ function li(n::Integer, x::Float64)::Float64
         throw(DomainError(n, "li(n,x) not implemented for n < 0"))
     end
 
-    n == 0 && return x/(1 - x)
+    n == 0 && return li0(x)
     n == 1 && return li1(x)
     x == 1.0 && return zeta(n)
     x == -1.0 && return (2.0^(1 - n) - 1.0)*zeta(n)
