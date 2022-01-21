@@ -12,7 +12,14 @@ end
 
 # calculates remainder from inversion formula for x > 1
 function li_pos_rest(n::Integer, x::Float64)::Float64
-    0.0
+    l = log(Complex(-x))
+    sum = 0.0
+
+    for r in 1:(n÷2)
+        sum += l^(n - 2*r)/factorial(n - 2*r)*(2.0^(1 - 2*r) - 1.0)*zeta(2*r)
+    end
+
+    real(2*sum - l^n/factorial(n))
 end
 
 # naive series expansion of Li(n,x) for |x| < 1
