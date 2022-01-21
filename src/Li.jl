@@ -174,6 +174,23 @@ function li_series(n::Integer, x::Float64)::Float64
     sum
 end
 
+"""
+    li(n::Integer, x::Float64)::Float64
+
+Returns the real n-th order polylogarithm
+``\\Re[\\operatorname{Li}_n(x)]`` of a real number ``x`` of type
+`Float64`.
+
+Author: Alexander Voigt
+
+License: MIT
+
+# Example
+```jldoctest; setup = :(using PolyLog)
+julia> li(10, 1.0)
+1.0009945751278182
+```
+"""
 function li(n::Integer, x::Float64)::Float64
     if n < 0
         throw(DomainError(n, "li(n,x) not implemented for n < 0"))
