@@ -104,9 +104,9 @@ end
 
 # calculates remainder from inversion formula for x > 1
 function li_pos_rest(n::Integer, x::Float64)::Float64
-    l = log(Complex(-x))
-    mag = abs(l)
-    arg = angle(l)
+    l = log(x)
+    mag = hypot(l, pi)
+    arg = atan(pi, l)
     sum = 0.0
 
     for r in 1:(n÷2)
