@@ -22,6 +22,36 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
     real(2*sum - l^n/factorial(n))
 end
 
+function harmonic(n::Integer)
+    sum = 1.0
+
+    for k in 2:(n-1)
+        sum += 1/k
+    end
+
+    sum
+end
+
+# series expansion of Li(n,x) for x ~ 1, x < 1
+function li_series_one(n::Integer, x::Float64)::Float64
+    l = log(x)
+    sum = zeta(n)
+
+    for j in 1:(n - 2)
+        sum += zeta(n - j)*l^j/factorial(j)
+    end
+
+    sum += (harmonic(n - 1) - log(-l))*l^(n - 1)/factorial(n - 1)
+
+    for j in n:typemax(n)
+        old_sum = sum
+        sum += zeta(n - j)*l^j/factorial(j)
+        sum == old_sum && break
+    end
+
+    sum
+end
+
 # naive series expansion of Li(n,x) for |x| < 1
 function li_series(n::Integer, x::Float64)::Float64
     sum = x
@@ -52,5 +82,7 @@ function li(n::Integer, x::Float64)::Float64
         (inv(x), li_pos_rest(n, x), isodd(n) ? 1.0 : -1.0)
     end
 
-    rest + sgn*li_series(n, y)
+    li = x > 0.75 ? li_series_one(n, y) : li_series(n, y)
+
+    rest + sgn*li
 end
