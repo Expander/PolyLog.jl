@@ -98,22 +98,30 @@ function li_neg_rest(n::Integer, x::Float64)::Float64
     2*sum - p*inverse_factorial(n)
 end
 
-function real_pow(mag::Float64, arg::Float64, n::Integer)::Float64
-    mag^n * cos(n*arg)
-end
-
 # calculates remainder from inversion formula for x > 1
 function li_pos_rest(n::Integer, x::Float64)::Float64
     l = log(x)
-    mag = hypot(l, pi)
-    arg = atan(pi, l)
+    mag = hypot(l, pi) # |log(-x)|
+    mag2 = mag*mag
+    arg = atan(pi, l)  # angle(log(-x))
     sum = 0.0
 
-    for r in 1:(n÷2)
-        sum += real_pow(mag, arg, n - 2*r)*inverse_factorial(n - 2*r)*li_minus_1(2*r)
+    if iseven(n)
+        p = 1.0 # collects mag^(2u)
+        for u in 0:(n÷2 - 1)
+            sum += p*cos(2*u*arg)*inverse_factorial(2*u)*li_minus_1(n - 2*u)
+            p *= mag2
+        end
+    else
+        k = (n - 1)÷2
+        p = mag # collects mag^(2u + 1)
+        for u in 0:(k - 1)
+            sum += p*cos((2*u + 1)*arg)*inverse_factorial(2*u + 1)*li_minus_1(2*(k - u))
+            p *= mag2
+        end
     end
 
-    2*sum - real_pow(mag, arg, n)*inverse_factorial(n)
+    2*sum - p*cos(n*arg)*inverse_factorial(n)
 end
 
 function harmonic(n::Integer)
