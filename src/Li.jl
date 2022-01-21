@@ -49,7 +49,8 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
     2*sum - p*cos(n*arg)*inverse_factorial(n)
 end
 
-function harmonic(n::Integer)
+# returns n-th harmonic number
+function harmonic(n::Integer)::Float64
     sum = 1.0
 
     for k in 2:n
@@ -59,7 +60,7 @@ function harmonic(n::Integer)
     sum
 end
 
-# series expansion of Li(n,x) for x ~ 1, x < 1
+# series expansion of Li(n,x) for x ~ 1, 0 < x < 1
 function li_series_one(n::Integer, x::Float64)::Float64
     l = log(x)
     sum = zeta(n)
