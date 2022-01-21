@@ -1,11 +1,31 @@
+li_minus_1(n::Integer) = (2.0^(1 - n) - 1.0)*zeta(n)
+
 # calculates remainder from inversion formula for x < -1
 function li_neg_rest(n::Integer, x::Float64)::Float64
     l = log(-x)
+    l2 = l*l
     sum = 0.0
 
-    for r in 1:(n÷2)
-        sum += l^(n - 2*r)/factorial(n - 2*r)*(2.0^(1 - 2*r) - 1.0)*zeta(2*r)
+    if iseven(n)
+        k = n÷2
+        p = 1.0 # collects l2^u = l^(2u)
+        for u in 0:(k - 1)
+            sum += p/factorial(2*u)*li_minus_1(n - 2*u)
+            p *= l2
+        end
+    else
+        k = (n - 1)÷2
+        p = 1.0 # collects l2^u = l^(2u)
+        for u in 0:(k - 1)
+            sum += p/factorial(2*u + 1)*li_minus_1(2*k - 2*u)
+            p *= l2
+        end
+        sum *= l
     end
+
+    # for r in 1:(n÷2)
+    #     sum += l^(n - 2*r)/factorial(n - 2*r)*(2.0^(1 - 2*r) - 1.0)*zeta(2*r)
+    # end
 
     2*sum - l^n/factorial(n)
 end
