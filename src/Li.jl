@@ -25,7 +25,7 @@ end
 function harmonic(n::Integer)
     sum = 1.0
 
-    for k in 2:(n - 1)
+    for k in 2:n
         sum += 1/k
     end
 
