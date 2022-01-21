@@ -1,6 +1,7 @@
 module PolyLog
 
 include("Constants.jl")
+include("InverseFactorial.jl")
 include("Li0.jl")
 include("Li1.jl")
 include("Li2.jl")
