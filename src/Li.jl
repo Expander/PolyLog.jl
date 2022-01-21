@@ -62,11 +62,13 @@ end
 # naive series expansion of Li(n,x) for |x| < 1
 function li_series(n::Integer, x::Float64)::Float64
     sum = x
+    xn = x*x
 
     for k in 2:typemax(n)
         old_sum = sum
-        sum += x^k/Float64(k)^n
+        sum += xn/Float64(k)^n
         sum == old_sum && break
+        xn *= x
     end
 
     sum
