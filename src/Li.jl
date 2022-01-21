@@ -66,14 +66,19 @@ function li_series_one(n::Integer, x::Float64)::Float64
     sum = zeta(n)
     p = 1.0 # collects l^j/j!
 
-    for j in 1:(n + 1)
+    for j in 1:(n - 2)
         p *= l/j
-        if j == n - 1
-            sum += (harmonic(n - 1) - log(-l))*p
-        else
-            sum += zeta(n - j)*p
-        end
+        sum += zeta(n - j)*p
     end
+
+    p *= l/(n - 1)
+    sum += (harmonic(n - 1) - log(-l))*p
+
+    p *= l/n
+    sum += zeta(0)*p
+
+    p *= l/(n + 1)
+    sum += zeta(-1)*p
 
     l2 = l*l
 
