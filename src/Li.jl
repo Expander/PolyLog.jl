@@ -36,16 +36,23 @@ end
 function li_series_one(n::Integer, x::Float64)::Float64
     l = log(x)
     sum = zeta(n)
+    p = 1.0 # collects l^j/j!
 
-    for j in 1:(n - 2)
-        sum += zeta(n - j)*l^j/factorial(j)
+    for j in 1:(n + 1)
+        p *= l/j
+        if j == n - 1
+            sum += (harmonic(n - 1) - log(-l))*p
+        else
+            sum += zeta(n - j)*p
+        end
     end
 
-    sum += (harmonic(n - 1) - log(-l))*l^(n - 1)/factorial(n - 1)
+    l2 = l*l
 
-    for j in n:typemax(n)
+    for j in (n + 3):2:typemax(n)
+        p *= l2/((j - 1)*j)
         old_sum = sum
-        sum += zeta(n - j)*l^j/factorial(j)
+        sum += zeta(n - j)*p
         sum == old_sum && break
     end
 
