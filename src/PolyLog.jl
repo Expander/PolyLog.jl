@@ -1,6 +1,7 @@
 module PolyLog
 
 include("Constants.jl")
+include("Li1.jl")
 include("Li2.jl")
 include("Li3.jl")
 include("Li4.jl")
@@ -9,6 +10,7 @@ include("Li6.jl")
 include("Li.jl")
 include("Zeta.jl")
 
+export li1
 export li2
 export li3
 export li4
