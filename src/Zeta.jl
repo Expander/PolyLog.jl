@@ -65,8 +65,12 @@ function zeta(n::Integer)::Float64
     if n < 0
         if iseven(n)
             0.0
-        else
+        elseif (1 - n)÷2 <= length(zetas_neg)
             zetas_neg[(1 - n)÷2]
+        elseif iseven((1 - n)÷2)
+            Inf
+        else
+            -Inf
         end
     elseif n == 0
         -0.5
