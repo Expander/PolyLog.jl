@@ -49,19 +49,6 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
     2*sum - p*cos(n*arg)*inverse_factorial(n)
 end
 
-# returns n-th harmonic number, n > 0
-function harmonic(n::Integer)::Float64
-    if n < 20
-        sum = 1.0
-        for k in 2:n
-            sum += 1/k
-        end
-        sum
-    else
-        eulergamma + digamma(n + 1)
-    end
-end
-
 # series expansion of Li(n,x) for x ~ 1, 0 < x < 1
 function li_series_one(n::Integer, x::Float64)::Float64
     l = log(x)
