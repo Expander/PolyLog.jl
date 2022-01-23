@@ -10,13 +10,17 @@ function li_neg_rest(n::Integer, x::Float64)::Float64
     if iseven(n)
         p = 1.0 # collects l^(2u)
         for u in 0:(n÷2 - 1)
+            old_sum = sum
             sum += p*inverse_factorial(2*u)*li_minus_1(n - 2*u)
+            sum == old_sum && break
             p *= l2
         end
     else
         p = l # collects l^(2u + 1)
         for u in 0:((n - 3)÷2)
+            old_sum = sum
             sum += p*inverse_factorial(2*u + 1)*li_minus_1(n - 1 - 2*u)
+            sum == old_sum && break
             p *= l2
         end
     end
@@ -35,13 +39,17 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
     if iseven(n)
         p = 1.0 # collects mag^(2u)
         for u in 0:(n÷2 - 1)
+            old_sum = sum
             sum += p*cos(2*u*arg)*inverse_factorial(2*u)*li_minus_1(n - 2*u)
+            sum == old_sum && break
             p *= l2
         end
     else
         p = mag # collects mag^(2u + 1)
         for u in 0:((n - 3)÷2)
+            old_sum = sum
             sum += p*cos((2*u + 1)*arg)*inverse_factorial(2*u + 1)*li_minus_1(n - 1 - 2*u)
+            sum == old_sum && break
             p *= l2
         end
     end
