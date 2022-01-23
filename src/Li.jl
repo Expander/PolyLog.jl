@@ -145,7 +145,11 @@ function li(n::Integer, x::Float64)::Float64
         (inv(x), li_pos_rest(n, x), isodd(n) ? 1.0 : -1.0)
     end
 
-    li = x > 0.75 ? li_series_one(n, y) : li_series(n, y)
+    li = if n < 20 && x > 0.75
+        li_series_one(n, y)
+    else
+        li_series(n, y)
+    end
 
     rest + sgn*li
 end
