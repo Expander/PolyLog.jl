@@ -109,7 +109,7 @@ end
 
 Returns the real n-th order polylogarithm
 ``\\Re[\\operatorname{Li}_n(x)]`` of a real number ``x`` of type
-`Float64`.
+`Float64` for integer ``n\\geq 0``.
 
 Author: Alexander Voigt
 
