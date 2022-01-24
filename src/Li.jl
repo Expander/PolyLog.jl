@@ -80,8 +80,9 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
         end
     else
         p = mag # collects mag^(2u + 1)
-        co = cos(arg) # collects cos((2*u + 1)*arg)
-        si = sin(arg) # collects sin((2*u + 1)*arg)
+        s, c = sincos(arg)
+        co = c # collects cos((2*u + 1)*arg)
+        si = s # collects sin((2*u + 1)*arg)
         for u in 0:((n - 3)÷2)
             old_sum = sum
             sum += p*co*inverse_factorial(2*u + 1)*li_minus_1(n - 1 - 2*u)
