@@ -24,3 +24,24 @@ function li1(x::Float64)::Float64
         -log(x - 1.0)
     end
 end
+
+"""
+    li1(z::ComplexF64)::ComplexF64
+
+Returns the complex 1st order polylogarithm
+``\\operatorname{Li}_1(z)`` of a complex number ``z`` of type
+`ComplexF64`.
+
+Author: Alexander Voigt
+
+License: MIT
+
+# Example
+```jldoctest; setup = :(using PolyLog)
+julia> li1(1.0 + 1.0im)
+-0.0 + 1.5707963267948966im
+```
+"""
+function li1(z::ComplexF64)::ComplexF64
+    -log(1.0 - z)
+end
