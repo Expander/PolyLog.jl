@@ -69,8 +69,8 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
     if iseven(n)
         p = 1.0 # collects mag^(2u)
         s2, c2 = sincos(2.0*arg)
-        co = 1.0 # collects cos(2*n*arg)
-        si = 0.0 # collects sin(2*n*arg)
+        co = 1.0 # collects cos(2*u*arg)
+        si = 0.0 # collects sin(2*u*arg)
         for u in 0:(n÷2 - 1)
             old_sum = sum
             sum += p*co*inverse_factorial(2*u)*li_minus_1(n - 2*u)
@@ -93,7 +93,7 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
         end
     end
 
-    2*sum - p*cos(n*arg)*inverse_factorial(n)
+    2*sum - p*co*inverse_factorial(n)
 end
 
 # series expansion of Li(n,x) for x ~ 1, 0 < x < 1
