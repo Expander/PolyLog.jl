@@ -14,7 +14,7 @@ Example
 ```.jl
 using PolyLog
 
-# real polylogarithms
+# real polylogarithms for real arguments
 li0(1.0)          # Re[Li_0(x)]
 li1(1.0)          # Re[Li_1(x)]
 li2(1.0)          # Re[Li_2(x)] (dilogarithm)
@@ -22,7 +22,7 @@ li3(1.0)          # Re[Li_3(x)] (trilogarithm)
 li4(1.0)          # Re[Li_4(x)]
 li(10, 1.0)       # Re[Li_n(x)] for all integers n >= 0 (here: n = 10)
 
-# complex polylogarithms
+# complex polylogarithms for complex arguments
 li0(1.0 + 1.0im)  # Li_0(z)
 li1(1.0 + 1.0im)  # Li_1(z)
 li2(1.0 + 1.0im)  # Li_2(z) (dilogarithm)
