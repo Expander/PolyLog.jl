@@ -1,4 +1,8 @@
-# digamma for integer n > 0
+# digamma for integer n > 0, following
+# [K.S. Kölbig: Programs for computing the logarithm of the gamma
+# function, and the digamma function, for complex argument, Computer
+# Physics Communications, Volume 4, Issue 2, 1972, Pages 221-226, ISSN
+# 0010-4655, https://doi.org/10.1016/0010-4655(72)90012-4]
 function digamma(n::Integer)::Float64
     # Table[BernoulliB[2n]/(2 n), {n,1,8}]
     C = (
