@@ -67,3 +67,18 @@ map(PolyLog.li6, cmpl_data)       # trigger compilation
 time_li6(cmpl_data)
 time_li6(cmpl_data)
 time_li6(cmpl_data)
+
+println("Benchmarking li::Float64")
+
+time_li(k, data) = @time map(x -> PolyLog.li(k, x), data)
+
+n = 1_000_000
+real_data = real((z_max - z_min)*rand(Float64, n) + z_min*ones(n))
+
+for k in vcat(collect(2:6), [100, 1000, 1000_000])
+    println("Benchmarking li($(k),x)::Float64")
+    map(x -> PolyLog.li(k, x), real_data) # trigger compilation
+    time_li(k, real_data)                 # trigger compilation
+    time_li(k, real_data)
+    time_li(k, real_data)
+end

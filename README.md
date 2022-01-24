@@ -14,16 +14,29 @@ Example
 ```.jl
 using PolyLog
 
-li2(1.0)         # real polylogarithm of order 2 (dilogarithm)
-li3(1.0)         # real polylogarithm of order 3 (trilogarithm)
-li4(1.0)         # real polylogarithm of order 4
+# real polylogarithms for real arguments
+li0(1.0)          # Re[Li_0(x)]
+li1(1.0)          # Re[Li_1(x)]
+li2(1.0)          # Re[Li_2(x)] (dilogarithm)
+li3(1.0)          # Re[Li_3(x)] (trilogarithm)
+li4(1.0)          # Re[Li_4(x)]
+li(10, 1.0)       # Re[Li_n(x)] for all integers n >= 0 (here: n = 10)
 
-li2(1.0 + 1.0im) # complex polylogarithm of order 2 (dilogarithm)
-li3(1.0 + 1.0im) # complex polylogarithm of order 3 (trilogarithm)
-li4(1.0 + 1.0im) # complex polylogarithm of order 4
-li5(1.0 + 1.0im) # complex polylogarithm of order 5
-li6(1.0 + 1.0im) # complex polylogarithm of order 6
+# complex polylogarithms for complex arguments
+li0(1.0 + 1.0im)  # Li_0(z)
+li1(1.0 + 1.0im)  # Li_1(z)
+li2(1.0 + 1.0im)  # Li_2(z) (dilogarithm)
+li3(1.0 + 1.0im)  # Li_3(z) (trilogarithm)
+li4(1.0 + 1.0im)  # Li_4(z)
+li5(1.0 + 1.0im)  # Li_5(z)
+li6(1.0 + 1.0im)  # Li_6(z)
 ```
+
+
+Documentation
+-------------
+
+[https://docs.juliahub.com/PolyLog/](https://docs.juliahub.com/PolyLog/)
 
 
 Notes
