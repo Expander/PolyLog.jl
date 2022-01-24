@@ -14,4 +14,5 @@
     end
 
     @test PolyLog.li0(1.0) == Inf
+    @test isnan(PolyLog.li0(1.0 + 0.0im))
 end

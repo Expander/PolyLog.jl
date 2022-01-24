@@ -14,4 +14,5 @@
     end
 
     @test PolyLog.li1(1.0) == Inf
+    @test PolyLog.li1(1.0 + 0.0im) == Inf
 end

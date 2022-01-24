@@ -12,4 +12,6 @@
             end
         end
     end
+
+    @test_throws DomainError PolyLog.li(-1, 1.0)
 end
