@@ -64,11 +64,11 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
     mag = hypot(l, pi) # |log(-x)|
     arg = atan(pi, l)  # angle(log(-x))
     l2 = mag*mag       # |log(-x)|^2
+    s2, c2 = sincos(2*arg)
     sum = 0.0
 
     if iseven(n)
         p = 1.0 # collects mag^(2u)
-        s2, c2 = sincos(2*arg)
         c = 1.0 # collects cos(2*n*arg)
         s = 0.0 # collects sin(2*n*arg)
         for u in 0:(n÷2 - 1)
@@ -80,11 +80,14 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
         end
     else
         p = mag # collects mag^(2u + 1)
+        c = cos(arg) # collects cos((2*u + 1)*arg)
+        s = sin(arg) # collects sin((2*u + 1)*arg)
         for u in 0:((n - 3)÷2)
             old_sum = sum
-            sum += p*cos((2*u + 1)*arg)*inverse_factorial(2*u + 1)*li_minus_1(n - 1 - 2*u)
+            sum += p*c*inverse_factorial(2*u + 1)*li_minus_1(n - 1 - 2*u)
             sum == old_sum && break
             p *= l2
+            c, s = c*c2 - s*s2, s*c2 + c*s2
         end
     end
 
