@@ -122,10 +122,7 @@ julia> li(10, 1.0)
 ```
 """
 function li(n::Integer, x::Float64)::Float64
-    if n < 0
-        throw(DomainError(n, "li(n,x) not implemented for n < 0"))
-    end
-
+    n < 0 && throw(DomainError(n, "li(n,x) not implemented for n < 0"))
     n == 0 && return li0(x)
     n == 1 && return li1(x)
     n == 2 && return li2(x)
