@@ -14,18 +14,18 @@ Example
 ```.jl
 using PolyLog
 
-li0(1.0)         # real polylogarithm of order 0
-li1(1.0)         # real polylogarithm of order 1
-li2(1.0)         # real polylogarithm of order 2 (dilogarithm)
-li3(1.0)         # real polylogarithm of order 3 (trilogarithm)
-li4(1.0)         # real polylogarithm of order 4
-li(10, 1.0)      # real polylogarithm of integer order n >= 0 (here: n = 10)
+li0(1.0)         # real polylogarithm Re[Li_0(x)] of order 0
+li1(1.0)         # real polylogarithm Re[Li_1(x)] of order 1
+li2(1.0)         # real polylogarithm Re[Li_2(x)] of order 2 (dilogarithm)
+li3(1.0)         # real polylogarithm Re[Li_3(x)] of order 3 (trilogarithm)
+li4(1.0)         # real polylogarithm Re[Li_4(x)] of order 4
+li(10, 1.0)      # real polylogarithm Re[Li_n(x)] of integer order n >= 0 (here: n = 10)
 
-li2(1.0 + 1.0im) # complex polylogarithm of order 2 (dilogarithm)
-li3(1.0 + 1.0im) # complex polylogarithm of order 3 (trilogarithm)
-li4(1.0 + 1.0im) # complex polylogarithm of order 4
-li5(1.0 + 1.0im) # complex polylogarithm of order 5
-li6(1.0 + 1.0im) # complex polylogarithm of order 6
+li2(1.0 + 1.0im) # complex polylogarithm Li_2(z) of order 2 (dilogarithm)
+li3(1.0 + 1.0im) # complex polylogarithm Li_3(z) of order 3 (trilogarithm)
+li4(1.0 + 1.0im) # complex polylogarithm Li_4(z) of order 4
+li5(1.0 + 1.0im) # complex polylogarithm Li_5(z) of order 5
+li6(1.0 + 1.0im) # complex polylogarithm Li_6(z) of order 6
 ```
 
 
