@@ -43,5 +43,9 @@ julia> li1(1.0 + 1.0im)
 ```
 """
 function li1(z::ComplexF64)::ComplexF64
-    -log(1.0 - z)
+    function clog(z)
+        az::Float64 = angle(z)
+        return 0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
+    end
+    -clog(1.0 - z)
 end

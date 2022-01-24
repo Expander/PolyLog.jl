@@ -1,5 +1,5 @@
 @testset "li" begin
-    for n in vcat(collect(2:6), [100])
+    for n in vcat(collect(0:6), [100])
         data = open(readdlm, joinpath(@__DIR__, "data", "Li$(n).txt"))
 
         for r in 1:size(data, 1)
