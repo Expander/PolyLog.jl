@@ -131,8 +131,8 @@ function li(n::Integer, x::Float64)::Float64
     x == 1.0 && return zeta(n)
     x == -1.0 && return li_minus_1(n)
 
-    # transformation of x to [-1,1]
-    (y, rest, sgn) = if x < -1.0
+    # transform x to [-1,1]
+    (x, rest, sgn) = if x < -1.0
         (inv(x), li_neg_rest(n, x), isodd(n) ? 1.0 : -1.0)
     elseif x < 1.0
         (x, 0.0, 1.0)
@@ -141,9 +141,9 @@ function li(n::Integer, x::Float64)::Float64
     end
 
     li = if n < 20 && x > 0.75
-        li_series_one(n, y)
+        li_series_one(n, x)
     else
-        li_series(n, y)
+        li_series(n, x)
     end
 
     rest + sgn*li
