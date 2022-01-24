@@ -128,6 +128,9 @@ function li(n::Integer, x::Float64)::Float64
 
     n == 0 && return li0(x)
     n == 1 && return li1(x)
+    n == 2 && return li2(x)
+    n == 3 && return li3(x)
+    n == 4 && return li4(x)
     x == 1.0 && return zeta(n)
     x == -1.0 && return li_minus_1(n)
 
