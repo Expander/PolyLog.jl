@@ -68,11 +68,15 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
 
     if iseven(n)
         p = 1.0 # collects mag^(2u)
+        s2, c2 = sincos(2*arg)
+        c = 1.0 # collects cos(2*n*arg)
+        s = 0.0 # collects sin(2*n*arg)
         for u in 0:(n÷2 - 1)
             old_sum = sum
-            sum += p*cos(2*u*arg)*inverse_factorial(2*u)*li_minus_1(n - 2*u)
+            sum += p*c*inverse_factorial(2*u)*li_minus_1(n - 2*u)
             sum == old_sum && break
             p *= l2
+            c, s = c*c2 - s*s2, s*c2 + c*s2
         end
     else
         p = mag # collects mag^(2u + 1)
