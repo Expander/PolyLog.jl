@@ -1,5 +1,5 @@
 # zeta(n) for n = 2,...,33
-const zetas = (
+const zetas_pos = (
     zeta2, zeta3, zeta4, zeta5, zeta6,
     1.0083492773819228, 1.0040773561979443, 1.0020083928260822,
     1.0009945751278181, 1.0004941886041195, 1.0002460865533080,
@@ -76,8 +76,8 @@ function zeta(n::Integer)::Float64
         -0.5
     elseif n == 1
         Inf
-    elseif n - 1 <= length(zetas)
-        zetas[n - 1]
+    elseif n - 1 <= length(zetas_pos)
+        zetas_pos[n - 1]
     else
         one(Float64)/(one(Float64) - 2.0^(-n))
     end
