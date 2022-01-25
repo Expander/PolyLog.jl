@@ -31,7 +31,10 @@ function li_minus_1(n::Integer)::Float64
     end
 end
 
-# calculates remainder from inversion formula for x < -1
+# returns r.h.s. of inversion formula for x < -1:
+#
+# Li(n,-x) + (-1)^n Li(n,-1/x)
+#    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
 function li_neg_rest(n::Integer, x::Float64)::Float64
     l = log(-x)
     l2 = l*l
@@ -58,7 +61,9 @@ function li_neg_rest(n::Integer, x::Float64)::Float64
     2*sum - p*inverse_factorial(n)
 end
 
-# calculates remainder from inversion formula for x > 1
+# returns r.h.s. of inversion formula for x > 1;
+# same expression as in li_neg_rest(n,x), but with
+# complex logarithm log(Complex(-x))
 function li_pos_rest(n::Integer, x::Float64)::Float64
     l = log(x)
     mag = hypot(l, pi) # |log(-x)|
@@ -96,7 +101,16 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
     2*sum - p*co*inverse_factorial(n)
 end
 
-# series expansion of Li(n,x) for x ~ 1, 0 < x < 1
+# returns Li(n,x) using the series expansion of Li(n,x) for x ~ 1
+# where 0 < x < 1:
+#
+# Li(n,x) = sum(j=0:Inf, zeta(n-j) log(x)^j/j!)
+#
+# where
+#
+# zeta(1) = -log(-log(x)) + harmonic(n - 1)
+#
+# harmonic(n) = sum(k=1:n, 1/k)
 function li_series_one(n::Integer, x::Float64)::Float64
     l = log(x)
     sum = zeta(n)
@@ -128,7 +142,10 @@ function li_series_one(n::Integer, x::Float64)::Float64
     sum
 end
 
-# naive series expansion of Li(n,x) for |x| < 1
+# returns Li(n,x) using the naive series expansion of Li(n,x)
+# for |x| < 1:
+#
+# Li(n,x) = sum(k=1:Inf, x^k/k^n)
 function li_series_naive(n::Integer, x::Float64)::Float64
     sum = x
     xn = x*x
