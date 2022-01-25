@@ -169,6 +169,7 @@ function li(n::Integer, x::Float64)::Float64
     n == 4 && return li4(x)
     x == 1.0 && return zeta(n)
     x == -1.0 && return li_minus_1(n)
+    isnan(x) && return NaN
 
     # transform x to [-1,1]
     (x, rest, sgn) = if x < -1.0
