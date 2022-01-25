@@ -129,7 +129,7 @@ function li_series_one(n::Integer, x::Float64)::Float64
 end
 
 # naive series expansion of Li(n,x) for |x| < 1
-function li_series(n::Integer, x::Float64)::Float64
+function li_series_naive(n::Integer, x::Float64)::Float64
     sum = x
     xn = x*x
 
@@ -183,7 +183,7 @@ function li(n::Integer, x::Float64)::Float64
     li = if n < 20 && x > 0.75
         li_series_one(n, x)
     else
-        li_series(n, x)
+        li_series_naive(n, x)
     end
 
     rest + sgn*li
