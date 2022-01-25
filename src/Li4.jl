@@ -105,8 +105,8 @@ julia> li4(1.0)
 ```
 """
 function li4(x::Float64)::Float64
-    # transform so that y in [-1,1]
-    (y, rest, sgn) = if x < -1.0
+    # transform to [-1,1]
+    (x, rest, sgn) = if x < -1.0
         l = log(-x)^2
         (inv(x), -7/4*zeta4 + l*(-zeta2/2 - 1/24*l), -1.0)
     elseif x == -1.0
@@ -120,14 +120,14 @@ function li4(x::Float64)::Float64
         (inv(x), 2*zeta4 + l*(zeta2 - 1/24*l), -1.0)
     end
 
-    app = if y < 0.0
-        li4_neg(y)
-    elseif y < 0.5
-        li4_half(y)
-    elseif y < 0.8
-        li4_mid(y)
-    else # y <= 1.0
-        li4_one(y)
+    app = if x < 0.0
+        li4_neg(x)
+    elseif x < 0.5
+        li4_half(x)
+    elseif x < 0.8
+        li4_mid(x)
+    else # x <= 1.0
+        li4_one(x)
     end
 
     rest + sgn*app
