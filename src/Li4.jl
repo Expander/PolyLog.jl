@@ -189,7 +189,7 @@ function li4(z::ComplexF64)::ComplexF64
         v2::ComplexF64 = v*v
         v4::ComplexF64 = v2*v2
         v8::ComplexF64 = v4*v4
-        c1::Float64 = 1.2020569031595943 # zeta(3)
+        c1::Float64 = zeta3
         c2::Float64 = 0.82246703342411322
         c3::ComplexF64 = (11.0/6.0 - clog(-v))/6.0
         c4::Float64 = -1.0/48.0

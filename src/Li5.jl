@@ -53,8 +53,8 @@ function li5(z::ComplexF64)::ComplexF64
     if lnz*lnz + pz*pz < 1.0 # |log(z)| < 1
         v::ComplexF64  = lnz + pz*im
         v2::ComplexF64 = v*v
-        c1::Float64 = 1.0823232337111382 # zeta(4)
-        c2::Float64 = 0.60102845157979714 # zeta(3)/2
+        c1::Float64 = zeta4
+        c2::Float64 = 0.5*zeta3
         c3::Float64 = 0.27415567780803774
         c4::ComplexF64 = (25.0/12.0 - clog(-v))/24.0
         c5::Float64 = -1.0/240.0
