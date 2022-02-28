@@ -42,6 +42,9 @@
         end
     end
 
+    # value close to boundary between series 1 and 2 in arXiv:2010.09860
+    @test PolyLog.li(-2, -0.50001) ≈ -0.074072592582716422 atol=1e-14
+
     @test isnan(PolyLog.li(10, NaN))
     @test isinf(PolyLog.li(10, Inf))
 end
