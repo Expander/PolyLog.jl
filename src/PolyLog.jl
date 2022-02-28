@@ -2,6 +2,7 @@ module PolyLog
 
 include("Constants.jl")
 include("Digamma.jl")
+include("Eta.jl")
 include("Harmonic.jl")
 include("InverseFactorial.jl")
 include("Li0.jl")
