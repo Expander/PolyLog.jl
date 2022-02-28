@@ -14,5 +14,5 @@
     end
 
     @test isnan(PolyLog.li(10, NaN))
-    @test_throws DomainError PolyLog.li(-1, 1.0)
+    @test isinf(PolyLog.li(10, Inf))
 end

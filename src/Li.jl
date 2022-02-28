@@ -145,15 +145,16 @@ julia> li(10, 1.0)
 ```
 """
 function li(n::Integer, x::Float64)::Float64
+    isnan(x) && return NaN
+    isinf(x) && return -Inf
+    x == 1.0 && return zeta(n)
+    x == -1.0 && return neg_eta(n)
     n < 0 && throw(DomainError(n, "li(n,x) not implemented for n < 0"))
     n == 0 && return li0(x)
     n == 1 && return li1(x)
     n == 2 && return li2(x)
     n == 3 && return li3(x)
     n == 4 && return li4(x)
-    x == 1.0 && return zeta(n)
-    x == -1.0 && return neg_eta(n)
-    isnan(x) && return NaN
 
     # transform x to [-1,1]
     (x, rest, sgn) = if x < -1.0
