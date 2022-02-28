@@ -1,5 +1,5 @@
 # 1/n! for integer n = 0, 1, 2, ...
-const inverse_factorials = (
+const INVERSE_FACTORIALS = (
     1.0,    1.0,     0.5   , 1.6666666666666667e-001, 4.1666666666666667e-002,
     8.3333333333333333e-003, 1.3888888888888889e-003, 1.9841269841269841e-004,
     2.4801587301587302e-005, 2.7557319223985891e-006, 2.7557319223985891e-007,
@@ -65,8 +65,8 @@ const inverse_factorials = (
 function inverse_factorial(n::Integer)::Float64
     if n < 0
         throw(DomainError(n, "inverse_factorial not implemented for n < 0"))
-    elseif n + 1 <= length(inverse_factorials)
-        inverse_factorials[n + 1]
+    elseif n + 1 <= length(INVERSE_FACTORIALS)
+        INVERSE_FACTORIALS[n + 1]
     else
         0.0
     end
