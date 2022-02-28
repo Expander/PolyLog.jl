@@ -1,5 +1,5 @@
 # zeta(n) for n = 2,...,33
-const zetas_pos = (
+const ZETA_POS = (
     zeta2, zeta3, zeta4, zeta5, zeta6,
     1.0083492773819228, 1.0040773561979443, 1.0020083928260822,
     1.0009945751278181, 1.0004941886041195, 1.0002460865533080,
@@ -13,7 +13,7 @@ const zetas_pos = (
 )
 
 # zeta(1 - 2n) for n = 1,...,130, i.e. zeta(-1), zeta(-3), zeta(-5), ...
-const zetas_neg = (
+const ZETA_NEG = (
    -8.3333333333333333e-02,  8.3333333333333333e-03, -3.9682539682539683e-03,
     4.1666666666666667e-03, -7.5757575757575758e-03,  2.1092796092796093e-02,
    -8.3333333333333333e-02,  4.4325980392156863e-01, -3.0539543302701197e000,
@@ -65,8 +65,8 @@ function zeta(n::Integer)::Float64
     if n < 0
         if iseven(n)
             0.0
-        elseif (1 - n)÷2 <= length(zetas_neg)
-            zetas_neg[(1 - n)÷2]
+        elseif (1 - n)÷2 <= length(ZETA_NEG)
+            ZETA_NEG[(1 - n)÷2]
         elseif iseven((1 - n)÷2)
             Inf
         else
@@ -76,8 +76,8 @@ function zeta(n::Integer)::Float64
         -0.5
     elseif n == 1
         Inf
-    elseif n - 1 <= length(zetas_pos)
-        zetas_pos[n - 1]
+    elseif n - 1 <= length(ZETA_POS)
+        ZETA_POS[n - 1]
     else
         one(Float64)/(one(Float64) - 2.0^(-n))
     end
