@@ -177,6 +177,9 @@ Returns the real n-th order polylogarithm
 ``\\Re[\\operatorname{Li}_n(x)]`` of a real number ``x`` of type
 `Float64` for all integers ``n``.
 
+The implementation for `n < 0` is an adaption of
+[[arxiv:2010.09860](https://arxiv.org/abs/2010.09860)].
+
 Author: Alexander Voigt
 
 License: MIT
