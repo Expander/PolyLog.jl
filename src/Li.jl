@@ -78,7 +78,7 @@ end
 # zeta(1) = -log(-log(x)) + harmonic(n - 1)
 #
 # harmonic(n) = sum(k=1:n, 1/k)
-function li_series_one(n::Integer, x::Float64)::Float64
+function li_series_unity_pos(n::Integer, x::Float64)::Float64
     l = log(x)
     sum = zeta(n)
     p = 1.0 # collects l^j/j!
@@ -109,6 +109,38 @@ function li_series_one(n::Integer, x::Float64)::Float64
     sum
 end
 
+# returns Li(n,x) using the series expansion for n < 0 and x ~ 1
+#
+# Li(n,x) = gamma(1-n) (-ln(x))^(n-1)
+#           + sum(k=0:Inf, zeta(n-k) ln(x)^k/k!)
+function li_series_unity_neg(n::Integer, z::ComplexF64)::ComplexF64
+    clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
+
+    lnz = clog(z)
+    lnz2 = lnz*lnz
+    sum = fac(-n)*(-lnz)^(n - 1)
+
+    if iseven(n)
+        kmin = 1
+        lnzk = lnz
+    else
+        kmin = 2
+        lnzk = lnz2
+        sum += zeta(n)
+    end
+
+    for k in kmin:2:typemax(n)
+        term = zeta(n - k)*inv_fac(k)*lnzk
+        !isfinite(term) && break
+        sum_old = sum
+        sum += term
+        sum == sum_old && break
+        lnzk *= lnz2
+    end
+
+    sum
+end
+
 # returns Li(n,x) using the naive series expansion of Li(n,x)
 # for |x| < 1:
 #
@@ -125,6 +157,17 @@ function li_series_naive(n::Integer, x::Float64)::Float64
     end
 
     sum
+end
+
+# returns |ln(x)|^2 for all x
+function ln_sqr(x::Float64)::Float64
+    if x < 0.0
+        log(-x)^2 + pi^2
+    elseif x == 0.0
+        NaN
+    else
+        log(x)^2
+    end
 end
 
 """
@@ -152,7 +195,15 @@ function li(n::Integer, x::Float64)::Float64
     x == -1.0 && return neg_eta(n)
 
     if n < 0
-        throw(DomainError(n, "li(n,x) not implemented for n < 0"))
+        # arXiv:2010.09860
+        l2 = ln_sqr(x)
+        if 4*pi^2*x*x < l2
+            li_series_naive(n, x)
+        elseif l2 < 0.512*0.512*4*pi^2
+            real(li_series_unity_neg(n, Complex(x)))
+        else
+            (isodd(n) ? 1.0 : -1.0)*li_series_naive(n, inv(x))
+        end
     elseif n == 0
         li0(x)
     elseif n == 1
@@ -174,7 +225,7 @@ function li(n::Integer, x::Float64)::Float64
         end
 
         li = if n < 20 && x > 0.75
-            li_series_one(n, x)
+            li_series_unity_pos(n, x)
         else
             li_series_naive(n, x)
         end
