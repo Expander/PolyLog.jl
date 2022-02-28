@@ -147,6 +147,7 @@ julia> li(10, 1.0)
 function li(n::Integer, x::Float64)::Float64
     isnan(x) && return NaN
     isinf(x) && return -Inf
+    x == 0.0 && return 0.0
     x == 1.0 && return zeta(n)
     x == -1.0 && return neg_eta(n)
 
