@@ -132,9 +132,9 @@ function fac(n::Integer)::Float64
 end
 
 # returns 1/n! for n >= 0
-function inverse_factorial(n::Integer)::Float64
+function inv_fac(n::Integer)::Float64
     if n < 0
-        throw(DomainError(n, "inverse_factorial not implemented for n < 0"))
+        throw(DomainError(n, "inv_fac not implemented for n < 0"))
     elseif n + 1 <= length(INVERSE_FACTORIALS)
         INVERSE_FACTORIALS[n + 1]
     else

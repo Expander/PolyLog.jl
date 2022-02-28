@@ -11,7 +11,7 @@ function li_neg_rest(n::Integer, x::Float64)::Float64
         p = 1.0 # collects l^(2u)
         for u in 0:(n÷2 - 1)
             old_sum = sum
-            sum += p*inverse_factorial(2*u)*neg_eta(n - 2*u)
+            sum += p*inv_fac(2*u)*neg_eta(n - 2*u)
             sum == old_sum && break
             p *= l2
         end
@@ -19,13 +19,13 @@ function li_neg_rest(n::Integer, x::Float64)::Float64
         p = l # collects l^(2u + 1)
         for u in 0:((n - 3)÷2)
             old_sum = sum
-            sum += p*inverse_factorial(2*u + 1)*neg_eta(n - 1 - 2*u)
+            sum += p*inv_fac(2*u + 1)*neg_eta(n - 1 - 2*u)
             sum == old_sum && break
             p *= l2
         end
     end
 
-    2*sum - p*inverse_factorial(n)
+    2*sum - p*inv_fac(n)
 end
 
 # returns r.h.s. of inversion formula for x > 1;
@@ -45,7 +45,7 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
         si = 0.0 # collects sin(2*u*arg)
         for u in 0:(n÷2 - 1)
             old_sum = sum
-            sum += p*co*inverse_factorial(2*u)*neg_eta(n - 2*u)
+            sum += p*co*inv_fac(2*u)*neg_eta(n - 2*u)
             sum == old_sum && break
             p *= l2
             co, si = co*c2 - si*s2, si*c2 + co*s2
@@ -58,14 +58,14 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
         si = s # collects sin((2*u + 1)*arg)
         for u in 0:((n - 3)÷2)
             old_sum = sum
-            sum += p*co*inverse_factorial(2*u + 1)*neg_eta(n - 1 - 2*u)
+            sum += p*co*inv_fac(2*u + 1)*neg_eta(n - 1 - 2*u)
             sum == old_sum && break
             p *= l2
             co, si = co*c2 - si*s2, si*c2 + co*s2
         end
     end
 
-    2*sum - p*co*inverse_factorial(n)
+    2*sum - p*co*inv_fac(n)
 end
 
 # returns Li(n,x) using the series expansion of Li(n,x) for x ~ 1
