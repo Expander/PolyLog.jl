@@ -1,10 +1,9 @@
+struct Ni
+    n::Integer
+    eps::Float64
+end
+
 @testset "li" begin
-
-    struct Ni
-        n::Integer
-        eps::Float64
-    end
-
     nis = (
         Ni(-10, 1e-09),
         Ni( -9, 1e-10),
