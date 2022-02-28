@@ -149,27 +149,35 @@ function li(n::Integer, x::Float64)::Float64
     isinf(x) && return -Inf
     x == 1.0 && return zeta(n)
     x == -1.0 && return neg_eta(n)
-    n < 0 && throw(DomainError(n, "li(n,x) not implemented for n < 0"))
-    n == 0 && return li0(x)
-    n == 1 && return li1(x)
-    n == 2 && return li2(x)
-    n == 3 && return li3(x)
-    n == 4 && return li4(x)
 
-    # transform x to [-1,1]
-    (x, rest, sgn) = if x < -1.0
-        (inv(x), li_neg_rest(n, x), isodd(n) ? 1.0 : -1.0)
-    elseif x < 1.0
-        (x, 0.0, 1.0)
-    else # x > 1.0
-        (inv(x), li_pos_rest(n, x), isodd(n) ? 1.0 : -1.0)
+    if n < 0
+        throw(DomainError(n, "li(n,x) not implemented for n < 0"))
+    elseif n == 0
+        li0(x)
+    elseif n == 1
+        li1(x)
+    elseif n == 2
+        li2(x)
+    elseif n == 3
+        li3(x)
+    elseif n == 4
+        li4(x)
+    else # n > 4
+        # transform x to [-1,1]
+        (x, rest, sgn) = if x < -1.0
+            (inv(x), li_neg_rest(n, x), isodd(n) ? 1.0 : -1.0)
+        elseif x < 1.0
+            (x, 0.0, 1.0)
+        else # x > 1.0
+            (inv(x), li_pos_rest(n, x), isodd(n) ? 1.0 : -1.0)
+        end
+
+        li = if n < 20 && x > 0.75
+            li_series_one(n, x)
+        else
+            li_series_naive(n, x)
+        end
+
+        rest + sgn*li
     end
-
-    li = if n < 20 && x > 0.75
-        li_series_one(n, x)
-    else
-        li_series_naive(n, x)
-    end
-
-    rest + sgn*li
 end
