@@ -20,7 +20,7 @@ li1(1.0)          # Re[Li_1(x)]
 li2(1.0)          # Re[Li_2(x)] (dilogarithm)
 li3(1.0)          # Re[Li_3(x)] (trilogarithm)
 li4(1.0)          # Re[Li_4(x)]
-li(10, 1.0)       # Re[Li_n(x)] for all integers n >= 0 (here: n = 10)
+li(10, 1.0)       # Re[Li_n(x)] for all integers n (here: n = 10)
 
 # complex polylogarithms for complex arguments
 li0(1.0 + 1.0im)  # Li_0(z)
@@ -42,9 +42,15 @@ Documentation
 Notes
 -----
 
+The implementation of the real dilogarithm is an adaption of
+[[arXiv:2201.01678](https://arxiv.org/abs/2201.01678)].
+
 The implementation of the complex dilogarithm has been inspired by the
 implementation in [SPheno](https://spheno.hepforge.org) and has been
-translated to Julia.
+translated to Rust.
+
+The implementation of the general n-th order polylogarithm is an
+adaption of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 
 
 Citation
