@@ -14,7 +14,9 @@ function li_rem(n::Integer, z::ComplexF64)::ComplexF64
     for k in kmax:-1:1
         ifac = inv_fac(n - 2*k)
         ifac == 0.0 && return 2*sum
+        old_sum = sum
         sum += neg_eta(2*k)*ifac*p
+        sum == old_sum && break
         p *= l2
     end
 
@@ -25,7 +27,7 @@ end
 #
 # Li(n,-x) + (-1)^n Li(n,-1/x)
 #    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
-function li_rem_neg(n::Integer, x::Float64)::Float64
+function li_rem(n::Integer, x::Float64)::Float64
     l = log(-x)
     l2 = l*l
     sum = 0.0
@@ -49,46 +51,6 @@ function li_rem_neg(n::Integer, x::Float64)::Float64
     end
 
     2*sum - p*inv_fac(n)
-end
-
-# returns r.h.s. of inversion formula for real x > 1;
-# same expression as in li_rem_neg(n,x), but with
-# complex logarithm log(Complex(-x))
-function li_rem_pos(n::Integer, x::Float64)::Float64
-    l = log(x)
-    mag = hypot(l, pi) # |log(-x)|
-    arg = atan(pi, l)  # angle(log(-x))
-    l2 = mag*mag       # |log(-x)|^2
-    sum = 0.0
-
-    if iseven(n)
-        p = 1.0 # collects mag^(2u)
-        s2, c2 = sincos(2.0*arg)
-        co = 1.0 # collects cos(2*u*arg)
-        si = 0.0 # collects sin(2*u*arg)
-        for u in 0:(n÷2 - 1)
-            old_sum = sum
-            sum += p*co*inv_fac(2*u)*neg_eta(n - 2*u)
-            sum == old_sum && break
-            p *= l2
-            co, si = co*c2 - si*s2, si*c2 + co*s2
-        end
-    else
-        p = mag # collects mag^(2u + 1)
-        s, c = sincos(arg)
-        s2, c2 = 2.0*s*c, 2.0*c*c - 1.0 # sincos(2*arg)
-        co = c # collects cos((2*u + 1)*arg)
-        si = s # collects sin((2*u + 1)*arg)
-        for u in 0:((n - 3)÷2)
-            old_sum = sum
-            sum += p*co*inv_fac(2*u + 1)*neg_eta(n - 1 - 2*u)
-            sum == old_sum && break
-            p *= l2
-            co, si = co*c2 - si*s2, si*c2 + co*s2
-        end
-    end
-
-    2*sum - p*co*inv_fac(n)
 end
 
 # returns Li(n,x) using the series expansion of Li(n,x) for n > 0 and
@@ -246,11 +208,11 @@ function li(n::Integer, x::Float64)::Float64
     else # n > 4
         # transform x to [-1,1]
         (x, rest, sgn) = if x < -1.0
-            (inv(x), li_rem_neg(n, x), isodd(n) ? 1.0 : -1.0)
+            (inv(x), li_rem(n, x), isodd(n) ? 1.0 : -1.0)
         elseif x < 1.0
             (x, 0.0, 1.0)
         else # x > 1.0
-            (inv(x), li_rem_pos(n, x), isodd(n) ? 1.0 : -1.0)
+            (inv(x), real(li_rem(n, Complex(x))), isodd(n) ? 1.0 : -1.0)
         end
 
         li = if n < 20 && x > 0.75
