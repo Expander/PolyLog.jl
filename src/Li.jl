@@ -53,18 +53,18 @@ function li_rem(n::Integer, x::Float64)::Float64
     2*sum - p*inv_fac(n)
 end
 
-# returns Li(n,x) using the series expansion of Li(n,x) for n > 0 and
-# x ~ 1 where 0 < x < 1:
+# returns Li(n,z) using the series expansion of Li(n,z) for n > 0 and
+# z ~ 1:
 #
-# Li(n,x) = sum(j=0:Inf, zeta(n-j) log(x)^j/j!)
+# Li(n,z) = sum(j=0:Inf, zeta(n-j) log(z)^j/j!)
 #
 # where
 #
-# zeta(1) = -log(-log(x)) + harmonic(n - 1)
+# zeta(1) = -log(-log(z)) + harmonic(n - 1)
 #
 # harmonic(n) = sum(k=1:n, 1/k)
-function li_series_unity_pos(n::Integer, x::ComplexOrReal)
-    l = log(x)
+function li_series_unity_pos(n::Integer, z::ComplexOrReal)
+    l = log(z)
     sum = zeta(n)
     p = 1.0 # collects l^j/j!
 
@@ -96,11 +96,11 @@ function li_series_unity_pos(n::Integer, x::ComplexOrReal)
     sum
 end
 
-# returns Li(n,x) using the series expansion of Li(n,x) for n < 0 and
-# x ~ 1
+# returns Li(n,z) using the series expansion of Li(n,z) for n < 0 and
+# z ~ 1
 #
-# Li(n,x) = gamma(1-n) (-ln(x))^(n-1)
-#           + sum(k=0:Inf, zeta(n-k) ln(x)^k/k!)
+# Li(n,z) = gamma(1-n) (-ln(z))^(n-1)
+#           + sum(k=0:Inf, zeta(n-k) ln(z)^k/k!)
 function li_series_unity_neg(n::Integer, z::ComplexF64)::ComplexF64
     lnz = log(z)
     lnz2 = lnz*lnz
@@ -131,17 +131,17 @@ end
 # for |x| < 1:
 #
 # Li(n,x) = sum(k=1:Inf, x^k/k^n)
-function li_series_naive(n::Integer, x::ComplexOrReal)
-    sum = x
-    xn = x*x
+function li_series_naive(n::Integer, z::ComplexOrReal)
+    sum = z
+    zn = z*z
 
     for k in 2:typemax(n)
-        term = xn/Float64(k)^n
+        term = zn/Float64(k)^n
         !isfinite(term) && break
         old_sum = sum
         sum += term
         sum == old_sum && break
-        xn *= x
+        zn *= z
     end
 
     sum
