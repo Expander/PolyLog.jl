@@ -38,7 +38,7 @@ end
             if imag(z) == 0.0
                 @test PolyLog.li(n, real(z)) ≈ real(expected) atol=eps rtol=eps
             end
-            if n <= 6 || abs2(z) <= 0.75*0.75
+            if n <= 6 || abs2(z) <= 0.75*0.75 || abs2(z) >= 1.4*1.4
                 @test PolyLog.li(n, z) ≈ expected atol=eps rtol=eps
             end
         end

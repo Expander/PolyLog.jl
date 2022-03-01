@@ -1,5 +1,32 @@
 const ComplexOrReal{T} = Union{T,Complex{T}}
 
+# returns complex logarithm of z
+function clog(z::ComplexF64)::ComplexF64
+    az::Float64 = angle(z)
+    0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
+end
+
+# returns r.h.s. of inversion formula for x < -1:
+#
+# Li(n,-x) + (-1)^n Li(n,-1/x)
+#    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
+function li_rem(n::Integer, z::ComplexF64)::ComplexF64
+    lnz = clog(-z)
+    lnz2 = lnz*lnz;
+    kmax = iseven(n) ? n÷2 : (n - 1)÷2
+    p = iseven(n) ? 1.0 + 0.0im : lnz
+    sum = 0.0 + 0.0im
+
+    for k in kmax:-1:1
+        ifac = inv_fac(n - 2*k)
+        ifac == 0.0 && return 2*sum
+        sum += neg_eta(2*k)*ifac*p
+        p *= lnz2
+    end
+
+    2*sum - p*inv_fac(n)
+end
+
 # returns r.h.s. of inversion formula for x < -1:
 #
 # Li(n,-x) + (-1)^n Li(n,-1/x)
@@ -295,6 +322,9 @@ function li(n::Integer, z::ComplexF64)::ComplexF64
         li6(z)
     elseif abs2(z) <= 0.75*0.75
         li_series_naive(n, z)
+    elseif abs2(z) >= 1.4*1.4
+        sgn = iseven(n) ? -1.0 : 1.0
+        sgn*li_series_naive(n, 1.0/z) + li_rem(n, z)
     else
         0.0
     end
