@@ -158,6 +158,9 @@ function ln_sqr(x::Float64)::Float64
     end
 end
 
+# returns -(-1)^n
+oddsgn(n) = isodd(n) ? 1.0 : -1.0
+
 """
     li(n::Integer, x::Float64)::Float64
 
@@ -193,7 +196,7 @@ function li(n::Integer, x::Float64)::Float64
         elseif l2 < 0.512*0.512*4*pi^2
             real(li_series_unity_neg(n, Complex(x)))
         else
-            (isodd(n) ? 1.0 : -1.0)*li_series_naive(n, inv(x))
+            oddsgn(n)*li_series_naive(n, inv(x))
         end
     elseif n == 0
         li0(x)
@@ -208,11 +211,11 @@ function li(n::Integer, x::Float64)::Float64
     else # n > 4
         # transform x to [-1,1]
         (x, rest, sgn) = if x < -1.0
-            (inv(x), li_rem(n, x), isodd(n) ? 1.0 : -1.0)
+            (inv(x), li_rem(n, x), oddsgn(n))
         elseif x < 1.0
             (x, 0.0, 1.0)
         else # x > 1.0
-            (inv(x), real(li_rem(n, Complex(x))), isodd(n) ? 1.0 : -1.0)
+            (inv(x), real(li_rem(n, Complex(x))), oddsgn(n))
         end
 
         li = if n < 20 && x > 0.75
@@ -279,8 +282,7 @@ function li(n::Integer, z::ComplexF64)::ComplexF64
     elseif abs2(z) <= 0.75*0.75
         li_series_naive(n, z)
     elseif abs2(z) >= 1.4*1.4
-        sgn = iseven(n) ? -1.0 : 1.0
-        sgn*li_series_naive(n, 1.0/z) + li_rem(n, z)
+        oddsgn(n)*li_series_naive(n, 1.0/z) + li_rem(n, z)
     else
         li_series_unity_pos(n, z)
     end
