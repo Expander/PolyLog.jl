@@ -107,7 +107,7 @@ end
 # zeta(1) = -log(-log(x)) + harmonic(n - 1)
 #
 # harmonic(n) = sum(k=1:n, 1/k)
-function li_series_unity_pos(n::Integer, x::Float64)::Float64
+function li_series_unity_pos(n::Integer, x::ComplexOrReal)
     l = log(x)
     sum = zeta(n)
     p = 1.0 # collects l^j/j!
@@ -326,6 +326,6 @@ function li(n::Integer, z::ComplexF64)::ComplexF64
         sgn = iseven(n) ? -1.0 : 1.0
         sgn*li_series_naive(n, 1.0/z) + li_rem(n, z)
     else
-        0.0
+        li_series_unity_pos(n, z)
     end
 end
