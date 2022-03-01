@@ -73,7 +73,8 @@ println("Benchmarking li::Float64")
 time_li(k, data) = @time map(x -> PolyLog.li(k, x), data)
 
 n = 1_000_000
-real_data = real((z_max - z_min)*rand(Float64, n) + z_min*ones(n))
+cmpl_data = (z_max - z_min)*rand(ComplexF64, n) + z_min*(1.0 + 1.0im)*ones(n)
+real_data = map(real, cmpl_data)
 
 for k in vcat(collect(-10:2:10), [100, 1000, 1000_000, -100, -1000, -1000_000])
     println("Benchmarking li($(k),x)::Float64")
@@ -81,4 +82,14 @@ for k in vcat(collect(-10:2:10), [100, 1000, 1000_000, -100, -1000, -1000_000])
     time_li(k, real_data)                 # trigger compilation
     time_li(k, real_data)
     time_li(k, real_data)
+end
+
+println("Benchmarking li::ComplexF64")
+
+for k in vcat(collect(-10:2:10), [100, 1000, 1000_000, -100, -1000, -1000_000])
+    println("Benchmarking li($(k),x)::ComplexF64")
+    map(x -> PolyLog.li(k, x), cmpl_data) # trigger compilation
+    time_li(k, cmpl_data)                 # trigger compilation
+    time_li(k, cmpl_data)
+    time_li(k, cmpl_data)
 end

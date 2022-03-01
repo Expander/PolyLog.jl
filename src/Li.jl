@@ -108,7 +108,9 @@ function li_series_unity_pos(n::Integer, x::ComplexOrReal)
 
     for j in 1:(n - 2)
         p *= l/j
+        old_sum = sum;
         sum += zeta(n - j)*p
+        sum == old_sum && break
     end
 
     p *= l/(n - 1)
