@@ -112,11 +112,6 @@ julia> li3(1.0 + 1.0im)
 ```
 """
 function li3(z::ComplexF64)::ComplexF64
-    function clog(z)
-        az::Float64 = angle(z)
-        return 0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
-    end
-
     bf = (
         1.0, -3.0/8.0, 17.0/216.0, -5.0/576.0,
         1.2962962962962963e-04,  8.1018518518518519e-05,

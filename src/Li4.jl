@@ -151,11 +151,6 @@ julia> li4(1.0 + 1.0im)
 ```
 """
 function li4(z::ComplexF64)::ComplexF64
-    function clog(z)
-        az::Float64 = angle(z)
-        return 0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
-    end
-
     bf = (
         1.0                   , -7.0/16.0              ,
         1.1651234567901235e-01, -1.9820601851851852e-02,

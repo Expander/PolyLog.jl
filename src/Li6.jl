@@ -16,11 +16,6 @@ julia> li6(1.0 + 1.0im)
 ```
 """
 function li6(z::ComplexF64)::ComplexF64
-    function clog(z)
-        az::Float64 = angle(z)
-        return 0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
-    end
-
     bf = (
         1.0                   , -31.0/64.0             ,
         1.5241340877914952e-01, -3.4365555877057613e-02,

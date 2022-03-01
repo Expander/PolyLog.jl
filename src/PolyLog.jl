@@ -3,8 +3,8 @@ module PolyLog
 include("Constants.jl")
 include("Digamma.jl")
 include("Eta.jl")
-include("Harmonic.jl")
 include("Factorial.jl")
+include("Harmonic.jl")
 include("Li0.jl")
 include("Li1.jl")
 include("Li2.jl")
@@ -13,6 +13,7 @@ include("Li4.jl")
 include("Li5.jl")
 include("Li6.jl")
 include("Li.jl")
+include("Log.jl")
 include("Zeta.jl")
 
 export li0
