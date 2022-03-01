@@ -1,9 +1,9 @@
 const ComplexOrReal{T} = Union{T,Complex{T}}
 
-# returns r.h.s. of inversion formula for x < -1:
+# returns r.h.s. of inversion formula for complex z:
 #
-# Li(n,-x) + (-1)^n Li(n,-1/x)
-#    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
+# Li(n,-z) + (-1)^n Li(n,-1/z)
+#    = -log(n,z)^n/n! + 2 sum(r=1:(n÷2), log(z)^(n-2r)/(n-2r)! Li(2r,-1))
 function li_rem(n::Integer, z::ComplexF64)::ComplexF64
     lnz = log(-z)
     lnz2 = lnz*lnz;
@@ -21,7 +21,7 @@ function li_rem(n::Integer, z::ComplexF64)::ComplexF64
     2*sum - p*inv_fac(n)
 end
 
-# returns r.h.s. of inversion formula for x < -1:
+# returns r.h.s. of inversion formula for real x < -1:
 #
 # Li(n,-x) + (-1)^n Li(n,-1/x)
 #    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
@@ -51,7 +51,7 @@ function li_rem_neg(n::Integer, x::Float64)::Float64
     2*sum - p*inv_fac(n)
 end
 
-# returns r.h.s. of inversion formula for x > 1;
+# returns r.h.s. of inversion formula for real x > 1;
 # same expression as in li_rem_neg(n,x), but with
 # complex logarithm log(Complex(-x))
 function li_rem_pos(n::Integer, x::Float64)::Float64
