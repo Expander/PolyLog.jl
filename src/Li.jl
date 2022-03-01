@@ -150,8 +150,10 @@ function li_series_naive(n::Integer, x::Float64)::Float64
     xn = x*x
 
     for k in 2:typemax(n)
+        term = xn/Float64(k)^n
+        !isfinite(term) && break
         old_sum = sum
-        sum += xn/Float64(k)^n
+        sum += term
         sum == old_sum && break
         xn *= x
     end
