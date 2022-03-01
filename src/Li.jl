@@ -2,7 +2,7 @@
 #
 # Li(n,-x) + (-1)^n Li(n,-1/x)
 #    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
-function li_neg_rest(n::Integer, x::Float64)::Float64
+function li_rem_neg(n::Integer, x::Float64)::Float64
     l = log(-x)
     l2 = l*l
     sum = 0.0
@@ -11,7 +11,7 @@ function li_neg_rest(n::Integer, x::Float64)::Float64
         p = 1.0 # collects l^(2u)
         for u in 0:(n÷2 - 1)
             old_sum = sum
-            sum += p*inverse_factorial(2*u)*neg_eta(n - 2*u)
+            sum += p*inv_fac(2*u)*neg_eta(n - 2*u)
             sum == old_sum && break
             p *= l2
         end
@@ -19,19 +19,19 @@ function li_neg_rest(n::Integer, x::Float64)::Float64
         p = l # collects l^(2u + 1)
         for u in 0:((n - 3)÷2)
             old_sum = sum
-            sum += p*inverse_factorial(2*u + 1)*neg_eta(n - 1 - 2*u)
+            sum += p*inv_fac(2*u + 1)*neg_eta(n - 1 - 2*u)
             sum == old_sum && break
             p *= l2
         end
     end
 
-    2*sum - p*inverse_factorial(n)
+    2*sum - p*inv_fac(n)
 end
 
 # returns r.h.s. of inversion formula for x > 1;
-# same expression as in li_neg_rest(n,x), but with
+# same expression as in li_rem_neg(n,x), but with
 # complex logarithm log(Complex(-x))
-function li_pos_rest(n::Integer, x::Float64)::Float64
+function li_rem_pos(n::Integer, x::Float64)::Float64
     l = log(x)
     mag = hypot(l, pi) # |log(-x)|
     arg = atan(pi, l)  # angle(log(-x))
@@ -45,7 +45,7 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
         si = 0.0 # collects sin(2*u*arg)
         for u in 0:(n÷2 - 1)
             old_sum = sum
-            sum += p*co*inverse_factorial(2*u)*neg_eta(n - 2*u)
+            sum += p*co*inv_fac(2*u)*neg_eta(n - 2*u)
             sum == old_sum && break
             p *= l2
             co, si = co*c2 - si*s2, si*c2 + co*s2
@@ -58,18 +58,18 @@ function li_pos_rest(n::Integer, x::Float64)::Float64
         si = s # collects sin((2*u + 1)*arg)
         for u in 0:((n - 3)÷2)
             old_sum = sum
-            sum += p*co*inverse_factorial(2*u + 1)*neg_eta(n - 1 - 2*u)
+            sum += p*co*inv_fac(2*u + 1)*neg_eta(n - 1 - 2*u)
             sum == old_sum && break
             p *= l2
             co, si = co*c2 - si*s2, si*c2 + co*s2
         end
     end
 
-    2*sum - p*co*inverse_factorial(n)
+    2*sum - p*co*inv_fac(n)
 end
 
-# returns Li(n,x) using the series expansion of Li(n,x) for x ~ 1
-# where 0 < x < 1:
+# returns Li(n,x) using the series expansion of Li(n,x) for n > 0 and
+# x ~ 1 where 0 < x < 1:
 #
 # Li(n,x) = sum(j=0:Inf, zeta(n-j) log(x)^j/j!)
 #
@@ -78,7 +78,7 @@ end
 # zeta(1) = -log(-log(x)) + harmonic(n - 1)
 #
 # harmonic(n) = sum(k=1:n, 1/k)
-function li_series_one(n::Integer, x::Float64)::Float64
+function li_series_unity_pos(n::Integer, x::Float64)::Float64
     l = log(x)
     sum = zeta(n)
     p = 1.0 # collects l^j/j!
@@ -109,6 +109,39 @@ function li_series_one(n::Integer, x::Float64)::Float64
     sum
 end
 
+# returns Li(n,x) using the series expansion of Li(n,x) for n < 0 and
+# x ~ 1
+#
+# Li(n,x) = gamma(1-n) (-ln(x))^(n-1)
+#           + sum(k=0:Inf, zeta(n-k) ln(x)^k/k!)
+function li_series_unity_neg(n::Integer, z::ComplexF64)::ComplexF64
+    clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
+
+    lnz = clog(z)
+    lnz2 = lnz*lnz
+    sum = fac(-n)*(-lnz)^(n - 1)
+
+    if iseven(n)
+        kmin = 1
+        lnzk = lnz
+    else
+        kmin = 2
+        lnzk = lnz2
+        sum += zeta(n)
+    end
+
+    for k in kmin:2:typemax(n)
+        term = zeta(n - k)*inv_fac(k)*lnzk
+        !isfinite(term) && break
+        sum_old = sum
+        sum += term
+        sum == sum_old && break
+        lnzk *= lnz2
+    end
+
+    sum
+end
+
 # returns Li(n,x) using the naive series expansion of Li(n,x)
 # for |x| < 1:
 #
@@ -118,8 +151,10 @@ function li_series_naive(n::Integer, x::Float64)::Float64
     xn = x*x
 
     for k in 2:typemax(n)
+        term = xn/Float64(k)^n
+        !isfinite(term) && break
         old_sum = sum
-        sum += xn/Float64(k)^n
+        sum += term
         sum == old_sum && break
         xn *= x
     end
@@ -127,12 +162,26 @@ function li_series_naive(n::Integer, x::Float64)::Float64
     sum
 end
 
+# returns |ln(x)|^2 for all x
+function ln_sqr(x::Float64)::Float64
+    if x < 0.0
+        log(-x)^2 + pi^2
+    elseif x == 0.0
+        NaN
+    else
+        log(x)^2
+    end
+end
+
 """
     li(n::Integer, x::Float64)::Float64
 
 Returns the real n-th order polylogarithm
 ``\\Re[\\operatorname{Li}_n(x)]`` of a real number ``x`` of type
-`Float64` for integer ``n\\geq 0``.
+`Float64` for all integers ``n``.
+
+The implementation for ``n < 0`` is an adaption of
+[[arxiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 
 Author: Alexander Voigt
 
@@ -145,30 +194,48 @@ julia> li(10, 1.0)
 ```
 """
 function li(n::Integer, x::Float64)::Float64
-    n < 0 && throw(DomainError(n, "li(n,x) not implemented for n < 0"))
-    n == 0 && return li0(x)
-    n == 1 && return li1(x)
-    n == 2 && return li2(x)
-    n == 3 && return li3(x)
-    n == 4 && return li4(x)
+    isnan(x) && return NaN
+    isinf(x) && return -Inf
+    x == 0.0 && return 0.0
     x == 1.0 && return zeta(n)
     x == -1.0 && return neg_eta(n)
-    isnan(x) && return NaN
 
-    # transform x to [-1,1]
-    (x, rest, sgn) = if x < -1.0
-        (inv(x), li_neg_rest(n, x), isodd(n) ? 1.0 : -1.0)
-    elseif x < 1.0
-        (x, 0.0, 1.0)
-    else # x > 1.0
-        (inv(x), li_pos_rest(n, x), isodd(n) ? 1.0 : -1.0)
+    if n < 0
+        # arXiv:2010.09860
+        l2 = ln_sqr(x)
+        if 4*pi^2*x*x < l2
+            li_series_naive(n, x)
+        elseif l2 < 0.512*0.512*4*pi^2
+            real(li_series_unity_neg(n, Complex(x)))
+        else
+            (isodd(n) ? 1.0 : -1.0)*li_series_naive(n, inv(x))
+        end
+    elseif n == 0
+        li0(x)
+    elseif n == 1
+        li1(x)
+    elseif n == 2
+        li2(x)
+    elseif n == 3
+        li3(x)
+    elseif n == 4
+        li4(x)
+    else # n > 4
+        # transform x to [-1,1]
+        (x, rest, sgn) = if x < -1.0
+            (inv(x), li_rem_neg(n, x), isodd(n) ? 1.0 : -1.0)
+        elseif x < 1.0
+            (x, 0.0, 1.0)
+        else # x > 1.0
+            (inv(x), li_rem_pos(n, x), isodd(n) ? 1.0 : -1.0)
+        end
+
+        li = if n < 20 && x > 0.75
+            li_series_unity_pos(n, x)
+        else
+            li_series_naive(n, x)
+        end
+
+        rest + sgn*li
     end
-
-    li = if n < 20 && x > 0.75
-        li_series_one(n, x)
-    else
-        li_series_naive(n, x)
-    end
-
-    rest + sgn*li
 end
