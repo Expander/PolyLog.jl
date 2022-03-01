@@ -1,3 +1,5 @@
+const ComplexOrReal{T} = Union{T,Complex{T}}
+
 # returns r.h.s. of inversion formula for x < -1:
 #
 # Li(n,-x) + (-1)^n Li(n,-1/x)
@@ -146,7 +148,7 @@ end
 # for |x| < 1:
 #
 # Li(n,x) = sum(k=1:Inf, x^k/k^n)
-function li_series_naive(n::Integer, x::Float64)::Float64
+function li_series_naive(n::Integer, x::ComplexOrReal)
     sum = x
     xn = x*x
 
@@ -268,7 +270,15 @@ function li(n::Integer, z::ComplexF64)::ComplexF64
     z == -1.0 && return neg_eta(n)
 
     if n < 0
-        0.0
+        l2 = abs2(log(z))
+        if 4*pi^2*abs2(z) < l2
+            li_series_naive(n, z)
+        elseif l2 < 0.512*0.512*4*pi^2
+            li_series_unity_neg(n, z)
+        else
+            sqrtz = sqrt(z)
+            2.0^(n - 1)*(li(n, sqrtz) + li(n, -sqrtz))
+        end
     elseif n == 0
         li0(z)
     elseif n == 1
