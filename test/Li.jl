@@ -38,6 +38,7 @@ end
             if imag(z) == 0.0
                 @test PolyLog.li(n, real(z)) ≈ real(expected) atol=eps rtol=eps
             end
+            @test PolyLog.li(n, z) ≈ expected atol=eps rtol=eps
         end
     end
 
