@@ -1,17 +1,11 @@
 const ComplexOrReal{T} = Union{T,Complex{T}}
 
-# returns complex logarithm of z
-function clog(z::ComplexF64)::ComplexF64
-    az::Float64 = angle(z)
-    0.5*log(abs2(z)) + (imag(z) == 0.0 && az < 0.0 ? -az : az)*1.0im
-end
-
 # returns r.h.s. of inversion formula for x < -1:
 #
 # Li(n,-x) + (-1)^n Li(n,-1/x)
 #    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
 function li_rem(n::Integer, z::ComplexF64)::ComplexF64
-    lnz = clog(-z)
+    lnz = log(-z)
     lnz2 = lnz*lnz;
     kmax = iseven(n) ? n÷2 : (n - 1)÷2
     p = iseven(n) ? 1.0 + 0.0im : lnz
@@ -144,9 +138,7 @@ end
 # Li(n,x) = gamma(1-n) (-ln(x))^(n-1)
 #           + sum(k=0:Inf, zeta(n-k) ln(x)^k/k!)
 function li_series_unity_neg(n::Integer, z::ComplexF64)::ComplexF64
-    clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
-
-    lnz = clog(z)
+    lnz = log(z)
     lnz2 = lnz*lnz
     sum = fac(-n)*(-lnz)^(n - 1)
 
