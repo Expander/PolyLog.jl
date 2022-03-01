@@ -5,17 +5,17 @@ const ComplexOrReal{T} = Union{T,Complex{T}}
 # Li(n,-z) + (-1)^n Li(n,-1/z)
 #    = -log(n,z)^n/n! + 2 sum(r=1:(n÷2), log(z)^(n-2r)/(n-2r)! Li(2r,-1))
 function li_rem(n::Integer, z::ComplexF64)::ComplexF64
-    lnz = log(-z)
-    lnz2 = lnz*lnz;
+    l = log(-z)
+    l2 = l*l;
     kmax = iseven(n) ? n÷2 : (n - 1)÷2
-    p = iseven(n) ? 1.0 + 0.0im : lnz
+    p = iseven(n) ? 1.0 + 0.0im : l
     sum = 0.0 + 0.0im
 
     for k in kmax:-1:1
         ifac = inv_fac(n - 2*k)
         ifac == 0.0 && return 2*sum
         sum += neg_eta(2*k)*ifac*p
-        p *= lnz2
+        p *= l2
     end
 
     2*sum - p*inv_fac(n)
