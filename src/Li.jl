@@ -68,10 +68,10 @@ function li(n::Integer, x::Float64)::Float64
 end
 
 """
-    li(n::Integer, x::ComplexF64)::ComplexF64
+    li(n::Integer, z::ComplexF64)::ComplexF64
 
 Returns the complex n-th order polylogarithm
-``\\operatorname{Li}_n(x)`` of a complex number ``z`` of type
+``\\operatorname{Li}_n(z)`` of a complex number ``z`` of type
 `ComplexF64` for all integers ``n``.
 
 The implementation for ``n < 0`` is an adaption of
@@ -83,8 +83,8 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> li(10, Complex(1.0, 1.0))
-1.0009945751278182
+julia> li(10, 1.0 + 1.0im)
+0.9999619510320734 + 1.0019864330842578im
 ```
 """
 function li(n::Integer, z::ComplexF64)::ComplexF64
