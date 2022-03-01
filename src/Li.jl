@@ -146,7 +146,7 @@ oddsgn(n) = isodd(n) ? 1.0 : -1.0
 # Li(n,-z) + (-1)^n Li(n,-1/z)
 #    = -log(n,z)^n/n! + 2 sum(r=1:(n÷2), log(z)^(n-2r)/(n-2r)! Li(2r,-1))
 function li_rem(n::Integer, z::ComplexF64)::ComplexF64
-    l = log(-z)
+    l = clog(-z)
     l2 = l*l;
     kmax = iseven(n) ? n÷2 : (n - 1)÷2
     p = iseven(n) ? 1.0 + 0.0im : l
@@ -205,7 +205,7 @@ end
 #
 # harmonic(n) = sum(k=1:n, 1/k)
 function li_series_unity_pos(n::Integer, z::ComplexOrReal)
-    l = log(z)
+    l = clog(z)
     sum = zeta(n)
     p = 1.0 # collects l^j/j!
 
@@ -217,7 +217,7 @@ function li_series_unity_pos(n::Integer, z::ComplexOrReal)
     end
 
     p *= l/(n - 1)
-    sum += (harmonic(n - 1) - log(-l))*p
+    sum += (harmonic(n - 1) - clog(-l))*p
 
     p *= l/n
     sum += zeta(0)*p
@@ -243,7 +243,7 @@ end
 # Li(n,z) = gamma(1-n) (-ln(z))^(n-1)
 #           + sum(k=0:Inf, zeta(n-k) ln(z)^k/k!)
 function li_series_unity_neg(n::Integer, z::ComplexF64)::ComplexF64
-    lnz = log(z)
+    lnz = clog(z)
     lnz2 = lnz*lnz
     sum = fac(-n)*(-lnz)^(n - 1)
 
