@@ -239,3 +239,51 @@ function li(n::Integer, x::Float64)::Float64
         rest + sgn*li
     end
 end
+
+"""
+    li(n::Integer, x::ComplexF64)::ComplexF64
+
+Returns the complex n-th order polylogarithm
+``\\operatorname{Li}_n(x)`` of a complex number ``z`` of type
+`ComplexF64` for all integers ``n``.
+
+The implementation for ``n < 0`` is an adaption of
+[[arxiv:2010.09860](https://arxiv.org/abs/2010.09860)].
+
+Author: Alexander Voigt
+
+License: MIT
+
+# Example
+```jldoctest; setup = :(using PolyLog)
+julia> li(10, Complex(1.0, 1.0))
+1.0009945751278182
+```
+"""
+function li(n::Integer, z::ComplexF64)::ComplexF64
+    isnan(z) && return NaN
+    isinf(z) && return -Inf
+    z == 0.0 && return 0.0
+    z == 1.0 && return zeta(n)
+    z == -1.0 && return neg_eta(n)
+
+    if n < 0
+        0.0
+    elseif n == 0
+        li0(z)
+    elseif n == 1
+        li1(z)
+    elseif n == 2
+        li2(z)
+    elseif n == 3
+        li3(z)
+    elseif n == 4
+        li4(z)
+    elseif n == 5
+        li5(z)
+    elseif n == 6
+        li6(z)
+    else # n > 6
+        0.0
+    end
+end
