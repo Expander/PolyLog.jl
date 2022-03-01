@@ -68,8 +68,8 @@ function li_rem_pos(n::Integer, x::Float64)::Float64
     2*sum - p*co*inv_fac(n)
 end
 
-# returns Li(n,x) using the series expansion of Li(n,x) for x ~ 1
-# where 0 < x < 1:
+# returns Li(n,x) using the series expansion of Li(n,x) for n > 0 and
+# x ~ 1 where 0 < x < 1:
 #
 # Li(n,x) = sum(j=0:Inf, zeta(n-j) log(x)^j/j!)
 #
@@ -109,7 +109,8 @@ function li_series_unity_pos(n::Integer, x::Float64)::Float64
     sum
 end
 
-# returns Li(n,x) using the series expansion for n < 0 and x ~ 1
+# returns Li(n,x) using the series expansion of Li(n,x) for n < 0 and
+# x ~ 1
 #
 # Li(n,x) = gamma(1-n) (-ln(x))^(n-1)
 #           + sum(k=0:Inf, zeta(n-k) ln(x)^k/k!)
@@ -179,7 +180,7 @@ Returns the real n-th order polylogarithm
 ``\\Re[\\operatorname{Li}_n(x)]`` of a real number ``x`` of type
 `Float64` for all integers ``n``.
 
-The implementation for `n < 0` is an adaption of
+The implementation for ``n < 0`` is an adaption of
 [[arxiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 
 Author: Alexander Voigt
