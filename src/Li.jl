@@ -2,7 +2,7 @@
 #
 # Li(n,-x) + (-1)^n Li(n,-1/x)
 #    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
-function li_neg_rest(n::Integer, x::Float64)::Float64
+function li_rem_neg(n::Integer, x::Float64)::Float64
     l = log(-x)
     l2 = l*l
     sum = 0.0
@@ -29,9 +29,9 @@ function li_neg_rest(n::Integer, x::Float64)::Float64
 end
 
 # returns r.h.s. of inversion formula for x > 1;
-# same expression as in li_neg_rest(n,x), but with
+# same expression as in li_rem_neg(n,x), but with
 # complex logarithm log(Complex(-x))
-function li_pos_rest(n::Integer, x::Float64)::Float64
+function li_rem_pos(n::Integer, x::Float64)::Float64
     l = log(x)
     mag = hypot(l, pi) # |log(-x)|
     arg = atan(pi, l)  # angle(log(-x))
@@ -222,11 +222,11 @@ function li(n::Integer, x::Float64)::Float64
     else # n > 4
         # transform x to [-1,1]
         (x, rest, sgn) = if x < -1.0
-            (inv(x), li_neg_rest(n, x), isodd(n) ? 1.0 : -1.0)
+            (inv(x), li_rem_neg(n, x), isodd(n) ? 1.0 : -1.0)
         elseif x < 1.0
             (x, 0.0, 1.0)
         else # x > 1.0
-            (inv(x), li_pos_rest(n, x), isodd(n) ? 1.0 : -1.0)
+            (inv(x), li_rem_pos(n, x), isodd(n) ? 1.0 : -1.0)
         end
 
         li = if n < 20 && x > 0.75
