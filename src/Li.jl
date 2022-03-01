@@ -293,7 +293,9 @@ function li(n::Integer, z::ComplexF64)::ComplexF64
         li5(z)
     elseif n == 6
         li6(z)
-    else # n > 6
+    elseif abs2(z) <= 0.75*0.75
+        li_series_naive(n, z)
+    else
         0.0
     end
 end
