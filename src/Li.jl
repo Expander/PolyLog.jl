@@ -243,26 +243,26 @@ end
 # Li(n,z) = gamma(1-n) (-ln(z))^(n-1)
 #           + sum(k=0:Inf, zeta(n-k) ln(z)^k/k!)
 function li_series_unity_neg(n::Integer, z::ComplexF64)::ComplexF64
-    lnz = clog(z)
-    lnz2 = lnz*lnz
-    sum = fac(-n)*(-lnz)^(n - 1)
+    l = clog(z)
+    l2 = l*l
+    sum = fac(-n)*(-l)^(n - 1)
 
     if iseven(n)
         kmin = 1
-        lnzk = lnz
+        lk = l
     else
         kmin = 2
-        lnzk = lnz2
+        lk = l2
         sum += zeta(n)
     end
 
     for k in kmin:2:typemax(n)
-        term = zeta(n - k)*inv_fac(k)*lnzk
+        term = zeta(n - k)*inv_fac(k)*lk
         !isfinite(term) && break
         sum_old = sum
         sum += term
         sum == sum_old && break
-        lnzk *= lnz2
+        lk *= l2
     end
 
     sum
