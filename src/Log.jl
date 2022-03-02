@@ -7,5 +7,5 @@ end
 
 # returns logarithm of x
 function clog(x::Float64)::Float64
-    0.5*log(abs2(x))
+    log(x)
 end
