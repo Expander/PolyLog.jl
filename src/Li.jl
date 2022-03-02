@@ -157,8 +157,8 @@ function li_rem(n::Integer, z::ComplexF64)::ComplexF64
         ifac == 0.0 && return 2*sum
         old_sum = sum
         sum += neg_eta(2*k)*ifac*p
-        sum == old_sum && break
         p *= l2
+        sum == old_sum && break
     end
 
     2*sum - p*inv_fac(n)
@@ -178,16 +178,16 @@ function li_rem(n::Integer, x::Float64)::Float64
         for u in 0:(n÷2 - 1)
             old_sum = sum
             sum += p*inv_fac(2*u)*neg_eta(n - 2*u)
-            sum == old_sum && break
             p *= l2
+            sum == old_sum && break
         end
     else
         p = l # collects l^(2u + 1)
         for u in 0:((n - 3)÷2)
             old_sum = sum
             sum += p*inv_fac(2*u + 1)*neg_eta(n - 1 - 2*u)
-            sum == old_sum && break
             p *= l2
+            sum == old_sum && break
         end
     end
 
