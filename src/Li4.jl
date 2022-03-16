@@ -210,7 +210,7 @@ function li4(z::ComplexF64)::ComplexF64
             arg = pz > 0.0 ? pz - pi : pz + pi
             lmz = lnz + arg*im # clog(z)
             lmz2 = lmz*lmz
-            (-clog(1.0 - 1.0/z), -7/4*zeta4 + lmz2*(-0.5*zeta2 - 1/24*lmz2), -1.0)
+            (-clog(1.0 - inv(z)), -7/4*zeta4 + lmz2*(-0.5*zeta2 - 1/24*lmz2), -1.0)
         end
 
         u2 = u*u

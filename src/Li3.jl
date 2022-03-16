@@ -168,7 +168,7 @@ function li3(z::ComplexF64)::ComplexF64
         else # nz > 1.0
             arg = pz > 0.0 ? pz - pi : pz + pi
             lmz = lnz + arg*im # clog(z)
-            (-clog(1.0 - 1.0/z), -lmz*(1/6*lmz*lmz + zeta2))
+            (-clog(1.0 - inv(z)), -lmz*(1/6*lmz*lmz + zeta2))
         end
 
         u2 = u*u
