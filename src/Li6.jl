@@ -41,6 +41,7 @@ function li6(z::ComplexF64)::ComplexF64
 
         u  = lnz + pz*im
         u2 = u*u
+        u4 = u2*u2
         c1 = zeta5
         c2 = 0.54116161685556910
         c3 = 0.20034281719326571
@@ -48,15 +49,9 @@ function li6(z::ComplexF64)::ComplexF64
         c5 = 1/120*(137/60 - clog(-u))
         c6 = -1/1440
 
-        zeta6 + u*c1 +
-        u2*(c2 + u*c3 +
-        u2*(c4 + u*c5 +
-        u2*(c6 +
-        u*(cs[1] +
-        u2*(cs[2] +
-        u2*(cs[3] +
-        u2*(cs[4] +
-        u2*(cs[5]))))))))
+        zeta6 + u2*c2 + u4*(c4 + u2*c6) +
+        u*(c1 + u2*c3 + u4*(c5 + u2*cs[1]) +
+           u4*u4*(cs[2] + u2*cs[3] + u4*(cs[4] + u2*cs[5])))
     else
         bf = (
             1.0                   , -31.0/64.0             ,
