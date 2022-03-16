@@ -107,22 +107,22 @@ function li2(z::ComplexF64)::ComplexF64
         return z*(1.0 + 0.25*z)
     end
 
-    (u::ComplexF64, rest::ComplexF64, sgn::Float64) = if rz <= 0.5
+    (u, rest, sgn) = if rz <= 0.5
         if nz > 1.0
-            (-clog(1.0 - 1.0 / z), -0.5 * clog(-z)^2 - zeta2, -1.0)
+            (-clog(1.0 - inv(z)), -0.5*clog(-z)^2 - zeta2, -1.0)
         else # nz <= 1.
             (-clog(1.0 - z), 0.0 + 0.0im, 1.0)
         end
     else # rz > 0.5
         if nz <= 2.0*rz
             l = -clog(z)
-            (l, l * clog(1.0 - z) + zeta2, -1.0)
+            (l, l*clog(1.0 - z) + zeta2, -1.0)
         else # nz > 2.0*rz
-            (-clog(1.0 - 1.0 / z), -0.5 * clog(-z)^2 - zeta2, -1.0)
+            (-clog(1.0 - inv(z)), -0.5*clog(-z)^2 - zeta2, -1.0)
         end
     end
 
-    bf = (
+    B = (
         - 1.0/4.0,
           1.0/36.0,
         - 1.0/3600.0,
@@ -135,18 +135,18 @@ function li2(z::ComplexF64)::ComplexF64
           4.5189800296199182e-16
     )
 
-    u2::ComplexF64 = u*u
-    u4::ComplexF64 = u2*u2
+    u2 = u*u
+    u4 = u2*u2
 
-    rest + sgn * (
+    rest + sgn*(
         u +
-        u2 * (bf[1] +
-        u  * (bf[2] +
-        u2 * (
-            bf[3] +
-            u2*bf[4] +
-            u4*(bf[5] + u2*bf[6]) +
-            u4*u4*(bf[7] + u2*bf[8] + u4*(bf[9] + u2*bf[10]))
+        u2*(B[1] +
+        u *(B[2] +
+        u2*(
+            B[3] +
+            u2*B[4] +
+            u4*(B[5] + u2*B[6]) +
+            u4*u4*(B[7] + u2*B[8] + u4*(B[9] + u2*B[10]))
         )))
     )
 end
