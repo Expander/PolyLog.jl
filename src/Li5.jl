@@ -41,21 +41,18 @@ function li5(z::ComplexF64)::ComplexF64
 
         u  = lnz + pz*im
         u2 = u*u
+        u4 = u2*u2
+        u8 = u4*u4
         c1 = zeta4
         c2 = 0.5*zeta3
         c3 = 0.27415567780803774
         c4 = 1/24*(25/12 - clog(-u))
         c5 = -1/240
 
-        zeta5 + u*c1 +
-        u2*(c2 + u*c3 +
-        u2*(c4 + u*c5 +
-        u2*(cs[1] +
-        u2*(cs[2] +
-        u2*(cs[3] +
-        u2*(cs[4] +
-        u2*(cs[5] +
-        u2*(cs[6]))))))))
+        zeta5 + u*(c1 + u2*(c3 + u2*c5)) +
+        u2*c2 + u4*(c4 + u2*cs[1]) +
+        u8*(cs[2] + u2*cs[3] + u4*(cs[4] + u2*cs[5])) +
+        u8*u8*cs[6]
     else
         bf = (
             1.0                   , -15.0/32.0             ,
