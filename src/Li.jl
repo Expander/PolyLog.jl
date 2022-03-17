@@ -121,7 +121,7 @@ function li(n::Integer, z::ComplexF64)::ComplexF64
     elseif abs2(z) <= 0.75^2
         li_series_naive(n, z)
     elseif abs2(z) >= 1.4^2
-        oddsgn(n)*li_series_naive(n, 1.0/z) + li_rem(n, z)
+        oddsgn(n)*li_series_naive(n, inv(z)) + li_rem(n, z)
     else
         li_series_unity_pos(n, z)
     end
