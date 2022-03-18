@@ -1,4 +1,5 @@
 @testset "fac" begin
+    @test_throws DomainError PolyLog.fac(-1)
     @test PolyLog.fac(  0) == 1.0
     @test PolyLog.fac(  1) == 1.0
     @test PolyLog.fac(  2) == 2.0
@@ -9,6 +10,7 @@
 end
 
 @testset "inv_fac" begin
+    @test_throws DomainError PolyLog.inv_fac(-1)
     @test PolyLog.inv_fac(  0) == 1.0
     @test PolyLog.inv_fac(  1) == 1.0
     @test PolyLog.inv_fac(  2) == 1/2

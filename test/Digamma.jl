@@ -1,4 +1,6 @@
 @testset "digamma" begin
+    @test_throws DomainError PolyLog.digamma(-1)
+    @test_throws DomainError PolyLog.digamma(0)
     @test PolyLog.digamma( 1) ≈ -0.57721566490153286 rtol=1e-14
     @test PolyLog.digamma( 2) ≈  0.42278433509846714 rtol=1e-14
     @test PolyLog.digamma( 3) ≈  0.92278433509846714 rtol=1e-14
