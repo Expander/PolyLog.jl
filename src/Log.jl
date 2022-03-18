@@ -9,3 +9,14 @@ end
 function clog(x::Float64)::Float64
     log(x)
 end
+
+# returns |ln(x)|^2 for all x
+function ln_sqr(x::Float64)::Float64
+    if x < 0.0
+        log(-x)^2 + pi^2
+    elseif x == 0.0
+        Inf
+    else
+        log(x)^2
+    end
+end

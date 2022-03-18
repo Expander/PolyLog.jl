@@ -127,17 +127,6 @@ function li(n::Integer, z::ComplexF64)::ComplexF64
     end
 end
 
-# returns |ln(x)|^2 for all x
-function ln_sqr(x::Float64)::Float64
-    if x < 0.0
-        log(-x)^2 + pi^2
-    elseif x == 0.0
-        NaN
-    else
-        log(x)^2
-    end
-end
-
 # returns -(-1)^n
 oddsgn(n) = isodd(n) ? 1.0 : -1.0
 
