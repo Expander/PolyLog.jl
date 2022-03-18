@@ -4,6 +4,7 @@ import PolyLog
 
 include("Digamma.jl")
 include("Eta.jl")
+include("Factorial.jl")
 include("Li0.jl")
 include("Li1.jl")
 include("Li2.jl")
