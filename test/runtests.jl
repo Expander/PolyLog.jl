@@ -1,7 +1,7 @@
 using Test
-using DelimitedFiles
 import PolyLog
 
+include("DataReader.jl")
 include("Digamma.jl")
 include("Eta.jl")
 include("Factorial.jl")
