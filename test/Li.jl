@@ -28,17 +28,8 @@ end
     for ni in nis
         n    = ni.n
         eps  = ni.eps
-        data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"))
-
-        for i in 1:size(data, 1)
-            z = data[i,1]
-            expected = data[i,2]
-
-            if imag(z) == 0.0
-                @test PolyLog.li(n, real(z)) ≈ real(expected) atol=eps rtol=eps
-            end
-            @test PolyLog.li(n, z) ≈ expected atol=eps rtol=eps
-        end
+        test_cmpl_function_on_data(z -> PolyLog.li(n, z), joinpath(@__DIR__, "data", "Li$(n).txt"), eps, eps)
+        test_real_function_on_data(z -> PolyLog.li(n, z), joinpath(@__DIR__, "data", "Li$(n).txt"), eps, eps)
     end
 
     # value close to boundary between series 1 and 2 in arXiv:2010.09860
