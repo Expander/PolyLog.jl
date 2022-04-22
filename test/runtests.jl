@@ -2,6 +2,7 @@ using Test
 import PolyLog
 
 include("DataReader.jl")
+include("DataTester.jl")
 include("Digamma.jl")
 include("Eta.jl")
 include("Factorial.jl")
