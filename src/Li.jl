@@ -1,11 +1,11 @@
 const ComplexOrReal{T} = Union{T,Complex{T}}
 
 """
-    li(n::Integer, x::Float64)::Float64
+    li(n::Integer, x::AbstractFloat)::AbstractFloat
 
 Returns the real n-th order polylogarithm
 ``\\Re[\\operatorname{Li}_n(x)]`` of a real number ``x`` of type
-`Float64` for all integers ``n``.
+`AbstractFloat` for all integers ``n``.
 
 The implementation for ``n < 0`` is an adaption of
 [[arxiv:2010.09860](https://arxiv.org/abs/2010.09860)].
@@ -20,6 +20,8 @@ julia> li(10, 1.0)
 1.0009945751278182
 ```
 """
+li(n::Integer, x::AbstractFloat) = convert(typeof(x), li(n, Float64(x)))
+
 function li(n::Integer, x::Float64)::Float64
     isnan(x) && return NaN
     isinf(x) && return -Inf
@@ -68,11 +70,11 @@ function li(n::Integer, x::Float64)::Float64
 end
 
 """
-    li(n::Integer, z::ComplexF64)::ComplexF64
+    li(n::Integer, z::Complex)::Complex
 
 Returns the complex n-th order polylogarithm
 ``\\operatorname{Li}_n(z)`` of a complex number ``z`` of type
-`ComplexF64` for all integers ``n``.
+`Complex` for all integers ``n``.
 
 The implementation for ``n < 0`` is an adaption of
 [[arxiv:2010.09860](https://arxiv.org/abs/2010.09860)].
@@ -87,6 +89,8 @@ julia> li(10, 1.0 + 1.0im)
 0.9999619510320734 + 1.0019864330842578im
 ```
 """
+li(n::Integer, x::Complex) = convert(typeof(x), li(n, ComplexF64(x)))
+
 function li(n::Integer, z::ComplexF64)::ComplexF64
     isnan(z) && return NaN
     isinf(z) && return -Inf
