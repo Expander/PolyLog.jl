@@ -2,8 +2,8 @@
     li1(x::Real)
 
 Returns the real 1st order polylogarithm
-``\\Re[\\operatorname{Li}_1(x)]`` of a real number ``x`` of type
-`Real`.
+``\\Re[\\operatorname{Li}_1(x)] = -\\Re[\\ln(1 - z)]`` of a real number
+``x`` of type `Real`.
 
 Author: Alexander Voigt
 
@@ -29,8 +29,8 @@ end
     li1(z::Complex)
 
 Returns the complex 1st order polylogarithm
-``\\operatorname{Li}_1(z)`` of a complex number ``z`` of type
-`Complex`.
+``\\operatorname{Li}_1(z) = -\\ln(1 - z)`` of a complex number
+``z`` of type `Complex`.
 
 Author: Alexander Voigt
 
