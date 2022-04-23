@@ -28,8 +28,12 @@ end
     for ni in nis
         n    = ni.n
         eps  = ni.eps
-        test_cmpl_function_on_data(z -> PolyLog.li(n, z), joinpath(@__DIR__, "data", "Li$(n).txt"), eps, eps)
-        test_real_function_on_data(z -> PolyLog.li(n, z), joinpath(@__DIR__, "data", "Li$(n).txt"), eps, eps)
+
+        cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"))
+        real_data = filter_real(cmpl_data)
+
+        test_function_on_data(z -> PolyLog.li(n, z), cmpl_data, eps, eps)
+        test_function_on_data(z -> PolyLog.li(n, z), real_data, eps, eps)
     end
 
     # value close to boundary between series 1 and 2 in arXiv:2010.09860
