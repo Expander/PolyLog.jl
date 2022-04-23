@@ -1,8 +1,8 @@
 """
-    li0(x::Number)
+    li0(z::Number)
 
 Returns the 0th order polylogarithm ``\\operatorname{Li}_0(z) = z/(1-z)``
-of a number ``x`` of type `Number`.
+of a number ``z`` of type `Number`.
 
 
 Author: Alexander Voigt
