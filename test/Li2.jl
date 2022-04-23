@@ -18,6 +18,7 @@
     @test PolyLog.li2(Float16(1.0)) ≈ zeta2
     @test PolyLog.li2(1//1) == zeta2
     @test PolyLog.li2(1) ≈ zeta2
+
     @test PolyLog.li2(1.0 + 0.0im) == zeta2
     @test PolyLog.li2(1.0f0 + 0.0f0im) ≈ zeta2
     @test PolyLog.li2(ComplexF16(1.0 + 0.0im)) ≈ zeta2
