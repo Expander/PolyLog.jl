@@ -20,8 +20,6 @@ julia> li(10, 1.0)
 1.0009945751278182
 ```
 """
-li(n::Integer, x::AbstractFloat) = convert(typeof(x), li(n, Float64(x)))
-
 function li(n::Integer, x::Float64)::Float64
     isnan(x) && return NaN
     isinf(x) && return -Inf
@@ -89,8 +87,6 @@ julia> li(10, 1.0 + 1.0im)
 0.9999619510320734 + 1.0019864330842578im
 ```
 """
-li(n::Integer, x::Complex) = convert(typeof(x), li(n, ComplexF64(x)))
-
 function li(n::Integer, z::ComplexF64)::ComplexF64
     isnan(z) && return NaN
     isinf(z) && return -Inf
