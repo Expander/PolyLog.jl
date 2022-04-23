@@ -14,6 +14,10 @@
     @test PolyLog.li1(-1.0f0) ≈ -log(2.0f0)
     @test PolyLog.li1(-1//1) == -log(2.0)
     @test PolyLog.li1(-1) ≈ -log(2.0)
+    @test PolyLog.li1(-1.0 + 0.0im) == -log(2.0)
+    @test PolyLog.li1(-1.0f0 + 0.0f0im) ≈ -log(2.0f0)
+    @test PolyLog.li1(-1//1 + 0//1im) ≈ -log(2.0)
+    @test PolyLog.li1(-1 + 0im) ≈ -log(2.0)
 
     @test PolyLog.li1(1.0) == Inf
     @test PolyLog.li1(1.0 + 0.0im) == Inf

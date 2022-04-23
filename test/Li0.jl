@@ -14,6 +14,10 @@
     @test PolyLog.li0(2.0f0) ≈ -2.0f0
     @test PolyLog.li0(2//1) == -2//1
     @test PolyLog.li0(2) ≈ -2.0
+    @test PolyLog.li0(2.0 + 0.0im) == -2.0
+    @test PolyLog.li0(2.0f0 + 0.0f0im) ≈ -2.0f0
+    @test PolyLog.li0(2//1 + 0//1im) ≈ -2.0
+    @test PolyLog.li0(2 + 0im) ≈ -2.0
 
     @test PolyLog.li0(1.0) == Inf
     @test isnan(PolyLog.li0(1.0 + 0.0im))
