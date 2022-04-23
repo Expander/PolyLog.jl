@@ -11,6 +11,8 @@ function benchmark_and_print(f, z, str)
     println(String(take!(io)))
 end
 
+benchmark_and_print(PolyLog.li1, 1.1        , "li1::Float64")
+benchmark_and_print(PolyLog.li1, 1.1 + 0.5im, "li1::ComplexF64")
 benchmark_and_print(PolyLog.li2, 1.1        , "li2::Float64")
 benchmark_and_print(PolyLog.li2, 1.1 + 0.5im, "li2::ComplexF64")
 benchmark_and_print(PolyLog.li3, 1.1        , "li3::Float64")
