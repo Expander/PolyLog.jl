@@ -147,7 +147,7 @@ License: MIT
 # Example
 ```jldoctest; setup = :(using PolyLog)
 julia> li4(1.0 + 1.0im)
-0.9593189135784193 + 1.1380391966769827im
+0.9593189135784193 + 1.138039196676983im
 ```
 """
 function li4(z::ComplexF64)::ComplexF64
