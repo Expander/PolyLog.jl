@@ -37,6 +37,12 @@ end
 
         zeta = PolyLog.zeta(n)
 
+        @test PolyLog.li(n, 1.0) == zeta
+        @test PolyLog.li(n, 1.0f0) ≈ zeta
+        @test PolyLog.li(n, Float16(1.0)) ≈ zeta
+        @test PolyLog.li(n, 1//1) ≈ zeta
+        @test PolyLog.li(n, 1) ≈ zeta
+
         @test PolyLog.li(n, 1.0 + 0.0im) == zeta
         @test PolyLog.li(n, 1.0f0 + 0.0f0im) ≈ zeta
         @test PolyLog.li(n, ComplexF16(1.0 + 0.0im)) ≈ zeta
