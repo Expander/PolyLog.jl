@@ -8,7 +8,7 @@
     test_function_on_data(z -> PolyLog.li4(ComplexF32(z)), cmpl_data, 1e-6, 1e-6)
     test_function_on_data(z -> PolyLog.li4(Float32(z)   ), real_data, 1e-6, 1e-6)
 
-    # test_function_on_data(z -> PolyLog.li4(ComplexF16(z)), cmpl_data, 1e-2, 1e-2)
+    test_function_on_data(z -> PolyLog.li4(ComplexF16(z)), cmpl_data, 1e-2, 1e-2)
     test_function_on_data(z -> PolyLog.li4(Float16(z)   ), real_data, 1e-2, 1e-2)
 
     zeta4 = 1.0823232337111382
