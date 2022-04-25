@@ -49,10 +49,10 @@ function li3_pos(x::Float64)::Float64
 end
 
 """
-    li3(x::Float64)::Float64
+    li3(x::Real)
 
 Returns the real trilogarithm ``\\Re[\\operatorname{Li}_3(x)]`` of a
-real number ``x`` of type `Float64`.
+real number ``x`` of type `Real`.
 
 Author: Alexander Voigt
 
@@ -64,7 +64,13 @@ julia> li3(1.0)
 1.2020569031595942
 ```
 """
-function li3(x::Float64)::Float64
+li3(x::Real) = _li3(float(x))
+
+_li3(x::Float16) = oftype(x, _li3(Float32(x)))
+
+_li3(x::Float32) = oftype(x, _li3(Float64(x)))
+
+function _li3(x::Float64)::Float64
     # transformation to [-1,0] and [0,1/2]
     (neg, pos, sgn, rest) = if x < -1.0
         l = log(-x)
@@ -96,10 +102,10 @@ function li3(x::Float64)::Float64
 end
 
 """
-    li3(z::ComplexF64)::ComplexF64
+    li3(z::Complex)
 
 Returns the complex trilogarithm ``\\operatorname{Li}_3(z)`` of a
-complex number ``z`` of type `ComplexF64`.
+complex number ``z`` of type `Complex`.
 
 Author: Alexander Voigt
 
@@ -111,7 +117,13 @@ julia> li3(1.0 + 1.0im)
 0.8711588834109378 + 1.267083441888924im
 ```
 """
-function li3(z::ComplexF64)::ComplexF64
+li3(z::Complex) = _li3(float(z))
+
+_li3(z::ComplexF16) = oftype(z, _li3(ComplexF32(z)))
+
+_li3(z::ComplexF32) = oftype(z, _li3(ComplexF64(z)))
+
+function _li3(z::ComplexF64)::ComplexF64
     if imag(z) == 0.0
         if real(z) == 0.0
             return 0.0 + 0.0im

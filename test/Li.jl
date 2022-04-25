@@ -34,6 +34,20 @@ end
 
         test_function_on_data(z -> PolyLog.li(n, z), cmpl_data, eps, eps)
         test_function_on_data(z -> PolyLog.li(n, z), real_data, eps, eps)
+
+        zeta = PolyLog.zeta(n)
+
+        @test PolyLog.li(n, 1.0) == zeta
+        @test PolyLog.li(n, 1.0f0) ≈ zeta
+        @test PolyLog.li(n, Float16(1.0)) ≈ zeta
+        @test PolyLog.li(n, 1//1) ≈ zeta
+        @test PolyLog.li(n, 1) ≈ zeta
+
+        @test PolyLog.li(n, 1.0 + 0.0im) == zeta
+        @test PolyLog.li(n, 1.0f0 + 0.0f0im) ≈ zeta
+        @test PolyLog.li(n, ComplexF16(1.0 + 0.0im)) ≈ zeta
+        @test PolyLog.li(n, 1//1 + 0//1im) ≈ zeta
+        @test PolyLog.li(n, 1 + 0im) ≈ zeta
     end
 
     # value close to boundary between series 1 and 2 in arXiv:2010.09860

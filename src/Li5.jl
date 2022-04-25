@@ -1,9 +1,9 @@
 """
-    li5(z::ComplexF64)::ComplexF64
+    li5(z::Complex)
 
 Returns the complex 5th order polylogarithm
 ``\\operatorname{Li}_5(z)`` of a complex number ``z`` of type
-`ComplexF64`.
+`ComplexF`.
 
 Author: Alexander Voigt
 
@@ -15,7 +15,13 @@ julia> li5(1.0 + 1.0im)
 0.9874666591701124 + 1.068441607107422im
 ```
 """
-function li5(z::ComplexF64)::ComplexF64
+li5(z::Complex) = _li5(float(z))
+
+_li5(z::ComplexF16) = oftype(z, _li5(ComplexF32(z)))
+
+_li5(z::ComplexF32) = oftype(z, _li5(ComplexF64(z)))
+
+function _li5(z::ComplexF64)::ComplexF64
     if imag(z) == 0.0
         if real(z) == 0.0
             return 0.0 + 0.0im

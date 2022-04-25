@@ -1,8 +1,8 @@
 """
-    li2(x::Float64)::Float64
+    li2(x::Real)
 
 Returns the real dilogarithm ``\\Re[\\operatorname{Li}_2(x)]`` of a
-real number ``x`` of type `Float64`.
+real number ``x`` of type `Real`.
 
 Implemented as rational function approximation with a maximum error of
 `5e-17` [[arXiv:2201.01678](https://arxiv.org/abs/2201.01678)].
@@ -17,7 +17,13 @@ julia> li2(1.0)
 1.6449340668482264
 ```
 """
-function li2(x::Float64)::Float64
+li2(x::Real) = _li2(float(x))
+
+_li2(x::Float16) = oftype(x, _li2(Float32(x)))
+
+_li2(x::Float32) = oftype(x, _li2(Float64(x)))
+
+function _li2(x::Float64)::Float64
     cp = (
         0.9999999999999999502e+0,
        -2.6883926818565423430e+0,
@@ -72,10 +78,10 @@ end
 
 
 """
-    li2(z::ComplexF64)::ComplexF64
+    li2(z::Complex)
 
 Returns the complex dilogarithm ``\\operatorname{Li}_2(z)`` of a
-complex number ``z`` of type `ComplexF64`.
+complex number ``z`` of type `Complex`.
 
 Author: Alexander Voigt
 
@@ -87,7 +93,13 @@ julia> li2(1.0 + 1.0im)
 0.616850275068085 + 1.4603621167531196im
 ```
 """
-function li2(z::ComplexF64)::ComplexF64
+li2(z::Complex) = _li2(float(z))
+
+_li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
+
+_li2(z::ComplexF32) = oftype(z, _li2(ComplexF64(z)))
+
+function _li2(z::ComplexF64)::ComplexF64
     clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
 
     rz = real(z)
