@@ -1,9 +1,9 @@
 """
-    li6(z::ComplexF64)::ComplexF64
+    li6(z::Complex)
 
 Returns the complex 6th order polylogarithm
 ``\\operatorname{Li}_6(z)`` of a complex number ``z`` of type
-`ComplexF64`.
+`Complex`.
 
 Author: Alexander Voigt
 
@@ -15,7 +15,13 @@ julia> li6(1.0 + 1.0im)
 0.996149796835317 + 1.0335544477237482im
 ```
 """
-function li6(z::ComplexF64)::ComplexF64
+li6(z::Complex) = _li6(float(z))
+
+_li6(z::ComplexF16) = oftype(z, _li6(ComplexF32(z)))
+
+_li6(z::ComplexF32) = oftype(z, _li6(ComplexF64(z)))
+
+function _li6(z::ComplexF64)::ComplexF64
     if imag(z) == 0.0
         if real(z) == 0.0
             return 0.0 + 0.0im
