@@ -1,7 +1,7 @@
 """
-    li1(x::Real)
+    reli1(x::Real)
 
-Returns the real 1st order polylogarithm
+Returns the real part of the 1st order polylogarithm
 ``\\Re[\\operatorname{Li}_1(x)] = -\\Re[\\ln(1 - z)]`` of a real number
 ``x`` of type `Real`.
 
@@ -15,7 +15,7 @@ julia> li1(0.5)
 0.6931471805599453
 ```
 """
-function li1(x::Real)
+function reli1(x::Real)
     if x < one(x)
         -log(one(x) - x)
     elseif x == one(x)
@@ -26,7 +26,7 @@ function li1(x::Real)
 end
 
 """
-    li1(z::Complex)
+    li1(z::Number)
 
 Returns the complex 1st order polylogarithm
 ``\\operatorname{Li}_1(z) = -\\ln(1 - z)`` of a complex number
@@ -42,6 +42,6 @@ julia> li1(1.0 + 1.0im)
 -0.0 + 1.5707963267948966im
 ```
 """
-function li1(z::Complex)
-    -clog(one(z) - z)
-end
+li1(z::Complex) = -clog(one(z) - z)
+
+li1(z::Real) = li1(Complex(z))
