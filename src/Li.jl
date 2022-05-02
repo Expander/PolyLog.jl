@@ -48,7 +48,7 @@ function _li(n::Integer, x::Float64)::Float64
     elseif n == 1
         reli1(x)
     elseif n == 2
-        li2(x)
+        reli2(x)
     elseif n == 3
         li3(x)
     elseif n == 4
