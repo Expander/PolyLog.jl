@@ -127,14 +127,11 @@ function _li3(z::ComplexF64)::ComplexF64
     if imag(z) == 0.0
         if real(z) == 0.0
             return 0.0 + 0.0im
-        end
-        if real(z) == 1.0
+        elseif real(z) == 1.0
             return zeta3 + 0.0im
-        end
-        if real(z) == -1.0
+        elseif real(z) == -1.0
             return -0.75*zeta3 + 0.0im
-        end
-        if real(z) == 0.5
+        elseif real(z) == 0.5
             return 0.53721319360804020 + 0.0im
         end
     end
