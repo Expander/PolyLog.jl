@@ -56,7 +56,7 @@ function _reli(n::Integer, x::Float64)::Float64
     else # n > 4
         # transform x to [-1,1]
         (x, rest, sgn) = if x < -1.0
-            (inv(x), li_rem(n, x), oddsgn(n))
+            (inv(x), reli_rem(n, x), oddsgn(n))
         elseif x < 1.0
             (x, 0.0, 1.0)
         else # x > 1.0
@@ -82,6 +82,13 @@ Returns the complex n-th order polylogarithm
 
 The implementation for ``n < 0`` is an adaptation of
 [[arxiv:2010.09860](https://arxiv.org/abs/2010.09860)].
+
+If only real arguments ``z\\in\\mathbb{R}`` are considered and one is
+interested only in the real part of the polylogarithm,
+``\\Re[\\operatorname{Li}_n(z)]``, refer to the function
+[`reli`](@ref), which may be a faster alternative.
+
+See also [`reli`](@ref).
 
 Author: Alexander Voigt
 
@@ -171,7 +178,7 @@ end
 #
 # Li(n,-x) + (-1)^n Li(n,-1/x)
 #    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
-function li_rem(n::Integer, x::Float64)::Float64
+function reli_rem(n::Integer, x::Float64)::Float64
     l = log(-x)
     l2 = l*l
     sum = 0.0
