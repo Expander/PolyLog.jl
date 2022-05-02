@@ -88,7 +88,7 @@ function li4_one(x::Float64)::Float64
 end
 
 """
-    li4(x::Real)
+    reli4(x::Real)
 
 Returns the real 4th order polylogarithm
 ``\\Re[\\operatorname{Li}_4(x)]`` of a real number ``x`` of type
@@ -100,17 +100,17 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> li4(1.0)
+julia> reli4(1.0)
 1.0823232337111381
 ```
 """
-li4(x::Real) = _li4(float(x))
+reli4(x::Real) = _reli4(float(x))
 
-_li4(x::Float16) = oftype(x, _li4(Float32(x)))
+_reli4(x::Float16) = oftype(x, _reli4(Float32(x)))
 
-_li4(x::Float32) = oftype(x, _li4(Float64(x)))
+_reli4(x::Float32) = oftype(x, _reli4(Float64(x)))
 
-function _li4(x::Float64)::Float64
+function _reli4(x::Float64)::Float64
     # transform to [-1,1]
     (x, rest, sgn) = if x < -1.0
         l = log(-x)^2
@@ -146,6 +146,13 @@ Returns the complex 4th order polylogarithm
 ``\\operatorname{Li}_4(z)`` of a complex number ``z`` of type
 `Complex`.
 
+If only real arguments ``z\\in\\mathbb{R}`` are considered and one is
+interested only in the real part of the 4th order polylogarithm,
+``\\Re[\\operatorname{Li}_4(z)]``, refer to the function
+[`reli4`](@ref), which may be a faster alternative.
+
+See also [`reli4`](@ref).
+
 Author: Alexander Voigt
 
 License: MIT
@@ -157,6 +164,8 @@ julia> li4(1.0 + 1.0im)
 ```
 """
 li4(z::Complex) = _li4(float(z))
+
+li4(z::Real) = li4(Complex(z))
 
 _li4(z::ComplexF16) = oftype(z, _li4(ComplexF32(z)))
 

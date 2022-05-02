@@ -52,7 +52,7 @@ function _li(n::Integer, x::Float64)::Float64
     elseif n == 3
         reli3(x)
     elseif n == 4
-        li4(x)
+        reli4(x)
     else # n > 4
         # transform x to [-1,1]
         (x, rest, sgn) = if x < -1.0
