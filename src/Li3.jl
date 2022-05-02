@@ -49,7 +49,7 @@ function li3_pos(x::Float64)::Float64
 end
 
 """
-    li3(x::Real)
+    reli3(x::Real)
 
 Returns the real trilogarithm ``\\Re[\\operatorname{Li}_3(x)]`` of a
 real number ``x`` of type `Real`.
@@ -60,17 +60,17 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> li3(1.0)
+julia> reli3(1.0)
 1.2020569031595942
 ```
 """
-li3(x::Real) = _li3(float(x))
+reli3(x::Real) = _reli3(float(x))
 
-_li3(x::Float16) = oftype(x, _li3(Float32(x)))
+_reli3(x::Float16) = oftype(x, _reli3(Float32(x)))
 
-_li3(x::Float32) = oftype(x, _li3(Float64(x)))
+_reli3(x::Float32) = oftype(x, _reli3(Float64(x)))
 
-function _li3(x::Float64)::Float64
+function _reli3(x::Float64)::Float64
     # transformation to [-1,0] and [0,1/2]
     (neg, pos, sgn, rest) = if x < -1.0
         l = log(-x)
@@ -107,6 +107,13 @@ end
 Returns the complex trilogarithm ``\\operatorname{Li}_3(z)`` of a
 complex number ``z`` of type `Complex`.
 
+If only real arguments ``z\\in\\mathbb{R}`` are considered and one is
+interested only in the real part of the trilogarithm,
+``\\Re[\\operatorname{Li}_3(z)]``, refer to the function
+[`reli3`](@ref), which may be a faster alternative.
+
+See also [`reli3`](@ref).
+
 Author: Alexander Voigt
 
 License: MIT
@@ -118,6 +125,8 @@ julia> li3(1.0 + 1.0im)
 ```
 """
 li3(z::Complex) = _li3(float(z))
+
+li3(z::Real) = li3(Complex(z))
 
 _li3(z::ComplexF16) = oftype(z, _li3(ComplexF32(z)))
 

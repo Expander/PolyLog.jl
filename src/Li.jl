@@ -50,7 +50,7 @@ function _li(n::Integer, x::Float64)::Float64
     elseif n == 2
         reli2(x)
     elseif n == 3
-        li3(x)
+        reli3(x)
     elseif n == 4
         li4(x)
     else # n > 4
