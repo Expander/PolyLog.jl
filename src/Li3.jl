@@ -1,5 +1,5 @@
-# Li3(x) for x in [-1,0]
-function li3_neg(x::Float64)::Float64
+# Re[Li3(x)] for x in [-1,0]
+function reli3_neg(x::Float64)::Float64
     cp = (
         0.9999999999999999795e+0, -2.0281801754117129576e+0,
         1.4364029887561718540e+0, -4.2240680435713030268e-1,
@@ -23,8 +23,8 @@ function li3_neg(x::Float64)::Float64
     x*p/q
 end
 
-# Li3(x) for x in [0,1/2]
-function li3_pos(x::Float64)::Float64
+# Re[Li3(x)] for x in [0,1/2]
+function reli3_pos(x::Float64)::Float64
     cp = (
         0.9999999999999999893e+0, -2.5224717303769789628e+0,
         2.3204919140887894133e+0, -9.3980973288965037869e-1,
@@ -74,28 +74,28 @@ function _reli3(x::Float64)::Float64
     # transformation to [-1,0] and [0,1/2]
     (neg, pos, sgn, rest) = if x < -1.0
         l = log(-x)
-        (li3_neg(inv(x)), 0.0, 1.0, -l*(zeta2 + 1/6*l*l))
+        (reli3_neg(inv(x)), 0.0, 1.0, -l*(zeta2 + 1/6*l*l))
     elseif x == -1.0
         return -0.75*zeta3
     elseif x < 0.0
-        (li3_neg(x), 0.0, 1.0, 0.0)
+        (reli3_neg(x), 0.0, 1.0, 0.0)
     elseif x == 0.0
         return 0.0
     elseif x < 0.5
-        (0.0, li3_pos(x), 1.0, 0.0)
+        (0.0, reli3_pos(x), 1.0, 0.0)
     elseif x == 0.5
         return 0.53721319360804020
     elseif x < 1.0
         l = log(x)
-        (li3_neg((x - 1.0)/x), li3_pos(1.0 - x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(1.0 - x) + 1/6*l)))
+        (reli3_neg((x - 1.0)/x), reli3_pos(1.0 - x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(1.0 - x) + 1/6*l)))
     elseif x == 1.0
         return zeta3
     elseif x < 2.0
         l = log(x)
-        (li3_neg(1.0 - x), li3_pos((x - 1.0)/x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(x - 1.0) + 1/6*l)))
+        (reli3_neg(1.0 - x), reli3_pos((x - 1.0)/x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(x - 1.0) + 1/6*l)))
     else # x >= 2.0
         l = log(x)
-        (0.0, li3_pos(inv(x)), 1.0, l*(2*zeta2 - 1/6*l*l))
+        (0.0, reli3_pos(inv(x)), 1.0, l*(2*zeta2 - 1/6*l*l))
     end
 
     rest + sgn*(neg + pos)

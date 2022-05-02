@@ -1,5 +1,5 @@
-# Li4(x) for x in [-1,0]
-function li4_neg(x::Float64)::Float64
+# Re[Li4(x)] for x in [-1,0]
+function reli4_neg(x::Float64)::Float64
     cp = (
         0.9999999999999999952e+0, -1.8532099956062184217e+0,
         1.1937642574034898249e+0, -3.1817912243893560382e-1,
@@ -23,8 +23,8 @@ function li4_neg(x::Float64)::Float64
     x*p/q
 end
 
-# Li4(x) for x in [0,1/2]
-function li4_half(x::Float64)::Float64
+# Re[Li4(x)] for x in [0,1/2]
+function reli4_half(x::Float64)::Float64
     cp = (
         1.0000000000000000414e+0, -2.0588072418045364525e+0,
         1.4713328756794826579e+0, -4.2608608613069811474e-1,
@@ -47,8 +47,8 @@ function li4_half(x::Float64)::Float64
     x*p/q
 end
 
-# Li4(x) for x in [1/2,8/10]
-function li4_mid(x::Float64)::Float64
+# Re[Li4(x)] for x in [1/2,8/10]
+function reli4_mid(x::Float64)::Float64
     cp = (
         3.2009826406098890447e-9, 9.9999994634837574160e-1,
        -2.9144851228299341318e+0, 3.1891031447462342009e+0,
@@ -73,8 +73,8 @@ function li4_mid(x::Float64)::Float64
     p/q
 end
 
-# Li4(x) for x in [8/10,1]
-function li4_one(x::Float64)::Float64
+# Re[Li4(x)] for x in [8/10,1]
+function reli4_one(x::Float64)::Float64
     l = log(x)
     l2 = l*l
 
@@ -127,13 +127,13 @@ function _reli4(x::Float64)::Float64
     end
 
     app = if x < 0.0
-        li4_neg(x)
+        reli4_neg(x)
     elseif x < 0.5
-        li4_half(x)
+        reli4_half(x)
     elseif x < 0.8
-        li4_mid(x)
+        reli4_mid(x)
     else # x <= 1.0
-        li4_one(x)
+        reli4_one(x)
     end
 
     rest + sgn*app
