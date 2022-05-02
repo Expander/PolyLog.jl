@@ -125,14 +125,10 @@ _li3(z::ComplexF32) = oftype(z, _li3(ComplexF64(z)))
 
 function _li3(z::ComplexF64)::ComplexF64
     if imag(z) == 0.0
-        if real(z) == 0.0
-            return 0.0 + 0.0im
-        elseif real(z) == 1.0
-            return zeta3 + 0.0im
-        elseif real(z) == -1.0
-            return -0.75*zeta3 + 0.0im
-        elseif real(z) == 0.5
-            return 0.53721319360804020 + 0.0im
+        if real(z) <= 1.0
+            return li3(real(z)) + 0.0im
+        else
+            return li3(real(z)) - pi*log(real(z))^2*0.5im
         end
     end
 

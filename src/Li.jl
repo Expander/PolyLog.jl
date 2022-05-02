@@ -106,6 +106,14 @@ function _li(n::Integer, z::ComplexF64)::ComplexF64
     z == 1.0 && return zeta(n)
     z == -1.0 && return neg_eta(n)
 
+    if n > 0 && imag(z) == 0.0
+        if real(z) <= 1.0
+            return li(n, real(z)) + 0.0im
+        else
+            return li(n, real(z)) - pi*inv_fac(n - 1)*log(real(z))^(n - 1)*1.0im
+        end
+    end
+
     if n < 0
         l2 = abs2(log(z))
         if 4*pi^2*abs2(z) < l2
