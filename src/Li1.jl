@@ -26,7 +26,7 @@ function reli1(x::Real)
 end
 
 """
-    li1(z::Number)
+    li1(z::Complex)
 
 Returns the complex 1st order polylogarithm
 ``\\operatorname{Li}_1(z) = -\\ln(1 - z)`` of a complex number
