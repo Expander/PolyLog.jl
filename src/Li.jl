@@ -111,12 +111,9 @@ _li(n::Integer, z::ComplexF32) = oftype(z, _li(n, ComplexF64(z)))
 function _li(n::Integer, z::ComplexF64)::ComplexF64
     isnan(z) && return NaN
     isinf(z) && return -Inf
-    z == 0.0 && return 0.0
-    z == 1.0 && return zeta(n)
-    z == -1.0 && return neg_eta(n)
 
-    if n > 0 && imag(z) == 0.0
-        if real(z) <= 1.0
+    if imag(z) == 0.0
+        if real(z) <= 1.0 || n <= 0
             return reli(n, real(z)) + 0.0im
         else
             return reli(n, real(z)) - pi*inv_fac(n - 1)*log(real(z))^(n - 1)*1.0im
