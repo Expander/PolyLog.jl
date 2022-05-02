@@ -117,9 +117,9 @@ function _li(n::Integer, z::ComplexF64)::ComplexF64
 
     if n > 0 && imag(z) == 0.0
         if real(z) <= 1.0
-            return li(n, real(z)) + 0.0im
+            return reli(n, real(z)) + 0.0im
         else
-            return li(n, real(z)) - pi*inv_fac(n - 1)*log(real(z))^(n - 1)*1.0im
+            return reli(n, real(z)) - pi*inv_fac(n - 1)*log(real(z))^(n - 1)*1.0im
         end
     end
 
