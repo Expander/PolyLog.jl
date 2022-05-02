@@ -25,4 +25,7 @@ export li5
 export li6
 export li
 
+export reli1
+export reli2
+
 end

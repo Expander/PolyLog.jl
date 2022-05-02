@@ -11,7 +11,7 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> li1(0.5)
+julia> reli1(0.5)
 0.6931471805599453
 ```
 """
@@ -31,6 +31,13 @@ end
 Returns the complex 1st order polylogarithm
 ``\\operatorname{Li}_1(z) = -\\ln(1 - z)`` of a complex number
 ``z`` of type `Complex`.
+
+If only real arguments ``z\\in\\mathbb{R}`` are considered and one is
+interested only in the real part, ``\\Re[\\operatorname{Li}_1(z)]``,
+refer to the function [`reli1`](@ref), which may be a faster
+alternative.
+
+See also [`reli1`](@ref).
 
 Author: Alexander Voigt
 

@@ -13,7 +13,7 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> li2(1.0)
+julia> reli2(1.0)
 1.6449340668482264
 ```
 """
@@ -82,6 +82,13 @@ end
 
 Returns the complex dilogarithm ``\\operatorname{Li}_2(z)`` of a
 complex number ``z`` of type `Complex`.
+
+If only real arguments ``z\\in\\mathbb{R}`` are considered and one is
+interested only in the real part of the dilogarithm,
+``\\Re[\\operatorname{Li}_2(z)]``, refer to the function
+[`reli2`](@ref), which may be a faster alternative.
+
+See also [`reli2`](@ref).
 
 Author: Alexander Voigt
 
