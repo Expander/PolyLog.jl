@@ -32,10 +32,16 @@ end
         cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"))
         real_data = filter_real(cmpl_data)
 
-        test_function_on_data(z -> PolyLog.li(n, z), cmpl_data, eps, eps)
-        test_function_on_data(z -> PolyLog.li(n, z), real_data, eps, eps)
+        test_function_on_data(z -> PolyLog.li(n, z)  , cmpl_data, eps, eps)
+        test_function_on_data(z -> PolyLog.reli(n, z), real_data, eps, eps)
 
         zeta = PolyLog.zeta(n)
+
+        @test PolyLog.reli(n, 1.0) == zeta
+        @test PolyLog.reli(n, 1.0f0) ≈ zeta
+        @test PolyLog.reli(n, Float16(1.0)) ≈ zeta
+        @test PolyLog.reli(n, 1//1) ≈ zeta
+        @test PolyLog.reli(n, 1) ≈ zeta
 
         @test PolyLog.li(n, 1.0) == zeta
         @test PolyLog.li(n, 1.0f0) ≈ zeta
@@ -51,13 +57,16 @@ end
     end
 
     # value close to boundary between series 1 and 2 in arXiv:2010.09860
-    @test PolyLog.li(-2, -0.50001) ≈ -0.074072592582716422 atol=1e-14
+    @test PolyLog.li(-2, -0.50001)   ≈ -0.074072592582716422 atol=1e-14
+    @test PolyLog.reli(-2, -0.50001) ≈ -0.074072592582716422 atol=1e-14
 
     # value sensitive to proper treatment of 0.0 vs -0.0 in imag(z)
     z = 1.5 + 0.0im
     @test PolyLog.li(10,  z) ≈ 1.5022603281703005298 - 2.56429642116111388671e-9im atol=1e-14 rtol=1e-14
     @test PolyLog.li(10, -z) ≈ -1.4978556954869267594 atol=1e-14
 
+    @test isnan(PolyLog.reli(10, NaN))
+    @test isinf(PolyLog.reli(10, Inf))
     @test isnan(PolyLog.li(10, NaN))
     @test isinf(PolyLog.li(10, Inf))
 end

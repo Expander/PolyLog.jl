@@ -1,7 +1,7 @@
 const ComplexOrReal{T} = Union{T,Complex{T}}
 
 """
-    li(n::Integer, x::Real)
+    reli(n::Integer, x::Real)
 
 Returns the real n-th order polylogarithm
 ``\\Re[\\operatorname{Li}_n(x)]`` of a real number ``x`` of type
@@ -16,17 +16,17 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> li(10, 1.0)
+julia> reli(10, 1.0)
 1.0009945751278182
 ```
 """
-li(n::Integer, x::Real) = _li(n, float(x))
+reli(n::Integer, x::Real) = _reli(n, float(x))
 
-_li(n::Integer, x::Float16) = oftype(x, _li(n, Float32(x)))
+_reli(n::Integer, x::Float16) = oftype(x, _reli(n, Float32(x)))
 
-_li(n::Integer, x::Float32) = oftype(x, _li(n, Float64(x)))
+_reli(n::Integer, x::Float32) = oftype(x, _reli(n, Float64(x)))
 
-function _li(n::Integer, x::Float64)::Float64
+function _reli(n::Integer, x::Float64)::Float64
     isnan(x) && return NaN
     isinf(x) && return -Inf
     x == 0.0 && return 0.0
@@ -94,6 +94,8 @@ julia> li(10, 1.0 + 1.0im)
 ```
 """
 li(n::Integer, z::Complex) = _li(n, float(z))
+
+li(n::Integer, z::Real) = li(n, Complex(z))
 
 _li(n::Integer, z::ComplexF16) = oftype(z, _li(n, ComplexF32(z)))
 
