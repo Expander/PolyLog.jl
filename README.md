@@ -59,12 +59,12 @@ Citation
 
 ~~~.bibtex
 @software{PolyLog.jl,
-    author       = {{Alexander Voigt}},
-    title        = {{PolyLog.jl}},
-    year         = {2022},
-    version      = {1.12.0},
-    url          = {https://github.com/Expander/PolyLog.jl},
-    note         = {[License: MIT]}
+    author  = {{Alexander Voigt}},
+    title   = {{PolyLog.jl}},
+    year    = {2022},
+    version = {1.12.0},
+    url     = {https://github.com/Expander/PolyLog.jl},
+    note    = {[License: MIT]}
 }
 ~~~
 
