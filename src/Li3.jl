@@ -1,5 +1,5 @@
-# Li3(x) for x in [-1,0]
-function li3_neg(x::Float64)::Float64
+# Re[Li3(x)] for x in [-1,0]
+function reli3_neg(x::Float64)::Float64
     cp = (
         0.9999999999999999795e+0, -2.0281801754117129576e+0,
         1.4364029887561718540e+0, -4.2240680435713030268e-1,
@@ -23,8 +23,8 @@ function li3_neg(x::Float64)::Float64
     x*p/q
 end
 
-# Li3(x) for x in [0,1/2]
-function li3_pos(x::Float64)::Float64
+# Re[Li3(x)] for x in [0,1/2]
+function reli3_pos(x::Float64)::Float64
     cp = (
         0.9999999999999999893e+0, -2.5224717303769789628e+0,
         2.3204919140887894133e+0, -9.3980973288965037869e-1,
@@ -49,7 +49,7 @@ function li3_pos(x::Float64)::Float64
 end
 
 """
-    li3(x::Real)
+    reli3(x::Real)
 
 Returns the real trilogarithm ``\\Re[\\operatorname{Li}_3(x)]`` of a
 real number ``x`` of type `Real`.
@@ -60,42 +60,42 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> li3(1.0)
+julia> reli3(1.0)
 1.2020569031595942
 ```
 """
-li3(x::Real) = _li3(float(x))
+reli3(x::Real) = _reli3(float(x))
 
-_li3(x::Float16) = oftype(x, _li3(Float32(x)))
+_reli3(x::Float16) = oftype(x, _reli3(Float32(x)))
 
-_li3(x::Float32) = oftype(x, _li3(Float64(x)))
+_reli3(x::Float32) = oftype(x, _reli3(Float64(x)))
 
-function _li3(x::Float64)::Float64
+function _reli3(x::Float64)::Float64
     # transformation to [-1,0] and [0,1/2]
     (neg, pos, sgn, rest) = if x < -1.0
         l = log(-x)
-        (li3_neg(inv(x)), 0.0, 1.0, -l*(zeta2 + 1/6*l*l))
+        (reli3_neg(inv(x)), 0.0, 1.0, -l*(zeta2 + 1/6*l*l))
     elseif x == -1.0
         return -0.75*zeta3
     elseif x < 0.0
-        (li3_neg(x), 0.0, 1.0, 0.0)
+        (reli3_neg(x), 0.0, 1.0, 0.0)
     elseif x == 0.0
         return 0.0
     elseif x < 0.5
-        (0.0, li3_pos(x), 1.0, 0.0)
+        (0.0, reli3_pos(x), 1.0, 0.0)
     elseif x == 0.5
         return 0.53721319360804020
     elseif x < 1.0
         l = log(x)
-        (li3_neg((x - 1.0)/x), li3_pos(1.0 - x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(1.0 - x) + 1/6*l)))
+        (reli3_neg((x - 1.0)/x), reli3_pos(1.0 - x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(1.0 - x) + 1/6*l)))
     elseif x == 1.0
         return zeta3
     elseif x < 2.0
         l = log(x)
-        (li3_neg(1.0 - x), li3_pos((x - 1.0)/x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(x - 1.0) + 1/6*l)))
+        (reli3_neg(1.0 - x), reli3_pos((x - 1.0)/x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(x - 1.0) + 1/6*l)))
     else # x >= 2.0
         l = log(x)
-        (0.0, li3_pos(inv(x)), 1.0, l*(2*zeta2 - 1/6*l*l))
+        (0.0, reli3_pos(inv(x)), 1.0, l*(2*zeta2 - 1/6*l*l))
     end
 
     rest + sgn*(neg + pos)
@@ -106,6 +106,13 @@ end
 
 Returns the complex trilogarithm ``\\operatorname{Li}_3(z)`` of a
 complex number ``z`` of type `Complex`.
+
+If only real arguments ``z\\in\\mathbb{R}`` are considered and one is
+interested only in the real part of the trilogarithm,
+``\\Re[\\operatorname{Li}_3(z)]``, refer to the function
+[`reli3`](@ref), which may be a faster alternative.
+
+See also [`reli3`](@ref).
 
 Author: Alexander Voigt
 
@@ -119,6 +126,8 @@ julia> li3(1.0 + 1.0im)
 """
 li3(z::Complex) = _li3(float(z))
 
+li3(z::Real) = li3(Complex(z))
+
 _li3(z::ComplexF16) = oftype(z, _li3(ComplexF32(z)))
 
 _li3(z::ComplexF32) = oftype(z, _li3(ComplexF64(z)))
@@ -126,9 +135,9 @@ _li3(z::ComplexF32) = oftype(z, _li3(ComplexF64(z)))
 function _li3(z::ComplexF64)::ComplexF64
     if imag(z) == 0.0
         if real(z) <= 1.0
-            return li3(real(z)) + 0.0im
+            return reli3(real(z)) + 0.0im
         else
-            return li3(real(z)) - pi*log(real(z))^2*0.5im
+            return reli3(real(z)) - pi*log(real(z))^2*0.5im
         end
     end
 

@@ -1,5 +1,5 @@
-# Li4(x) for x in [-1,0]
-function li4_neg(x::Float64)::Float64
+# Re[Li4(x)] for x in [-1,0]
+function reli4_neg(x::Float64)::Float64
     cp = (
         0.9999999999999999952e+0, -1.8532099956062184217e+0,
         1.1937642574034898249e+0, -3.1817912243893560382e-1,
@@ -23,8 +23,8 @@ function li4_neg(x::Float64)::Float64
     x*p/q
 end
 
-# Li4(x) for x in [0,1/2]
-function li4_half(x::Float64)::Float64
+# Re[Li4(x)] for x in [0,1/2]
+function reli4_half(x::Float64)::Float64
     cp = (
         1.0000000000000000414e+0, -2.0588072418045364525e+0,
         1.4713328756794826579e+0, -4.2608608613069811474e-1,
@@ -47,8 +47,8 @@ function li4_half(x::Float64)::Float64
     x*p/q
 end
 
-# Li4(x) for x in [1/2,8/10]
-function li4_mid(x::Float64)::Float64
+# Re[Li4(x)] for x in [1/2,8/10]
+function reli4_mid(x::Float64)::Float64
     cp = (
         3.2009826406098890447e-9, 9.9999994634837574160e-1,
        -2.9144851228299341318e+0, 3.1891031447462342009e+0,
@@ -73,8 +73,8 @@ function li4_mid(x::Float64)::Float64
     p/q
 end
 
-# Li4(x) for x in [8/10,1]
-function li4_one(x::Float64)::Float64
+# Re[Li4(x)] for x in [8/10,1]
+function reli4_one(x::Float64)::Float64
     l = log(x)
     l2 = l*l
 
@@ -88,7 +88,7 @@ function li4_one(x::Float64)::Float64
 end
 
 """
-    li4(x::Real)
+    reli4(x::Real)
 
 Returns the real 4th order polylogarithm
 ``\\Re[\\operatorname{Li}_4(x)]`` of a real number ``x`` of type
@@ -100,17 +100,17 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> li4(1.0)
+julia> reli4(1.0)
 1.0823232337111381
 ```
 """
-li4(x::Real) = _li4(float(x))
+reli4(x::Real) = _reli4(float(x))
 
-_li4(x::Float16) = oftype(x, _li4(Float32(x)))
+_reli4(x::Float16) = oftype(x, _reli4(Float32(x)))
 
-_li4(x::Float32) = oftype(x, _li4(Float64(x)))
+_reli4(x::Float32) = oftype(x, _reli4(Float64(x)))
 
-function _li4(x::Float64)::Float64
+function _reli4(x::Float64)::Float64
     # transform to [-1,1]
     (x, rest, sgn) = if x < -1.0
         l = log(-x)^2
@@ -127,13 +127,13 @@ function _li4(x::Float64)::Float64
     end
 
     app = if x < 0.0
-        li4_neg(x)
+        reli4_neg(x)
     elseif x < 0.5
-        li4_half(x)
+        reli4_half(x)
     elseif x < 0.8
-        li4_mid(x)
+        reli4_mid(x)
     else # x <= 1.0
-        li4_one(x)
+        reli4_one(x)
     end
 
     rest + sgn*app
@@ -145,6 +145,13 @@ end
 Returns the complex 4th order polylogarithm
 ``\\operatorname{Li}_4(z)`` of a complex number ``z`` of type
 `Complex`.
+
+If only real arguments ``z\\in\\mathbb{R}`` are considered and one is
+interested only in the real part of the 4th order polylogarithm,
+``\\Re[\\operatorname{Li}_4(z)]``, refer to the function
+[`reli4`](@ref), which may be a faster alternative.
+
+See also [`reli4`](@ref).
 
 Author: Alexander Voigt
 
@@ -158,6 +165,8 @@ julia> li4(1.0 + 1.0im)
 """
 li4(z::Complex) = _li4(float(z))
 
+li4(z::Real) = li4(Complex(z))
+
 _li4(z::ComplexF16) = oftype(z, _li4(ComplexF32(z)))
 
 _li4(z::ComplexF32) = oftype(z, _li4(ComplexF64(z)))
@@ -165,9 +174,9 @@ _li4(z::ComplexF32) = oftype(z, _li4(ComplexF64(z)))
 function _li4(z::ComplexF64)::ComplexF64
     if imag(z) == 0.0
         if real(z) <= 1.0
-            return li4(real(z)) + 0.0im
+            return reli4(real(z)) + 0.0im
         else
-            return li4(real(z)) - pi/6*log(real(z))^3*1.0im
+            return reli4(real(z)) - pi/6*log(real(z))^3*1.0im
         end
     end
 

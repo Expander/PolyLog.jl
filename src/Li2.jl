@@ -1,5 +1,5 @@
 """
-    li2(x::Real)
+    reli2(x::Real)
 
 Returns the real dilogarithm ``\\Re[\\operatorname{Li}_2(x)]`` of a
 real number ``x`` of type `Real`.
@@ -13,17 +13,17 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> li2(1.0)
+julia> reli2(1.0)
 1.6449340668482264
 ```
 """
-li2(x::Real) = _li2(float(x))
+reli2(x::Real) = _reli2(float(x))
 
-_li2(x::Float16) = oftype(x, _li2(Float32(x)))
+_reli2(x::Float16) = oftype(x, _reli2(Float32(x)))
 
-_li2(x::Float32) = oftype(x, _li2(Float64(x)))
+_reli2(x::Float32) = oftype(x, _reli2(Float64(x)))
 
-function _li2(x::Float64)::Float64
+function _reli2(x::Float64)::Float64
     cp = (
         0.9999999999999999502e+0,
        -2.6883926818565423430e+0,
@@ -83,6 +83,13 @@ end
 Returns the complex dilogarithm ``\\operatorname{Li}_2(z)`` of a
 complex number ``z`` of type `Complex`.
 
+If only real arguments ``z\\in\\mathbb{R}`` are considered and one is
+interested only in the real part of the dilogarithm,
+``\\Re[\\operatorname{Li}_2(z)]``, refer to the function
+[`reli2`](@ref), which may be a faster alternative.
+
+See also [`reli2`](@ref).
+
 Author: Alexander Voigt
 
 License: MIT
@@ -94,6 +101,8 @@ julia> li2(1.0 + 1.0im)
 ```
 """
 li2(z::Complex) = _li2(float(z))
+
+li2(z::Real) = li2(Complex(z))
 
 _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 
@@ -107,9 +116,9 @@ function _li2(z::ComplexF64)::ComplexF64
 
     if iz == 0.0
         if rz <= 1.0
-            return li2(rz)
+            return reli2(rz)
         else # rz > 1.
-            return li2(rz) - pi*log(rz)*1.0im
+            return reli2(rz) - pi*log(rz)*1.0im
         end
     end
 

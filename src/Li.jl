@@ -1,7 +1,7 @@
 const ComplexOrReal{T} = Union{T,Complex{T}}
 
 """
-    li(n::Integer, x::Real)
+    reli(n::Integer, x::Real)
 
 Returns the real n-th order polylogarithm
 ``\\Re[\\operatorname{Li}_n(x)]`` of a real number ``x`` of type
@@ -16,17 +16,17 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> li(10, 1.0)
+julia> reli(10, 1.0)
 1.0009945751278182
 ```
 """
-li(n::Integer, x::Real) = _li(n, float(x))
+reli(n::Integer, x::Real) = _reli(n, float(x))
 
-_li(n::Integer, x::Float16) = oftype(x, _li(n, Float32(x)))
+_reli(n::Integer, x::Float16) = oftype(x, _reli(n, Float32(x)))
 
-_li(n::Integer, x::Float32) = oftype(x, _li(n, Float64(x)))
+_reli(n::Integer, x::Float32) = oftype(x, _reli(n, Float64(x)))
 
-function _li(n::Integer, x::Float64)::Float64
+function _reli(n::Integer, x::Float64)::Float64
     isnan(x) && return NaN
     isinf(x) && return -Inf
     x == 0.0 && return 0.0
@@ -46,17 +46,17 @@ function _li(n::Integer, x::Float64)::Float64
     elseif n == 0
         li0(x)
     elseif n == 1
-        li1(x)
+        reli1(x)
     elseif n == 2
-        li2(x)
+        reli2(x)
     elseif n == 3
-        li3(x)
+        reli3(x)
     elseif n == 4
-        li4(x)
+        reli4(x)
     else # n > 4
         # transform x to [-1,1]
         (x, rest, sgn) = if x < -1.0
-            (inv(x), li_rem(n, x), oddsgn(n))
+            (inv(x), reli_rem(n, x), oddsgn(n))
         elseif x < 1.0
             (x, 0.0, 1.0)
         else # x > 1.0
@@ -83,6 +83,13 @@ Returns the complex n-th order polylogarithm
 The implementation for ``n < 0`` is an adaptation of
 [[arxiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 
+If only real arguments ``z\\in\\mathbb{R}`` are considered and one is
+interested only in the real part of the polylogarithm,
+``\\Re[\\operatorname{Li}_n(z)]``, refer to the function
+[`reli`](@ref), which may be a faster alternative.
+
+See also [`reli`](@ref).
+
 Author: Alexander Voigt
 
 License: MIT
@@ -95,6 +102,8 @@ julia> li(10, 1.0 + 1.0im)
 """
 li(n::Integer, z::Complex) = _li(n, float(z))
 
+li(n::Integer, z::Real) = li(n, Complex(z))
+
 _li(n::Integer, z::ComplexF16) = oftype(z, _li(n, ComplexF32(z)))
 
 _li(n::Integer, z::ComplexF32) = oftype(z, _li(n, ComplexF64(z)))
@@ -105,9 +114,9 @@ function _li(n::Integer, z::ComplexF64)::ComplexF64
 
     if imag(z) == 0.0
         if real(z) <= 1.0 || n <= 0
-            return li(n, real(z)) + 0.0im
+            return reli(n, real(z)) + 0.0im
         else
-            return li(n, real(z)) - pi*inv_fac(n - 1)*log(real(z))^(n - 1)*1.0im
+            return reli(n, real(z)) - pi*inv_fac(n - 1)*log(real(z))^(n - 1)*1.0im
         end
     end
 
@@ -174,7 +183,7 @@ end
 #
 # Li(n,-x) + (-1)^n Li(n,-1/x)
 #    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
-function li_rem(n::Integer, x::Float64)::Float64
+function reli_rem(n::Integer, x::Float64)::Float64
     l = log(-x)
     l2 = l*l
     sum = 0.0

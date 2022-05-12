@@ -15,14 +15,13 @@ Example
 using PolyLog
 
 # real polylogarithms for real arguments
-li0(1.0)            # Re[Li_0(x)]
-li1(1.0)            # Re[Li_1(x)]
-li2(1.0)            # Re[Li_2(x)] (dilogarithm)
-li3(1.0)            # Re[Li_3(x)] (trilogarithm)
-li4(1.0)            # Re[Li_4(x)]
-li(10, 1.0)         # Re[Li_n(x)] for all integers n (here: n = 10)
+reli1(1.0)          # Re[Li_1(x)]
+reli2(1.0)          # Re[Li_2(x)] (dilogarithm)
+reli3(1.0)          # Re[Li_3(x)] (trilogarithm)
+reli4(1.0)          # Re[Li_4(x)]
+reli(10, 1.0)       # Re[Li_n(x)] for all integers n (here: n = 10)
 
-# complex polylogarithms for complex arguments
+# complex polylogarithms for real or complex arguments
 li0(1.0 + 1.0im)    # Li_0(z)
 li1(1.0 + 1.0im)    # Li_1(z)
 li2(1.0 + 1.0im)    # Li_2(z) (dilogarithm)
@@ -43,7 +42,7 @@ Documentation
 Notes
 -----
 
-The implementation of the real dilogarithm is an adaption of
+The implementation of the real dilogarithm is an adaptation of
 [[arXiv:2201.01678](https://arxiv.org/abs/2201.01678)].
 
 The implementation of the complex dilogarithm has been inspired by the
@@ -51,7 +50,7 @@ implementation in [SPheno](https://spheno.hepforge.org) and has been
 translated to Julia.
 
 The implementation of the general n-th order polylogarithm is an
-adaption of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
+adaptation of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 
 
 Citation
