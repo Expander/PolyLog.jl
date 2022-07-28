@@ -72,33 +72,31 @@ _reli3(x::Float32) = oftype(x, _reli3(Float64(x)))
 
 function _reli3(x::Float64)::Float64
     # transformation to [-1,0] and [0,1/2]
-    (neg, pos, sgn, rest) = if x < -1.0
+    if x < -1.0
         l = log(-x)
-        (reli3_neg(inv(x)), 0.0, 1.0, -l*(zeta2 + 1/6*l*l))
+        reli3_neg(inv(x)) - l*(zeta2 + 1/6*l*l)
     elseif x == -1.0
-        return -0.75*zeta3
+        -0.75*zeta3
     elseif x < 0.0
-        (reli3_neg(x), 0.0, 1.0, 0.0)
+        reli3_neg(x)
     elseif x == 0.0
-        return 0.0
+        0.0
     elseif x < 0.5
-        (0.0, reli3_pos(x), 1.0, 0.0)
+        reli3_pos(x)
     elseif x == 0.5
         return 0.53721319360804020
     elseif x < 1.0
         l = log(x)
-        (reli3_neg((x - 1.0)/x), reli3_pos(1.0 - x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(1.0 - x) + 1/6*l)))
+        -reli3_neg(1.0 - inv(x)) - reli3_pos(1.0 - x) + zeta3 + l*(zeta2 + l*(-0.5*log(1.0 - x) + 1/6*l))
     elseif x == 1.0
-        return zeta3
+        zeta3
     elseif x < 2.0
         l = log(x)
-        (reli3_neg(1.0 - x), reli3_pos((x - 1.0)/x), -1.0, zeta3 + l*(zeta2 + l*(-0.5*log(x - 1.0) + 1/6*l)))
+        -reli3_neg(1.0 - x) - reli3_pos(1.0 - inv(x)) + zeta3 + l*(zeta2 + l*(-0.5*log(x - 1.0) + 1/6*l))
     else # x >= 2.0
         l = log(x)
-        (0.0, reli3_pos(inv(x)), 1.0, l*(2*zeta2 - 1/6*l*l))
+        reli3_pos(inv(x)) + l*(2*zeta2 - 1/6*l*l)
     end
-
-    rest + sgn*(neg + pos)
 end
 
 """
