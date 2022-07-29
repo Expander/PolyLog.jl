@@ -61,7 +61,7 @@ Citation
     author  = {{Alexander Voigt}},
     title   = {{PolyLog.jl}},
     year    = {2022},
-    version = {2.0.0},
+    version = {2.0.1},
     url     = {https://github.com/Expander/PolyLog.jl},
     note    = {[License: MIT]}
 }
