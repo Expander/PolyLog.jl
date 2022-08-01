@@ -53,21 +53,6 @@ The implementation of the general n-th order polylogarithm is an
 adaptation of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 
 
-Citation
---------
-
-~~~.bibtex
-@software{PolyLog.jl,
-    author  = {{Alexander Voigt}},
-    title   = {{PolyLog.jl}},
-    year    = {2022},
-    version = {2.1.0},
-    url     = {https://github.com/Expander/PolyLog.jl},
-    note    = {[License: MIT]}
-}
-~~~
-
-
 Copying
 -------
 
