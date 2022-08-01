@@ -8,5 +8,3 @@ title: "PolyLog.jl"
 version: 2.1.0
 date-released: 2022-07-29
 url: "https://github.com/Expander/PolyLog.jl"
-preferred-citation:
-  type: software
