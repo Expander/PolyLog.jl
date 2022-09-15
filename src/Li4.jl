@@ -81,7 +81,7 @@ function reli4_one(x::Float64)::Float64
     zeta4 +
     l*(zeta3 +
     l*(zeta2/2 +
-    l*(11/36 - 1/6*log(abs(l)) +
+    l*(11/36 - 1/6*log(-l) +
     l*(-1/48 +
     l*(-1/1440 +
     l2*(1/604800 - 1/91445760*l2))))))
