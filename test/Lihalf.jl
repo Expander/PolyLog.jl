@@ -5,26 +5,26 @@ end
 
 @testset "lihalf" begin
     nis = (
-        Ni(-20, 1e-09),
-        Ni(-18, 1e-10),
-        Ni(-16, 1e-10),
-        Ni(-14, 1e-12),
-        Ni(-12, 1e-12),
-        Ni(-10, 1e-10),
-        Ni( -8, 1e-13),
-        Ni( -6, 1e-13),
-        Ni( -4, 1e-13),
-        Ni( -2, 1e-14),
-        Ni(  0, 1e-14),
-        Ni(  1, 1e-14),
-        Ni(  2, 1e-14),
-        Ni(  3, 1e-14),
-        Ni(  4, 1e-14),
-        Ni(  5, 1e-14),
-        Ni(  6, 1e-14),
-        Ni(  8, 1e-14),
-        Ni( 10, 1e-14),
-        Ni( 12, 1e-14),
+        Nihalf(-20, 1e-09),
+        Nihalf(-18, 1e-10),
+        Nihalf(-16, 1e-10),
+        Nihalf(-14, 1e-12),
+        Nihalf(-12, 1e-12),
+        Nihalf(-10, 1e-10),
+        Nihalf( -8, 1e-13),
+        Nihalf( -6, 1e-13),
+        Nihalf( -4, 1e-13),
+        Nihalf( -2, 1e-14),
+        Nihalf(  0, 1e-14),
+        Nihalf(  1, 1e-14),
+        Nihalf(  2, 1e-14),
+        Nihalf(  3, 1e-14),
+        Nihalf(  4, 1e-14),
+        Nihalf(  5, 1e-14),
+        Nihalf(  6, 1e-14),
+        Nihalf(  8, 1e-14),
+        Nihalf( 10, 1e-14),
+        Nihalf( 12, 1e-14),
     )
 
     for ni in nis
@@ -38,6 +38,12 @@ end
         else
             cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(n)half.txt"))
             real_data = filter_real(cmpl_data)
+
+            real_data = hcat(
+                [real_data[i,1] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75],
+                [real_data[i,2] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75]
+            )
+            test_function_on_data(z -> PolyLog.relihalf(n, z), real_data, eps, eps)
 
             @test PolyLog.relihalf(n, 0.0) == zero(Float64)
             @test PolyLog.relihalf(n, 0.0f0) == zero(Float32)
