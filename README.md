@@ -14,14 +14,17 @@ Example
 ```.jl
 using PolyLog
 
-# real polylogarithms for real arguments
+# real polylogarithms for real arguments and integer order
 reli1(1.0)          # Re[Li_1(x)]
 reli2(1.0)          # Re[Li_2(x)] (dilogarithm)
 reli3(1.0)          # Re[Li_3(x)] (trilogarithm)
 reli4(1.0)          # Re[Li_4(x)]
 reli(10, 1.0)       # Re[Li_n(x)] for all integers n (here: n = 10)
 
-# complex polylogarithms for real or complex arguments
+# real polylogarithms for real arguments and half-integer order
+relihalf(1, 1.0)    # Re[Li_{n/2}(x)] for all integers n (here: n = 1)
+
+# complex polylogarithms for real or complex arguments and integer order
 li0(1.0 + 1.0im)    # Li_0(z)
 li1(1.0 + 1.0im)    # Li_1(z)
 li2(1.0 + 1.0im)    # Li_2(z) (dilogarithm)

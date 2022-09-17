@@ -24,12 +24,11 @@ _relihalf(n::Integer, x::Float32) = oftype(x, _relihalf(n, Float64(x)))
 function _relihalf(n::Integer, x::Float64)::Float64
     isnan(x) && return NaN
     isinf(x) && return -Inf
+    iseven(n) && return reli(n÷2, x)
     x == 0.0 && return 0.0
 
     if n < 0
         throw(DomainError(n, "relihalf not implemented for n < 0"))
-    elseif n == 0
-        li0(x)
     else
         throw(DomainError(n, "relihalf not implemented for n > 0"))
     end
