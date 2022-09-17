@@ -13,6 +13,7 @@ include("Li4.jl")
 include("Li5.jl")
 include("Li6.jl")
 include("Li.jl")
+include("Lihalf.jl")
 include("Log.jl")
 include("Zeta.jl")
 
@@ -30,5 +31,6 @@ export reli2
 export reli3
 export reli4
 export reli
+export relihalf
 
 end
