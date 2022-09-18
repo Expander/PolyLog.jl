@@ -32,6 +32,8 @@ function _relihalf(n::Integer, x::Float64)::Float64
     else # n > 0
         if abs(x) < 0.75
             return lihalf_series_naive(n, x)
+        elseif ln_sqr(x) < (2*pi)^2
+            return real(lihalf_series_unity_pos(n, Complex(x)))
         end
         throw(DomainError(n, "relihalf not implemented for n > 0 and abs(x) >= 0.75"))
     end
@@ -55,4 +57,25 @@ function lihalf_series_naive(n::Integer, z::ComplexOrReal)
     end
 
     sum
+end
+
+# returns Li(n/2,z) using the series expansion of Li(n/2,z) for n > 0
+# and z ~ 1:
+#
+# Li(n/2,z) = gamma(1 - n/2) (-log(x))^(n/2-1) + sum(j=0:Inf, zeta(n/2-j) log(z)^j/j!)
+function lihalf_series_unity_pos(n::Integer, z::Complex)
+    l = clog(z)
+    sum = zetahalf(n)
+    p = 1.0 # collects l^j/j!
+
+    for j in 1:typemax(n)
+        p *= l/j
+        term = zetahalf(n - 2*j)*p
+        !isfinite(term) && break
+        old_sum = sum;
+        sum += term
+        sum == old_sum && break
+    end
+
+    gammahalf(2 - n)*(-l)^((n - 2)/2) + sum
 end
