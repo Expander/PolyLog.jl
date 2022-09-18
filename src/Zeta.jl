@@ -195,15 +195,17 @@ end
 
 # Riemann zeta function for half integer arguments, zetahalf(n) = zeta(n/2)
 function zetahalf(n::Integer)::Float64
-    iseven(n) && throw(DomainError(n, "zetahalf not implemented even arguments n"))
-
-    i = (n + 1)÷2 + 260
-
-    if i < 1
-        Inf
-    elseif i <= length(ZETA_HALF)
-        ZETA_HALF[i]
+    if iseven(n)
+        zeta(n÷2)
     else
-        one(Float64)
+        i = (n + 1)÷2 + 260
+
+        if i < 1
+            Inf
+        elseif i <= length(ZETA_HALF)
+            ZETA_HALF[i]
+        else
+            one(Float64)
+        end
     end
 end
