@@ -17,3 +17,14 @@
     @test PolyLog.zeta(34) == 1.0000000000582077
     @test PolyLog.zeta(35) == 1.0000000000291039
 end
+
+@testset "zetahalf" begin
+    @test PolyLog.zetahalf(-521) == Inf
+    @test PolyLog.zetahalf(-519) == 3.982766118112322e307
+    @test PolyLog.zetahalf(-3) == -0.025485201889833036
+    @test PolyLog.zetahalf(-1) == -0.20788622497735457
+    @test PolyLog.zetahalf(1) == -1.4603545088095868
+    @test PolyLog.zetahalf(3) == 2.6123753486854883
+    @test PolyLog.zetahalf(107) == 1.0000000000000001
+    @test PolyLog.zetahalf(109) == 1.0
+end
