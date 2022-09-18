@@ -43,6 +43,10 @@ end
                 [real_data[i,1] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75],
                 [real_data[i,2] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75]
             )
+            # real_data = hcat(
+            #     [real_data[i,1] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75 || abs(log(Complex(real_data[i,1]))) < 2*pi],
+            #     [real_data[i,2] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75 || abs(log(Complex(real_data[i,1]))) < 2*pi]
+            # )
             test_function_on_data(z -> PolyLog.relihalf(n, z), real_data, eps, eps)
 
             @test PolyLog.relihalf(n, 0.0) == zero(Float64)
