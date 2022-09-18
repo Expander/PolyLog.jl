@@ -19,7 +19,12 @@
 end
 
 @testset "zetahalf" begin
-    @test PolyLog.zetahalf(-521) == Inf
+    @test PolyLog.zetahalf(-531) == -Inf
+    @test PolyLog.zetahalf(-529) == -Inf
+    @test PolyLog.zetahalf(-527) == Inf
+    @test PolyLog.zetahalf(-525) == Inf
+    @test PolyLog.zetahalf(-523) == -Inf
+    @test PolyLog.zetahalf(-521) == -Inf
     @test PolyLog.zetahalf(-519) == 3.982766118112322e307
     @test PolyLog.zetahalf(-4) == PolyLog.zeta(-2)
     @test PolyLog.zetahalf(-3) == -0.025485201889833036

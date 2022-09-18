@@ -201,7 +201,11 @@ function zetahalf(n::Integer)::Float64
         i = (n + 1)÷2 + 260
 
         if i < 1
-            Inf
+            if iseven(i÷2)
+                -Inf
+            else
+                Inf
+            end
         elseif i <= length(ZETA_HALF)
             ZETA_HALF[i]
         else
