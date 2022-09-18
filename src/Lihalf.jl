@@ -66,7 +66,7 @@ end
 # Li(n/2,z) = gamma(1 - n/2) (-log(x))^(n/2-1) + sum(j=0:Inf, zeta(n/2-j) log(z)^j/j!)
 function lihalf_series_unity_pos(n::Integer, z::Complex)
     l = clog(z)
-    sum = zetahalf(n)
+    sum = gammahalf(2 - n)*(-l)^((n - 1)÷2)/sqrt(-l) + zetahalf(n)
     p = 1.0 # collects l^j/j!
 
     for j in 1:typemax(n)
@@ -78,5 +78,5 @@ function lihalf_series_unity_pos(n::Integer, z::Complex)
         sum == old_sum && break
     end
 
-    gammahalf(2 - n)*(-l)^((n - 2)/2) + sum
+    sum
 end
