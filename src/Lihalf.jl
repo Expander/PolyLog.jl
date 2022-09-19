@@ -26,6 +26,7 @@ function _relihalf(n::Integer, x::Float64)::Float64
     isinf(x) && return -Inf
     iseven(n) && return reli(n÷2, x)
     x == 0.0 && return 0.0
+    x == 1.0 && n == 1 && return Inf
     x == 1.0 && return zetahalf(n)
 
     if n < 0
