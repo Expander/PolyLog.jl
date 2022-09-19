@@ -61,7 +61,13 @@ end
         @test PolyLog.relihalf(n, 0//1) == 0
         @test PolyLog.relihalf(n, 0) == 0
 
-        if n != 1
+        if n == 1
+            @test PolyLog.relihalf(n, 1.0) == Inf
+            @test PolyLog.relihalf(n, 1.0f0) == Inf
+            @test PolyLog.relihalf(n, Float16(1.0)) == Inf
+            @test PolyLog.relihalf(n, 1//1) == Inf
+            @test PolyLog.relihalf(n, 1) == Inf
+        else
             zeta = PolyLog.zetahalf(n)
 
             @test PolyLog.relihalf(n, 1.0) == zeta
