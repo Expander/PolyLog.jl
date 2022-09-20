@@ -84,7 +84,7 @@ function _lihalf(n::Integer, z::ComplexF64)::ComplexF64
             lihalf_series_unity_pos(n, z)
         else
             sqrtz = sqrt(z)
-            2.0^(n/2 - 1)*(lihalf(n, sqrtz) + lihalf(n, -sqrtz)) # TODO: optimize
+            invsqrt2*2.0^((n - 1)÷2)*(lihalf(n, sqrtz) + lihalf(n, -sqrtz))
         end
     end
 end
