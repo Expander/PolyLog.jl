@@ -33,11 +33,59 @@ function _relihalf(n::Integer, x::Float64)::Float64
         throw(DomainError(n, "relihalf not implemented for n < 0"))
     else # n > 0
         if abs(x) < 0.75
-            return lihalf_series_naive(n, x)
+            lihalf_series_naive(n, x)
         elseif ln_sqr(x) < (2*pi)^2
-            return real(lihalf_series_unity_pos(n, Complex(x)))
+            real(lihalf_series_unity_pos(n, Complex(x)))
+        else
+            real(lihalf(n, Complex(x)))
         end
-        throw(DomainError(n, "relihalf not implemented for n > 0 and abs(x) >= 0.75"))
+    end
+end
+
+"""
+    lihalf(n::Integer, z::Complex)
+
+Returns the n/2-th order polylogarithm
+``\\operatorname{Li}_{n/2}(x)`` of a complex number ``z`` of type
+`Complex` for all integers ``n``.
+
+Author: Alexander Voigt
+
+License: MIT
+
+# Example
+```jldoctest; setup = :(using PolyLog)
+julia> lihalf(1, 0.5)
+-1.5466407024391607 - 2.7835446536610238im
+```
+"""
+lihalf(n::Integer, z::Complex) = _lihalf(n, float(z))
+
+lihalf(n::Integer, z::Real) = lihalf(n, Complex(z))
+
+_lihalf(n::Integer, z::ComplexF16) = oftype(z, _lihalf(n, ComplexF32(z)))
+
+_lihalf(n::Integer, z::ComplexF32) = oftype(z, _lihalf(n, ComplexF64(z)))
+
+function _lihalf(n::Integer, z::ComplexF64)::ComplexF64
+    isnan(z) && return NaN
+    isinf(z) && return -Inf
+    iseven(n) && return li(n÷2, z)
+    z == 0.0 && return 0.0
+    z == 1.0 && n == 1 && return Inf
+    z == 1.0 && return zetahalf(n)
+
+    if n < 0
+        throw(DomainError(n, "lihalf not implemented for n < 0"))
+    else # n > 0
+        if abs(z) < 0.75
+            lihalf_series_naive(n, z)
+        elseif abs2(log(z)) < (2*pi)^2
+            lihalf_series_unity_pos(n, z)
+        else
+            sqrtz = sqrt(z)
+            2.0^(n/2 - 1)*(lihalf(n, sqrtz) + lihalf(n, -sqrtz)) # TODO: optimize
+        end
     end
 end
 
@@ -61,13 +109,20 @@ function lihalf_series_naive(n::Integer, z::ComplexOrReal)
     sum
 end
 
+# convert -0.0 to 0.0
+function posfp0(z::Complex)
+    re = real(z)
+    im = imag(z)
+    Complex(re == 0.0 ? 0.0 : re, im == 0.0 ? 0.0 : im)
+end
+
 # returns Li(n/2,z) using the series expansion of Li(n/2,z) for n > 0
 # and z ~ 1:
 #
 # Li(n/2,z) = gamma(1 - n/2) (-log(x))^(n/2-1) + sum(j=0:Inf, zeta(n/2-j) log(z)^j/j!)
 function lihalf_series_unity_pos(n::Integer, z::Complex)
     l = clog(z)
-    sum = gammahalf(2 - n)*(-l)^((n - 1)÷2)/sqrt(-l) + zetahalf(n)
+    sum = gammahalf(2 - n)*(posfp0(-l))^(n/2 - 1) + zetahalf(n) # TODO: optimize
     p = 1.0 # collects l^j/j!
 
     for j in 1:typemax(n)

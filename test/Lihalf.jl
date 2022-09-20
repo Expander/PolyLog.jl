@@ -34,6 +34,7 @@ end
             cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(n÷2).txt"))
             real_data = filter_real(cmpl_data)
             test_function_on_data(z -> PolyLog.relihalf(n, z), real_data, ni.eps, ni.eps)
+            test_function_on_data(z -> PolyLog.lihalf(n, z), cmpl_data, ni.eps, ni.eps)
         else
             cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(n)half.txt"))
             real_data = filter_real(cmpl_data)
@@ -44,15 +45,20 @@ end
                     [real_data[i,1] for i in 1:size(real_data, 1) if !(real_data[i,1] <= one(Float64) && one(Float64) - real_data[i,1] < eps(Float64))],
                     [real_data[i,2] for i in 1:size(real_data, 1) if !(real_data[i,1] <= one(Float64) && one(Float64) - real_data[i,1] < eps(Float64))]
                 )
+                cmpl_data = hcat(
+                    [cmpl_data[i,1] for i in 1:size(cmpl_data, 1) if !(abs(one(Float64) - cmpl_data[i,1]) < eps(Float64))],
+                    [cmpl_data[i,2] for i in 1:size(cmpl_data, 1) if !(abs(one(Float64) - cmpl_data[i,1]) < eps(Float64))]
+                )
             end
 
             # test only values for which there is an implementation yet (TODO)
-            real_data = hcat(
-                [real_data[i,1] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75 || abs(log(Complex(real_data[i,1]))) < 2*pi],
-                [real_data[i,2] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75 || abs(log(Complex(real_data[i,1]))) < 2*pi]
-            )
+            # real_data = hcat(
+            #     [real_data[i,1] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75 || abs(log(Complex(real_data[i,1]))) < 2*pi],
+            #     [real_data[i,2] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75 || abs(log(Complex(real_data[i,1]))) < 2*pi]
+            # )
 
             test_function_on_data(z -> PolyLog.relihalf(n, z), real_data, ni.eps, ni.eps)
+            # test_function_on_data(z -> PolyLog.lihalf(n, z), cmpl_data, ni.eps, ni.eps)
         end
 
         @test PolyLog.relihalf(n, 0.0) == zero(Float64)
