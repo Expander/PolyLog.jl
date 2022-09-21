@@ -110,10 +110,13 @@ function lihalf_series_naive(n::Integer, z::ComplexOrReal)
 end
 
 # convert -0.0 to 0.0
+function posfp0(x::Real)
+    x == zero(x) ? zero(x) : x
+end
+
+# convert -0.0 to 0.0
 function posfp0(z::Complex)
-    re = real(z)
-    im = imag(z)
-    Complex(re == 0.0 ? 0.0 : re, im == 0.0 ? 0.0 : im)
+    Complex(posfp0(real(z)), posfp0(imag(z)))
 end
 
 # returns Li(n/2,z) using the series expansion of Li(n/2,z) for n > 0
