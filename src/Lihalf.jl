@@ -126,7 +126,7 @@ end
 function lihalf_series_unity_pos(n::Integer, z::Complex)
     l = clog(z)
     sum = gammahalf(2 - n)*(posfp0(-l))^(n/2 - 1) + zetahalf(n) # TODO: optimize
-    p = 1.0 # collects l^j/j!
+    p = one(l) # collects l^j/j!
 
     for j in 1:typemax(n)
         p *= l/j
