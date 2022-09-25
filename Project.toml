@@ -8,7 +8,7 @@ SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [compat]
 julia = "1.0"
-SpecialFunctions = "1"
+SpecialFunctions = "0.10, 1"
 
 [extras]
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
