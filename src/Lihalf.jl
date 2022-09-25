@@ -1,3 +1,5 @@
+import SpecialFunctions
+
 """
     relihalf(n::Integer, x::Real)
 
@@ -34,8 +36,6 @@ function _relihalf(n::Integer, x::Float64)::Float64
     else # n > 0
         if abs(x) < 0.75
             lihalf_series_naive(n, x)
-        elseif ln_sqr(x) < (2*pi)^2
-            real(lihalf_series_unity_pos(n, Complex(x)))
         else
             real(lihalf(n, Complex(x)))
         end
@@ -78,13 +78,12 @@ function _lihalf(n::Integer, z::ComplexF64)::ComplexF64
     if n < 0
         throw(DomainError(n, "lihalf not implemented for n < 0"))
     else # n > 0
-        if abs(z) < 0.75
+        if abs2(z) < 0.75^2
             lihalf_series_naive(n, z)
-        elseif abs2(log(z)) < (2*pi)^2
-            lihalf_series_unity_pos(n, z)
+        elseif abs2(z) >= 1.4^2
+            -Complex(-1.0, 0.0)^(n/2)*lihalf_series_naive(n, inv(z)) + lihalf_rem(n, z)
         else
-            sqrtz = sqrt(z)
-            invsqrt2*2.0^((n - 1)÷2)*(lihalf(n, sqrtz) + lihalf(n, -sqrtz))
+            lihalf_series_unity_pos(n, z)
         end
     end
 end
@@ -138,4 +137,14 @@ function lihalf_series_unity_pos(n::Integer, z::Complex)
     end
 
     sum
+end
+
+# returns r.h.s. of inversion formula for complex z:
+#
+# Li(s,z) + (-1)^s Li(s,1/z)
+#    = (2pi*i)^s/gamma(s)*zeta(1 - s, 1/2 + log(-z)/(2pi*i))
+function lihalf_rem(n::Integer, z::Complex)
+    s = n/2
+    tpi = 2*pi*1.0im
+    tpi^s/gammahalf(n)*SpecialFunctions.zeta(1 - s, 1/2 + log(posfp0(-z))/tpi)
 end

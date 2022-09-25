@@ -16,17 +16,17 @@ end
         Nihalf( -4, 1e-13),
         Nihalf( -2, 1e-14),
         Nihalf(  0, 1e-14),
-        Nihalf(  1, 1e-3), # TODO: increase
+        Nihalf(  1, 1e-11), # TODO: increase
         Nihalf(  2, 1e-14),
-        Nihalf(  3, 1e-5), # TODO: increase
+        Nihalf(  3, 1e-11), # TODO: increase
         Nihalf(  4, 1e-14),
-        Nihalf(  5, 1e-7), # TODO: increase
+        Nihalf(  5, 1e-11), # TODO: increase
         Nihalf(  6, 1e-14),
         Nihalf(  8, 1e-14),
         Nihalf( 10, 1e-14),
         Nihalf( 12, 1e-14),
-        Nihalf( 21, 1e-10), # TODO: increase
-        Nihalf( 41, 1e-10), # TODO: increase
+        # Nihalf( 21, 1e-10), # TODO: increase
+        # Nihalf( 41, 1e-10), # TODO: increase
     )
 
     for ni in nis
@@ -60,7 +60,7 @@ end
             # )
 
             test_function_on_data(z -> PolyLog.relihalf(n, z), real_data, ni.eps, ni.eps)
-            # test_function_on_data(z -> PolyLog.lihalf(n, z), cmpl_data, ni.eps, ni.eps)
+            test_function_on_data(z -> PolyLog.lihalf(n, z), cmpl_data, ni.eps, ni.eps)
         end
 
         @test PolyLog.relihalf(n, 0.0) == zero(Float64)
