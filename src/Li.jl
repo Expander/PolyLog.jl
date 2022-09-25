@@ -222,7 +222,7 @@ end
 function li_series_unity_pos(n::Integer, z::ComplexOrReal)
     l = clog(z)
     sum = zeta(n)
-    p = 1.0 # collects l^j/j!
+    p = one(z) # collects l^j/j!
 
     for j in 1:(n - 2)
         p *= l/j
