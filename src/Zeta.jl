@@ -213,3 +213,166 @@ function zetahalf(n::Integer)::Float64
         end
     end
 end
+
+# Generalized zeta function for half integer arguments, zetahalf(n, a) = zeta(n/2, a)
+function zetahalf(n::Integer, a::Complex)
+    zeta(n/2, a)
+end
+
+# Generalized zeta function, which is related to polygamma
+# (at least for integer m > 0 and real(z) > 0) by:
+#    polygamma(m, z) = (-1)^(m+1) * gamma(m+1) * zeta(m+1, z).
+# Our algorithm for the polygamma is just the m-th derivative
+# of our digamma approximation, and this derivative process yields
+# a function of the form
+#          (-1)^(m) * gamma(m+1) * (something)
+# So identifying the (something) with the -zeta function, we get
+# the zeta function for free and might as well export it, especially
+# since this is a common generalization of the Riemann zeta function
+# (which Julia already exports).   Note that this geneneralization
+# is equivalent to Mathematica's Zeta[s,z], and is equivalent to the
+# Hurwitz zeta function for real(z) > 0.
+
+# Helper macro for polygamma(m, z):
+#   Evaluate p[1]*c[1] + x*p[2]*c[2] + x^2*p[3]*c[3] + ...
+#   where c[1] = m + 1
+#         c[k] = c[k-1] * (2k+m-1)*(2k+m-2) / ((2k-1)*(2k-2)) = c[k-1] * d[k]
+#         i.e. d[k] = c[k]/c[k-1] = (2k+m-1)*(2k+m-2) / ((2k-1)*(2k-2))
+#   by a modified version of Horner's rule:
+#      c[1] * (p[1] + d[2]*x * (p[2] + d[3]*x * (p[3] + ...))).
+# The entries of p must be literal constants and there must be > 1 of them.
+macro pg_horner(x, m, p...)
+    k = length(p)
+    me = esc(m)
+    xe = esc(x)
+    ex = :(($me + $(2k-1)) * ($me + $(2k-2)) * $(p[end]/((2k-1)*(2k-2))))
+    for k = length(p)-1:-1:2
+        cdiv = 1 / ((2k-1)*(2k-2))
+        ex = :(($cdiv * ($me + $(2k-1)) * ($me + $(2k-2))) *
+               ($(p[k]) + $xe * $ex))
+    end
+    :(($me + 1) * ($(p[1]) + $xe * $ex))
+end
+
+"""
+    zeta(s, z)
+Generalized zeta function defined by
+```math
+\\zeta(s, z)=\\sum_{k=0}^\\infty \\frac{1}{((k+z)^2)^{s/2}},
+```
+where any term with ``k+z=0`` is excluded.  For ``\\Re z > 0``,
+this definition is equivalent to the Hurwitz zeta function
+``\\sum_{k=0}^\\infty (k+z)^{-s}``.
+The Riemann zeta function is recovered as ``\\zeta(s)=\\zeta(s,1)``.
+External links: [Riemann zeta function](https://en.wikipedia.org/wiki/Riemann_zeta_function), [Hurwitz zeta function](https://en.wikipedia.org/wiki/Hurwitz_zeta_function)
+"""
+zeta(s::Number, z::Number) = _zeta(map(float, promote(s, z))...)
+
+function _zeta(s::T, z::T) where {T<:ComplexOrReal{Float64}}
+    (z == 1 || z == 0) && return zeta(s)
+    s == 2 && return trigamma(z)
+
+    # handle NaN cases
+    if isnan(s) || isnan(z)
+        return T <: Real ? NaN : NaN + NaN*im
+    end
+
+    x = real(z)
+
+    # annoying s = Inf case:
+    if !isfinite(s)
+        if real(s) == Inf
+            if x > 1 || (x >= 0.5 ? abs(z) > 1 : abs(z - round(x)) > 1)
+                return zero(T) # distance to poles is > 1
+            end
+            x > 0 && isreal(z) && isreal(s) && return T(Inf)
+        end
+        throw(DomainError(s, "`s` must be finite."))  # nothing clever to return
+    end
+
+    m = s - 1
+    ζ = zero(T)
+
+    # Algorithm is just the m-th derivative of digamma formula above,
+    # with a modified cutoff of the final asymptotic expansion.
+
+    # Note: we multiply by -(-1)^m m! in polygamma below, so this factor is
+    #       pulled out of all of our derivatives.
+
+    cutoff = 7 + real(m) + abs(imag(m)) # TODO: this cutoff is too conservative?
+    if x < cutoff
+        # shift using recurrence formula
+        xf = floor(x)
+        nx = Int(xf)
+        n = ceil(Int, cutoff - nx)
+        minus_s = -s
+        if nx < 0 # x < 0
+            # need to use (-z)^(-s) recurrence to be correct for real z < 0
+            # [the general form of the recurrence term is (z^2)^(-s/2)]
+            minus_z = -z
+            ζ += pow_oftype(ζ, minus_z, minus_s) # ν = 0 term
+            if xf != z
+                ζ += pow_oftype(ζ, z - nx, minus_s)
+                # real(z - nx) > 0, so use correct branch cut
+                # otherwise, if xf==z, then the definition skips this term
+            end
+            # do loop in different order, depending on the sign of s,
+            # so that we are looping from largest to smallest summands and
+            # can halt the loop early if possible; see issue #15946
+            # FIXME: still slow for small m, large Im(z)
+            if real(s) > 0
+                for ν in -nx-1:-1:1
+                    ζₒ= ζ
+                    ζ += pow_oftype(ζ, minus_z - ν, minus_s)
+                    ζ == ζₒ && break # prevent long loop for large -x > 0
+                end
+            else
+                for ν in 1:-nx-1
+                    ζₒ= ζ
+                    ζ += pow_oftype(ζ, minus_z - ν, minus_s)
+                    ζ == ζₒ && break # prevent long loop for large -x > 0
+                end
+            end
+        else # x ≥ 0 && z != 0
+            ζ += pow_oftype(ζ, z, minus_s)
+        end
+        # loop order depends on sign of s, as above
+        if real(s) > 0
+            for ν in max(1,1-nx):n-1
+                ζₒ= ζ
+                ζ += pow_oftype(ζ, z + ν, minus_s)
+                ζ == ζₒ && break # prevent long loop for large m
+            end
+        else
+            for ν in n-1:-1:max(1,1-nx)
+                ζₒ= ζ
+                ζ += pow_oftype(ζ, z + ν, minus_s)
+                ζ == ζₒ && break # prevent long loop for large m
+            end
+        end
+        z += n
+    end
+
+    t = inv(z)
+    w = isa(t, Real) ? conj(oftype(ζ, t))^m : oftype(ζ, t)^m
+    ζ += w * (inv(m) + 0.5*t)
+
+    t *= t # 1/z^2
+    ζ += w*t * @pg_horner(t,m,0.08333333333333333,-0.008333333333333333,0.003968253968253968,-0.004166666666666667,0.007575757575757576,-0.021092796092796094,0.08333333333333333,-0.4432598039215686,3.0539543302701198)
+
+    return ζ
+end
+
+# compute oftype(x, y)^p efficiently, choosing the correct branch cut
+pow_oftype(x, y, p) = oftype(x, y)^p
+pow_oftype(x::Complex, y::Real, p::Complex) = oftype(x, y^p)
+function pow_oftype(x::Complex, y::Real, p::Real)
+    if p >= 0
+        # note: this will never be called for y < 0,
+        # which would throw an error for non-integer p here
+        return oftype(x, y^p)
+    else
+        yp = y^-p # use real power for efficiency
+        return oftype(x, Complex(yp, -zero(yp))) # get correct sign of zero!
+    end
+end
