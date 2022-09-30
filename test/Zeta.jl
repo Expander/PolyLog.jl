@@ -37,3 +37,12 @@ end
     @test PolyLog.zetahalf(107) == 1.0000000000000001
     @test PolyLog.zetahalf(109) == 1.0
 end
+
+@testset "zetahalf2" begin
+    for s in -10:10
+        @test PolyLog.zetahalf(s, Complex(-1.0)) == 1.0 + PolyLog.zetahalf(s)
+        @test PolyLog.zetahalf(s, Complex(0.0)) == PolyLog.zetahalf(s)
+        @test PolyLog.zetahalf(s, Complex(1.0)) == PolyLog.zetahalf(s)
+        @test PolyLog.zetahalf(s, Complex(2.0)) == PolyLog.zetahalf(s) - 1.0
+    end
+end

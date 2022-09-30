@@ -216,6 +216,9 @@ end
 
 # Generalized zeta function for half integer arguments, zetahalf(n, a) = zeta(n/2, a)
 function zetahalf(n::Integer, a::Complex)
+    (a == one(a) || a == zero(a)) && return Complex(zetahalf(n))
+    a == -one(a) && return Complex(one(a) + zetahalf(n))
+    a == 2*one(a) && return Complex(zetahalf(n) - one(a))
     zeta(n/2, a)
 end
 
@@ -269,26 +272,26 @@ External links: [Riemann zeta function](https://en.wikipedia.org/wiki/Riemann_ze
 zeta(s::Number, z::Number) = _zeta(map(float, promote(s, z))...)
 
 function _zeta(s::T, z::T) where {T<:ComplexOrReal{Float64}}
-    (z == 1 || z == 0) && return zeta(s)
-    s == 2 && return trigamma(z)
+    # (z == 1 || z == 0) && return zeta(s)
+    # s == 2 && return trigamma(z)
 
-    # handle NaN cases
-    if isnan(s) || isnan(z)
-        return T <: Real ? NaN : NaN + NaN*im
-    end
+    # # handle NaN cases
+    # if isnan(s) || isnan(z)
+    #     return T <: Real ? NaN : NaN + NaN*im
+    # end
 
     x = real(z)
 
-    # annoying s = Inf case:
-    if !isfinite(s)
-        if real(s) == Inf
-            if x > 1 || (x >= 0.5 ? abs(z) > 1 : abs(z - round(x)) > 1)
-                return zero(T) # distance to poles is > 1
-            end
-            x > 0 && isreal(z) && isreal(s) && return T(Inf)
-        end
-        throw(DomainError(s, "`s` must be finite."))  # nothing clever to return
-    end
+    # # annoying s = Inf case:
+    # if !isfinite(s)
+    #     if real(s) == Inf
+    #         if x > 1 || (x >= 0.5 ? abs(z) > 1 : abs(z - round(x)) > 1)
+    #             return zero(T) # distance to poles is > 1
+    #         end
+    #         x > 0 && isreal(z) && isreal(s) && return T(Inf)
+    #     end
+    #     throw(DomainError(s, "`s` must be finite."))  # nothing clever to return
+    # end
 
     m = s - 1
     ζ = zero(T)
