@@ -144,5 +144,6 @@ end
 function lihalf_rem(n::Integer, z::Complex)
     s = n/2
     tpi = 2*pi*1.0im
-    tpi^s/gammahalf(n)*zetahalf(2 - n, 1/2 + log(posfp0(-z))/tpi)
+    inv_tpi = 1/tpi
+    tpi^s/gammahalf(n)*zetahalf(2 - n, 1/2 + log(posfp0(-z))*inv_tpi)
 end
