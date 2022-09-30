@@ -142,8 +142,8 @@ end
 # Li(s,z) + (-1)^s Li(s,1/z)
 #    = (2pi*i)^s/gamma(s)*zeta(1 - s, 1/2 + log(-z)/(2pi*i))
 function lihalf_rem(n::Integer, z::Complex)
-    s = n/2
     tpi = 2*pi*1.0im
     inv_tpi = 1/tpi
-    tpi^s/gammahalf(n)*zetahalf(2 - n, 1/2 + log(posfp0(-z))*inv_tpi)
+    sqrt_tpi = sqrt(tpi)
+    tpi^((n - 1)÷2)*sqrt_tpi/gammahalf(n)*zetahalf(2 - n, 1/2 + log(posfp0(-z))*inv_tpi)
 end
