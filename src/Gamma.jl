@@ -119,14 +119,20 @@ const GAMMA_HALF = (
 
 # Gamma function for half-integer arguments, gammahalf(n) = gamma(n/2)
 function gammahalf(n::Integer)::Float64
-    iseven(n) && throw(DomainError(n, "gammahalf not implemented even arguments n"))
-
-    i = (n + 1)÷2 + 170
-    if i < 1
-        0.0
-    elseif i <= length(GAMMA_HALF)
-        GAMMA_HALF[i]
+    if iseven(n)
+        if n < 0
+            iseven(n) && throw(DomainError(n, "gammahalf not implemented even arguments n"))
+        else
+            fac(n÷2)
+        end
     else
-        Inf
+        i = (n + 1)÷2 + 170
+        if i < 1
+            0.0
+        elseif i <= length(GAMMA_HALF)
+            GAMMA_HALF[i]
+        else
+            Inf
+        end
     end
 end
