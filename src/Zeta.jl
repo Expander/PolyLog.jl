@@ -335,7 +335,7 @@ function zeta(s::Real, z::Complex)
     end
 
     t = inv(z)
-    w = isa(t, Real) ? conj(oftype(ζ, t))^m : oftype(ζ, t)^m
+    w = t^m
     ζ += w * (inv(m) + 0.5*t)
 
     t *= t # 1/z^2
