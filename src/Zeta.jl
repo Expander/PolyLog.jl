@@ -285,19 +285,19 @@ function zetahalf(k::Integer, z::Complex)
             end
             # do loop in different order, depending on the sign of s,
             # so that we are looping from largest to smallest summands and
-            # can halt the loop early if possible; see issue #15946
+            # can halt the loop early if possible
             # FIXME: still slow for small m, large Im(z)
             if real(s) > 0
                 for nu in -nx-1:-1:1
                     zeta_old = res
                     res += (minus_z - nu)^minus_s
-                    res == zeta_old && break # prevent long loop for large -x > 0
+                    res == zeta_old && break
                 end
             else
                 for nu in 1:-nx-1
                     zeta_old = res
                     res += (minus_z - nu)^minus_s
-                    res == zeta_old && break # prevent long loop for large -x > 0
+                    res == zeta_old && break
                 end
             end
         else # x ≥ 0 && z != 0
@@ -308,13 +308,13 @@ function zetahalf(k::Integer, z::Complex)
             for nu in max(1,1-nx):n-1
                 zeta_old = res
                 res += (z + nu)^minus_s
-                res == zeta_old && break # prevent long loop for large m
+                res == zeta_old && break
             end
         else
             for nu in n-1:-1:max(1,1-nx)
                 zeta_old = res
                 res += (z + nu)^minus_s
-                res == zeta_old && break # prevent long loop for large m
+                res == zeta_old && break
             end
         end
         z += n
