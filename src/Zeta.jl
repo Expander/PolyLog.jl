@@ -270,27 +270,7 @@ The Riemann zeta function is recovered as ``\\zeta(s)=\\zeta(s,1)``.
 External links: [Riemann zeta function](https://en.wikipedia.org/wiki/Riemann_zeta_function), [Hurwitz zeta function](https://en.wikipedia.org/wiki/Hurwitz_zeta_function)
 """
 function zeta(s::Real, z::Complex)
-    # (z == 1 || z == 0) && return zeta(s)
-    # s == 2 && return trigamma(z)
-
-    # # handle NaN cases
-    # if isnan(s) || isnan(z)
-    #     return T <: Real ? NaN : NaN + NaN*im
-    # end
-
     x = real(z)
-
-    # # annoying s = Inf case:
-    # if !isfinite(s)
-    #     if real(s) == Inf
-    #         if x > 1 || (x >= 0.5 ? abs(z) > 1 : abs(z - round(x)) > 1)
-    #             return zero(T) # distance to poles is > 1
-    #         end
-    #         x > 0 && isreal(z) && isreal(s) && return T(Inf)
-    #     end
-    #     throw(DomainError(s, "`s` must be finite."))  # nothing clever to return
-    # end
-
     m = s - 1
     ζ = zero(z)
 
@@ -359,9 +339,7 @@ function zeta(s::Real, z::Complex)
     ζ += w * (inv(m) + 0.5*t)
 
     t *= t # 1/z^2
-    ζ += w*t * @pg_horner(t,m,0.08333333333333333,-0.008333333333333333,0.003968253968253968,-0.004166666666666667,0.007575757575757576,-0.021092796092796094,0.08333333333333333,-0.4432598039215686,3.0539543302701198)
-
-    return ζ
+    ζ + w*t * @pg_horner(t,m,0.08333333333333333,-0.008333333333333333,0.003968253968253968,-0.004166666666666667,0.007575757575757576,-0.021092796092796094,0.08333333333333333,-0.4432598039215686,3.0539543302701198)
 end
 
 # compute oftype(x, y)^p efficiently, choosing the correct branch cut
