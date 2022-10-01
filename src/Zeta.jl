@@ -214,12 +214,12 @@ function zetahalf(n::Integer)::Float64
     end
 end
 
-# Generalized zeta function for half integer arguments, zetahalf(n, a) = zeta(n/2, a)
-function zetahalf(n::Integer, z::Complex)
-    (z == one(z) || z == zero(z)) && return Complex(zetahalf(n))
-    z == -one(z) && return Complex(one(z) + zetahalf(n))
-    z == 2*one(z) && return Complex(zetahalf(n) - one(z))
-    _zetahalf(n, z)
+# Generalized zeta function for half integer arguments, zetahalf(k, z) = zeta(k/2, z)
+function zetahalf(k::Integer, z::Complex)
+    (z == one(z) || z == zero(z)) && return Complex(zetahalf(k))
+    z == -one(z) && return Complex(one(z) + zetahalf(k))
+    z == 2*one(z) && return Complex(zetahalf(k) - one(z))
+    _zetahalf(k, z)
 end
 
 # Generalized zeta function, which is related to polygamma
@@ -268,8 +268,8 @@ this definition is equivalent to the Hurwitz zeta function
 ``\\sum_{k=0}^\\infty (k+z)^{-s}``.
 The Riemann zeta function is recovered as ``\\zeta(s)=\\zeta(s,1)``.
 """
-function _zetahalf(tn::Integer, z::Complex)
-    s = tn/2
+function _zetahalf(k::Integer, z::Complex)
+    s = k/2
     x = real(z)
     m = s - 1
     ζ = zero(z)
