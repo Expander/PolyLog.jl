@@ -23,5 +23,5 @@ function digamma(n::Integer)::Float64
     t = inv(n)
     res += log(n) - 0.5*t
     t *= t # 1/n^2
-    res -= t*(C[1] + t*(C[2] + t*(C[3] + t*(C[4] + t*(C[5] + t*(C[6] + t*(C[7] + t*C[8])))))))
+    res - t*(C[1] + t*(C[2] + t*(C[3] + t*(C[4] + t*(C[5] + t*(C[6] + t*(C[7] + t*C[8])))))))
 end
