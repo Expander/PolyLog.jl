@@ -291,9 +291,9 @@ function zeta(s::Real, z::Complex)
             # need to use (-z)^(-s) recurrence to be correct for real z < 0
             # [the general form of the recurrence term is (z^2)^(-s/2)]
             minus_z = -z
-            ζ += pow_oftype(ζ, minus_z, minus_s) # ν = 0 term
+            ζ += minus_z^minus_s # ν = 0 term
             if xf != z
-                ζ += pow_oftype(ζ, z - nx, minus_s)
+                ζ += (z - nx)^minus_s
                 # real(z - nx) > 0, so use correct branch cut
                 # otherwise, if xf==z, then the definition skips this term
             end
@@ -304,30 +304,30 @@ function zeta(s::Real, z::Complex)
             if real(s) > 0
                 for ν in -nx-1:-1:1
                     ζₒ= ζ
-                    ζ += pow_oftype(ζ, minus_z - ν, minus_s)
+                    ζ += (minus_z - ν)^minus_s
                     ζ == ζₒ && break # prevent long loop for large -x > 0
                 end
             else
                 for ν in 1:-nx-1
                     ζₒ= ζ
-                    ζ += pow_oftype(ζ, minus_z - ν, minus_s)
+                    ζ += (minus_z - ν)^minus_s
                     ζ == ζₒ && break # prevent long loop for large -x > 0
                 end
             end
         else # x ≥ 0 && z != 0
-            ζ += pow_oftype(ζ, z, minus_s)
+            ζ += z^minus_s
         end
         # loop order depends on sign of s, as above
         if real(s) > 0
             for ν in max(1,1-nx):n-1
                 ζₒ= ζ
-                ζ += pow_oftype(ζ, z + ν, minus_s)
+                ζ += (z + ν)^minus_s
                 ζ == ζₒ && break # prevent long loop for large m
             end
         else
             for ν in n-1:-1:max(1,1-nx)
                 ζₒ= ζ
-                ζ += pow_oftype(ζ, z + ν, minus_s)
+                ζ += (z + ν)^minus_s
                 ζ == ζₒ && break # prevent long loop for large m
             end
         end
@@ -340,18 +340,4 @@ function zeta(s::Real, z::Complex)
 
     t *= t # 1/z^2
     ζ + w*t * @pg_horner(t,m,0.08333333333333333,-0.008333333333333333,0.003968253968253968,-0.004166666666666667,0.007575757575757576,-0.021092796092796094,0.08333333333333333,-0.4432598039215686,3.0539543302701198)
-end
-
-# compute oftype(x, y)^p efficiently, choosing the correct branch cut
-pow_oftype(x, y, p) = oftype(x, y)^p
-pow_oftype(x::Complex, y::Real, p::Complex) = oftype(x, y^p)
-function pow_oftype(x::Complex, y::Real, p::Real)
-    if p >= 0
-        # note: this will never be called for y < 0,
-        # which would throw an error for non-integer p here
-        return oftype(x, y^p)
-    else
-        yp = y^-p # use real power for efficiency
-        return oftype(x, Complex(yp, -zero(yp))) # get correct sign of zero!
-    end
 end
