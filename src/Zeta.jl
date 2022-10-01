@@ -258,7 +258,7 @@ function zetahalf(k::Integer, z::Complex)
     s = k/2
     x = real(z)
     m = s - 1
-    ζ = zero(z)
+    res = zero(z)
 
     # Algorithm is just the m-th derivative of digamma formula above,
     # with a modified cutoff of the final asymptotic expansion.
@@ -277,9 +277,9 @@ function zetahalf(k::Integer, z::Complex)
             # need to use (-z)^(-s) recurrence to be correct for real z < 0
             # [the general form of the recurrence term is (z^2)^(-s/2)]
             minus_z = -z
-            ζ += minus_z^minus_s # ν = 0 term
+            res += minus_z^minus_s # nu = 0 term
             if xf != z
-                ζ += (z - nx)^minus_s
+                res += (z - nx)^minus_s
                 # real(z - nx) > 0, so use correct branch cut
                 # otherwise, if xf==z, then the definition skips this term
             end
@@ -288,33 +288,33 @@ function zetahalf(k::Integer, z::Complex)
             # can halt the loop early if possible; see issue #15946
             # FIXME: still slow for small m, large Im(z)
             if real(s) > 0
-                for ν in -nx-1:-1:1
-                    ζₒ= ζ
-                    ζ += (minus_z - ν)^minus_s
-                    ζ == ζₒ && break # prevent long loop for large -x > 0
+                for nu in -nx-1:-1:1
+                    zeta_old = res
+                    res += (minus_z - nu)^minus_s
+                    res == zeta_old && break # prevent long loop for large -x > 0
                 end
             else
-                for ν in 1:-nx-1
-                    ζₒ= ζ
-                    ζ += (minus_z - ν)^minus_s
-                    ζ == ζₒ && break # prevent long loop for large -x > 0
+                for nu in 1:-nx-1
+                    zeta_old = res
+                    res += (minus_z - nu)^minus_s
+                    res == zeta_old && break # prevent long loop for large -x > 0
                 end
             end
         else # x ≥ 0 && z != 0
-            ζ += z^minus_s
+            res += z^minus_s
         end
         # loop order depends on sign of s, as above
         if real(s) > 0
-            for ν in max(1,1-nx):n-1
-                ζₒ= ζ
-                ζ += (z + ν)^minus_s
-                ζ == ζₒ && break # prevent long loop for large m
+            for nu in max(1,1-nx):n-1
+                zeta_old = res
+                res += (z + nu)^minus_s
+                res == zeta_old && break # prevent long loop for large m
             end
         else
-            for ν in n-1:-1:max(1,1-nx)
-                ζₒ= ζ
-                ζ += (z + ν)^minus_s
-                ζ == ζₒ && break # prevent long loop for large m
+            for nu in n-1:-1:max(1,1-nx)
+                zeta_old = res
+                res += (z + nu)^minus_s
+                res == zeta_old && break # prevent long loop for large m
             end
         end
         z += n
@@ -322,8 +322,8 @@ function zetahalf(k::Integer, z::Complex)
 
     t = inv(z)
     w = t^m
-    ζ += w * (inv(m) + 0.5*t)
+    res += w * (inv(m) + 0.5*t)
 
     t *= t # 1/z^2
-    ζ + w*t * @pg_horner(t,m,0.08333333333333333,-0.008333333333333333,0.003968253968253968,-0.004166666666666667,0.007575757575757576,-0.021092796092796094,0.08333333333333333,-0.4432598039215686,3.0539543302701198)
+    res + w*t * @pg_horner(t,m,0.08333333333333333,-0.008333333333333333,0.003968253968253968,-0.004166666666666667,0.007575757575757576,-0.021092796092796094,0.08333333333333333,-0.4432598039215686,3.0539543302701198)
 end
