@@ -219,7 +219,7 @@ function zetahalf(n::Integer, a::Complex)
     (a == one(a) || a == zero(a)) && return Complex(zetahalf(n))
     a == -one(a) && return Complex(one(a) + zetahalf(n))
     a == 2*one(a) && return Complex(zetahalf(n) - one(a))
-    zeta(n/2, a)
+    _zetahalf(n, a)
 end
 
 # Generalized zeta function, which is related to polygamma
@@ -258,8 +258,8 @@ macro pg_horner(x, m, p...)
 end
 
 """
-    zeta(s, z)
-Generalized zeta function defined by
+    _zetahalf(n, z) = zeta(s=n/2, z)
+Generalized zeta function for half-integer arguments ``s=n/2`` defined by
 ```math
 \\zeta(s, z)=\\sum_{k=0}^\\infty \\frac{1}{((k+z)^2)^{s/2}},
 ```
@@ -267,9 +267,9 @@ where any term with ``k+z=0`` is excluded.  For ``\\Re z > 0``,
 this definition is equivalent to the Hurwitz zeta function
 ``\\sum_{k=0}^\\infty (k+z)^{-s}``.
 The Riemann zeta function is recovered as ``\\zeta(s)=\\zeta(s,1)``.
-External links: [Riemann zeta function](https://en.wikipedia.org/wiki/Riemann_zeta_function), [Hurwitz zeta function](https://en.wikipedia.org/wiki/Hurwitz_zeta_function)
 """
-function zeta(s::Real, z::Complex)
+function _zetahalf(nh::Integer, z::Complex)
+    s = nh/2
     x = real(z)
     m = s - 1
     ζ = zero(z)
