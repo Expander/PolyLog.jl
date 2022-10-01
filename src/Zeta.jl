@@ -269,9 +269,7 @@ this definition is equivalent to the Hurwitz zeta function
 The Riemann zeta function is recovered as ``\\zeta(s)=\\zeta(s,1)``.
 External links: [Riemann zeta function](https://en.wikipedia.org/wiki/Riemann_zeta_function), [Hurwitz zeta function](https://en.wikipedia.org/wiki/Hurwitz_zeta_function)
 """
-zeta(s::Number, z::Number) = _zeta(map(float, promote(s, z))...)
-
-function _zeta(s::T, z::T) where {T<:ComplexOrReal{Float64}}
+function zeta(s::Real, z::Complex)
     # (z == 1 || z == 0) && return zeta(s)
     # s == 2 && return trigamma(z)
 
@@ -294,7 +292,7 @@ function _zeta(s::T, z::T) where {T<:ComplexOrReal{Float64}}
     # end
 
     m = s - 1
-    ζ = zero(T)
+    ζ = zero(z)
 
     # Algorithm is just the m-th derivative of digamma formula above,
     # with a modified cutoff of the final asymptotic expansion.
