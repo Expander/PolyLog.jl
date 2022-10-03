@@ -39,10 +39,15 @@ end
 end
 
 @testset "zetahalf2" begin
-    for s in -10:10
+    for s in -11:2:11
         @test PolyLog.zetahalf(s, Complex(-1.0)) == 1.0 + PolyLog.zetahalf(s)
         @test PolyLog.zetahalf(s, Complex(0.0)) == PolyLog.zetahalf(s)
         @test PolyLog.zetahalf(s, Complex(1.0)) == PolyLog.zetahalf(s)
         @test PolyLog.zetahalf(s, Complex(2.0)) == PolyLog.zetahalf(s) - 1.0
     end
+    eps = 1e14
+    @test PolyLog.zetahalf(1, Complex(-3/2)) ≈  1.6258114998791907  atol=eps rtol=eps
+    @test PolyLog.zetahalf(1, Complex(-1/2)) ≈  0.80931491895146468 atol=eps rtol=eps
+    @test PolyLog.zetahalf(1, Complex( 1/2)) ≈ -0.60489864342163037 atol=eps rtol=eps
+    @test PolyLog.zetahalf(1, Complex( 3/2)) ≈ -2.0191122057947254  atol=eps rtol=eps
 end

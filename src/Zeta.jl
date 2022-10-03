@@ -251,6 +251,7 @@ end
 
 # Generalized zeta function for half integer arguments, zetahalf(k, z) = zeta(k/2, z)
 function zetahalf(k::Integer, z::Complex)
+    iseven(k) && throw(DomainError(k, "zetahalf not implemented for even k"))
     (z == one(z) || z == zero(z)) && return Complex(zetahalf(k))
     z == -one(z) && return Complex(one(z) + zetahalf(k))
     z == 2*one(z) && return Complex(zetahalf(k) - one(z))
