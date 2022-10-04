@@ -32,6 +32,5 @@ export reli2
 export reli3
 export reli4
 export reli
-export relihalf
 
 end

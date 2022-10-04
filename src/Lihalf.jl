@@ -1,9 +1,9 @@
 """
-    relihalf(n::Integer, x::Real)
+    reli(r::Rational, x::Real)
 
-Returns the real n/2-th order polylogarithm
-``\\Re[\\operatorname{Li}_{n/2}(x)]`` of a real number ``x`` of type
-`Real` for all integers ``n``.
+Returns the real r-th order polylogarithm
+``\\Re[\\operatorname{Li}_{r}(x)]`` of a real number ``x`` of type
+`Real` for half-integer rationals ``r=n/2`` with ``n\\in\\mathbb{Z}``.
 
 Author: Alexander Voigt
 
@@ -11,17 +11,27 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> relihalf(1, 0.5)
+julia> reli(1//2, 0.5)
 0.80612672304285226
 ```
 """
-relihalf(n::Integer, x::Real) = _relihalf(n, float(x))
+function reli(r::Rational, x::Real)
+    if denominator(r) == 1
+        reli(numerator(r), x)
+    elseif denominator(r) == 2
+        relihalf(numerator(r), x)
+    else
+        throw(DomainError(r, "reli not implemented for non-half-integer r"))
+    end
+end
 
-_relihalf(n::Integer, x::Float16) = oftype(x, _relihalf(n, Float32(x)))
+relihalf(n::Integer, x::Real) = relihalf(n, float(x))
 
-_relihalf(n::Integer, x::Float32) = oftype(x, _relihalf(n, Float64(x)))
+relihalf(n::Integer, x::Float16) = oftype(x, relihalf(n, Float32(x)))
 
-function _relihalf(n::Integer, x::Float64)::Float64
+relihalf(n::Integer, x::Float32) = oftype(x, relihalf(n, Float64(x)))
+
+function relihalf(n::Integer, x::Float64)::Float64
     isnan(x) && return NaN
     isinf(x) && return -Inf
     iseven(n) && return reli(n÷2, x)
@@ -41,11 +51,11 @@ function _relihalf(n::Integer, x::Float64)::Float64
 end
 
 """
-    lihalf(n::Integer, z::Complex)
+    lihalf(r::Rational, z::Complex)
 
-Returns the n/2-th order polylogarithm
-``\\operatorname{Li}_{n/2}(x)`` of a complex number ``z`` of type
-`Complex` for all integers ``n``.
+Returns the r-th order polylogarithm ``\\operatorname{Li}_{r}(x)`` of
+a complex number ``z`` of type `Complex` for half-integer rationals
+``r=n/2`` with ``n\\in\\mathbb{Z}``.
 
 Author: Alexander Voigt
 
@@ -53,19 +63,29 @@ License: MIT
 
 # Example
 ```jldoctest; setup = :(using PolyLog)
-julia> lihalf(1, 0.5)
+julia> li(1//2, 0.5)
 -1.5466407024391607 - 2.7835446536610238im
 ```
 """
-lihalf(n::Integer, z::Complex) = _lihalf(n, float(z))
+function li(r::Rational, z::Complex)
+    if denominator(r) == 1
+        li(numerator(r), z)
+    elseif denominator(r) == 2
+        lihalf(numerator(r), z)
+    else
+        throw(DomainError(r, "li not implemented for non-half-integer r"))
+    end
+end
+
+lihalf(n::Integer, z::Complex) = lihalf(n, float(z))
 
 lihalf(n::Integer, z::Real) = lihalf(n, Complex(z))
 
-_lihalf(n::Integer, z::ComplexF16) = oftype(z, _lihalf(n, ComplexF32(z)))
+lihalf(n::Integer, z::ComplexF16) = oftype(z, lihalf(n, ComplexF32(z)))
 
-_lihalf(n::Integer, z::ComplexF32) = oftype(z, _lihalf(n, ComplexF64(z)))
+lihalf(n::Integer, z::ComplexF32) = oftype(z, lihalf(n, ComplexF64(z)))
 
-function _lihalf(n::Integer, z::ComplexF64)::ComplexF64
+function lihalf(n::Integer, z::ComplexF64)::ComplexF64
     isnan(z) && return NaN
     isinf(z) && return -Inf
     iseven(n) && return li(n÷2, z)

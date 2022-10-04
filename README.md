@@ -14,25 +14,24 @@ Example
 ```.jl
 using PolyLog
 
-# real polylogarithms for real arguments and integer order
+# real polylogarithms for real arguments
 reli1(1.0)          # Re[Li_1(x)]
 reli2(1.0)          # Re[Li_2(x)] (dilogarithm)
 reli3(1.0)          # Re[Li_3(x)] (trilogarithm)
 reli4(1.0)          # Re[Li_4(x)]
 reli(10, 1.0)       # Re[Li_n(x)] for all integers n (here: n = 10)
-
-# real polylogarithms for real arguments and half-integer order
-relihalf(1, 1.0)    # Re[Li_{n/2}(x)] for all integers n (here: n = 1)
+reli(1//2, 1.0)     # Re[Li_r(x)] for all half-integer rationals r=n/2 (here: n = 1)
 
 # complex polylogarithms for real or complex arguments and integer order
-li0(1.0 + 1.0im)    # Li_0(z)
-li1(1.0 + 1.0im)    # Li_1(z)
-li2(1.0 + 1.0im)    # Li_2(z) (dilogarithm)
-li3(1.0 + 1.0im)    # Li_3(z) (trilogarithm)
-li4(1.0 + 1.0im)    # Li_4(z)
-li5(1.0 + 1.0im)    # Li_5(z)
-li6(1.0 + 1.0im)    # Li_6(z)
-li(10, 1.0 + 1.0im) # Li_n(z) for all integers n (here: n = 10)
+li0(1.0 + 1.0im)      # Li_0(z)
+li1(1.0 + 1.0im)      # Li_1(z)
+li2(1.0 + 1.0im)      # Li_2(z) (dilogarithm)
+li3(1.0 + 1.0im)      # Li_3(z) (trilogarithm)
+li4(1.0 + 1.0im)      # Li_4(z)
+li5(1.0 + 1.0im)      # Li_5(z)
+li6(1.0 + 1.0im)      # Li_6(z)
+li(10, 1.0 + 1.0im)   # Li_n(z) for all integers n (here: n = 10)
+li(1//2, 1.0 + 1.0im) # Li_r(x) for all half-integer rationals r=n/2 (here: n = 1)
 ```
 
 
