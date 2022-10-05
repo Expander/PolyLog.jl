@@ -36,7 +36,7 @@ end
         elseif denominator(n) == 2
             k = numerator(n)
         else
-            denominator(n) != 2 && throw(DomainError(k, "only half-integer orders are allowed"))
+            throw(DomainError(n, "only half-integer orders are allowed"))
         end
 
         if iseven(k)
@@ -60,12 +60,6 @@ end
                 )
             end
 
-            # test only values for which there is an implementation yet (TODO)
-            # real_data = hcat(
-            #     [real_data[i,1] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75 || abs(log(Complex(real_data[i,1]))) < 2*pi],
-            #     [real_data[i,2] for i in 1:size(real_data, 1) if abs(real_data[i,1]) < 0.75 || abs(log(Complex(real_data[i,1]))) < 2*pi]
-            # )
-
             test_function_on_data(z -> PolyLog.reli(n, z), real_data, ni.eps, ni.eps)
             test_function_on_data(z -> PolyLog.li(n, z), cmpl_data, ni.eps, ni.eps)
         end
@@ -83,11 +77,7 @@ end
             @test PolyLog.reli(n, 1//1) == Inf
             @test PolyLog.reli(n, 1) == Inf
         else
-            if denominator(n) == 1
-                zeta = PolyLog.zeta(numerator(n))
-            elseif denominator(n) == 2
-                zeta = PolyLog.zetahalf(numerator(n))
-            end
+            zeta = PolyLog.zetahalf(k)
 
             @test PolyLog.reli(n, 1.0) == zeta
             @test PolyLog.reli(n, 1.0f0) ≈ zeta
