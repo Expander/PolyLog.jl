@@ -21,7 +21,7 @@ function reli(r::Rational, x::Real)
     elseif denominator(r) == 2
         relihalf(numerator(r), x)
     else
-        throw(DomainError(r, "reli not implemented for non-half-integer r"))
+        throw(DomainError(r, "reli not implemented for non-half-integer rational order r"))
     end
 end
 
@@ -73,7 +73,7 @@ function li(r::Rational, z::Complex)
     elseif denominator(r) == 2
         lihalf(numerator(r), z)
     else
-        throw(DomainError(r, "li not implemented for non-half-integer r"))
+        throw(DomainError(r, "li not implemented for non-half-integer rational order r"))
     end
 end
 
