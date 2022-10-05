@@ -42,8 +42,6 @@ end
         if iseven(k)
             cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(k÷2).txt"))
             real_data = filter_real(cmpl_data)
-            test_function_on_data(z -> PolyLog.reli(n, z), real_data, ni.eps, ni.eps)
-            test_function_on_data(z -> PolyLog.li(n, z), cmpl_data, ni.eps, ni.eps)
         else
             cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(k)half.txt"))
             real_data = filter_real(cmpl_data)
@@ -59,10 +57,10 @@ end
                     [cmpl_data[i,2] for i in 1:size(cmpl_data, 1) if !(abs(one(Float64) - cmpl_data[i,1]) < eps(Float64))]
                 )
             end
-
-            test_function_on_data(z -> PolyLog.reli(n, z), real_data, ni.eps, ni.eps)
-            test_function_on_data(z -> PolyLog.li(n, z), cmpl_data, ni.eps, ni.eps)
         end
+
+        test_function_on_data(z -> PolyLog.reli(n, z), real_data, ni.eps, ni.eps)
+        test_function_on_data(z -> PolyLog.li(n, z), cmpl_data, ni.eps, ni.eps)
     end
 end
 
