@@ -51,7 +51,7 @@ function relihalf(n::Integer, x::Float64)::Float64
 end
 
 """
-    lihalf(r::Rational, z::Complex)
+    li(r::Rational, z::Complex)
 
 Returns the r-th order polylogarithm ``\\operatorname{Li}_{r}(x)`` of
 a complex number ``z`` of type `Complex` for half-integer rationals
