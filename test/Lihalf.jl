@@ -41,22 +41,22 @@ end
 
         if iseven(k)
             cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(k÷2).txt"))
-            real_data = filter_real(cmpl_data)
         else
             cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(k)half.txt"))
-            real_data = filter_real(cmpl_data)
+        end
 
-            # remove Li_{1/2}(<≈1), which is Inf
-            if n == 1//2
-                real_data = hcat(
-                    [real_data[i,1] for i in 1:size(real_data, 1) if !(real_data[i,1] <= one(Float64) && one(Float64) - real_data[i,1] < eps(Float64))],
-                    [real_data[i,2] for i in 1:size(real_data, 1) if !(real_data[i,1] <= one(Float64) && one(Float64) - real_data[i,1] < eps(Float64))]
-                )
-                cmpl_data = hcat(
-                    [cmpl_data[i,1] for i in 1:size(cmpl_data, 1) if !(abs(one(Float64) - cmpl_data[i,1]) < eps(Float64))],
-                    [cmpl_data[i,2] for i in 1:size(cmpl_data, 1) if !(abs(one(Float64) - cmpl_data[i,1]) < eps(Float64))]
-                )
-            end
+        real_data = filter_real(cmpl_data)
+
+        # remove Li_{1/2}(<≈1), which is Inf
+        if n == 1//2
+            real_data = hcat(
+                [real_data[i,1] for i in 1:size(real_data, 1) if !(real_data[i,1] <= one(Float64) && one(Float64) - real_data[i,1] < eps(Float64))],
+                [real_data[i,2] for i in 1:size(real_data, 1) if !(real_data[i,1] <= one(Float64) && one(Float64) - real_data[i,1] < eps(Float64))]
+            )
+            cmpl_data = hcat(
+                [cmpl_data[i,1] for i in 1:size(cmpl_data, 1) if !(abs(one(Float64) - cmpl_data[i,1]) < eps(Float64))],
+                [cmpl_data[i,2] for i in 1:size(cmpl_data, 1) if !(abs(one(Float64) - cmpl_data[i,1]) < eps(Float64))]
+            )
         end
 
         test_function_on_data(z -> PolyLog.reli(n, z), real_data, ni.eps, ni.eps)
