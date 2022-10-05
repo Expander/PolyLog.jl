@@ -63,6 +63,13 @@ end
             test_function_on_data(z -> PolyLog.reli(n, z), real_data, ni.eps, ni.eps)
             test_function_on_data(z -> PolyLog.li(n, z), cmpl_data, ni.eps, ni.eps)
         end
+    end
+end
+
+
+@testset "lihalfspecialcases" begin
+    for k in -40:40
+        n = k//2
 
         @test PolyLog.reli(n, 0.0) == zero(Float64)
         @test PolyLog.reli(n, 0.0f0) == zero(Float32)
