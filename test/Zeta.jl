@@ -39,15 +39,29 @@ end
 end
 
 @testset "zetahalf2" begin
+    struct Zetahalf
+        k::Integer
+        z::Complex
+        res::Complex
+        eps::Float64
+    end
+
+    zhs = (
+        Zetahalf(1, Complex(-3/2), Complex( 1.6258114998791907 ), 1e14),
+        Zetahalf(1, Complex(-1/2), Complex( 0.80931491895146468), 1e14),
+        Zetahalf(1, Complex( 1/2), Complex(-0.60489864342163037), 1e14),
+        Zetahalf(1, Complex( 3/2), Complex(-2.0191122057947254 ), 1e14),
+    )
+
+    for zh in zhs
+        @test PolyLog.zetahalf(zh.k, zh.z) ≈ zh.res atol=zh.eps rtol=zh.eps
+    end
+
+    # test identities
     for s in -11:2:11
         @test PolyLog.zetahalf(s, Complex(-1.0)) == 1.0 + PolyLog.zetahalf(s)
         @test PolyLog.zetahalf(s, Complex(0.0)) == PolyLog.zetahalf(s)
         @test PolyLog.zetahalf(s, Complex(1.0)) == PolyLog.zetahalf(s)
         @test PolyLog.zetahalf(s, Complex(2.0)) == PolyLog.zetahalf(s) - 1.0
     end
-    eps = 1e14
-    @test PolyLog.zetahalf(1, Complex(-3/2)) ≈  1.6258114998791907  atol=eps rtol=eps
-    @test PolyLog.zetahalf(1, Complex(-1/2)) ≈  0.80931491895146468 atol=eps rtol=eps
-    @test PolyLog.zetahalf(1, Complex( 1/2)) ≈ -0.60489864342163037 atol=eps rtol=eps
-    @test PolyLog.zetahalf(1, Complex( 3/2)) ≈ -2.0191122057947254  atol=eps rtol=eps
 end
