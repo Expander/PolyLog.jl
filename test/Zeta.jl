@@ -38,14 +38,14 @@ end
     @test PolyLog.zetahalf(109) == 1.0
 end
 
-@testset "zetahalf2" begin
-    struct Zetahalf
-        k::Integer
-        z::Complex
-        res::Complex
-        eps::Float64
-    end
+struct Zetahalf
+    k::Integer
+    z::Complex
+    res::Complex
+    eps::Float64
+end
 
+@testset "zetahalf2" begin
     zhs = (
         Zetahalf(1, Complex(-3/2), Complex( 1.6258114998791907 ), 1e14),
         Zetahalf(1, Complex(-1/2), Complex( 0.80931491895146468), 1e14),
