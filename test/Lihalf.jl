@@ -16,7 +16,7 @@ end
         Nihalf( -4//2, 1e-13),
         Nihalf( -2//2, 1e-14),
         Nihalf(  0//2, 1e-14),
-        Nihalf(  1//2, 1e-11), # TODO: increase
+        Nihalf(  1//2, 1e-14),
         Nihalf(  2//2, 1e-14),
         Nihalf(  3//2, 1e-11), # TODO: increase
         Nihalf(  4//2, 1e-14),
