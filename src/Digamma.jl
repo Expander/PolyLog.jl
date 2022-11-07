@@ -21,7 +21,6 @@ function digamma(n::Integer)::Float64
         n += k
     end
     t = inv(n)
-    res += log(n) - one(Float64)/2*t
-    t *= t # 1/n^2
-    res - t*(C[1] + t*(C[2] + t*(C[3] + t*(C[4] + t*(C[5] + t*(C[6] + t*(C[7] + t*C[8])))))))
+    t2 = t*t # 1/n^2
+    res + log(n) - one(Float64)/2*t - t2*(C[1] + t2*(C[2] + t2*(C[3] + t2*(C[4] + t2*(C[5] + t2*(C[6] + t2*(C[7] + t2*C[8])))))))
 end
