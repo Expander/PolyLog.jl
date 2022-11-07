@@ -3,9 +3,9 @@ function harmonic(n::Integer)::Float64
     if n <= 0
         throw(DomainError(n, "harmonic not implemented for n <= 0"))
     elseif n < 20
-        sum = 1.0
+        sum = one(Float64)
         for k in 2:n
-            sum += 1/k
+            sum += inv(k)
         end
         sum
     else
