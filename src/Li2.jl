@@ -69,7 +69,7 @@ function _reli2(x::Float64)::Float64
     elseif x < 0.5
         reli2_approx(x)
     elseif x < 1.0
-        -reli2_approx(1.0 - x) + zeta2 - log(x)*log(1.0 - x)
+        -reli2_approx(1.0 - x) + zeta2 - log(x)*log1p(-x)
     elseif x == 1.0
         zeta2
     elseif x < 2.0

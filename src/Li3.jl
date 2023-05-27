@@ -87,7 +87,7 @@ function _reli3(x::Float64)::Float64
         return 0.53721319360804020
     elseif x < 1.0
         l = log(x)
-        -reli3_neg(1.0 - inv(x)) - reli3_pos(1.0 - x) + zeta3 + l*(zeta2 + l*(-0.5*log(1.0 - x) + 1/6*l))
+        -reli3_neg(1.0 - inv(x)) - reli3_pos(1.0 - x) + zeta3 + l*(zeta2 + l*(-0.5*log1p(-x) + 1/6*l))
     elseif x == 1.0
         zeta3
     elseif x < 2.0
