@@ -30,6 +30,20 @@ function reli2_approx(x::Float64)::Float64
 end
 
 
+# rational function approximation of Re[Li2(x)] for x in [0, 1/2]
+function reli2_approx(x::Float32)::Float32
+    cp = (1.00000020f0, -0.780790946f0, 0.0648256871f0)
+    cq = (1.00000000f0, -1.03077545f0, 0.211216710f0)
+
+    x2 = x*x
+
+    p = cp[1] + x * cp[2] + x2 * cp[3]
+    q = cq[1] + x * cq[2] + x2 * cq[3]
+
+    x*p/q
+end
+
+
 """
     reli2(x::Real)
 
@@ -53,7 +67,31 @@ reli2(x::Real) = _reli2(float(x))
 
 _reli2(x::Float16) = oftype(x, _reli2(Float32(x)))
 
-_reli2(x::Float32) = oftype(x, _reli2(Float64(x)))
+function _reli2(x::Float32)::Float32
+    # transform to [0, 1/2]
+    if x < -1.0f0
+        l = log(1.0f0 - x)
+        reli2_approx(1.0f0/(1.0f0 - x)) - zeta2 + l*(0.5f0*l - log(-x))
+    elseif x == -1.0f0
+        -0.5f0*zeta2
+    elseif x < 0.0f0
+        -reli2_approx(x/(x - 1.0f0)) - 0.5f0*log1p(-x)^2
+    elseif x == 0.0f0
+        0.0f0
+    elseif x < 0.5f0
+        reli2_approx(x)
+    elseif x < 1.0f0
+        -reli2_approx(1.0f0 - x) + zeta2 - log(x)*log1p(-x)
+    elseif x == 1.0f0
+        zeta2
+    elseif x < 2.0f0
+        l = log(x)
+        reli2_approx(1.0f0 - 1.0f0/x) + zeta2 - l*(log(1.0f0 - 1.0f0/x) + 0.5f0*l)
+    else
+        -reli2_approx(1.0f0/x) + 2.0f0*zeta2 - 0.5f0*log(x)^2
+    end
+end
+
 
 function _reli2(x::Float64)::Float64
     # transform to [0, 1/2]
