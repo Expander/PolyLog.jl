@@ -4,6 +4,7 @@ n = 10_000_000
 z_min = -5
 z_max = 5
 c64_data = (z_max - z_min)*rand(ComplexF64, n) + z_min*(1.0 + 1.0im)*ones(n)
+c32_data = map(ComplexF32, c64_data)
 f64_data = map(real, c64_data)
 f32_data = map(Float32, f64_data)
 
@@ -19,6 +20,13 @@ time_li4(data) = @time map(PolyLog.li4, data)
 time_li5(data) = @time map(PolyLog.li5, data)
 time_li6(data) = @time map(PolyLog.li6, data)
 
+println("Benchmarking li2::Float32")
+
+map(PolyLog.reli2, f32_data)       # trigger compilation
+time_reli2(f32_data)
+time_reli2(f32_data)
+time_reli2(f32_data)
+
 println("Benchmarking li2::Float64")
 
 map(PolyLog.reli2, f64_data)       # trigger compilation
@@ -26,12 +34,12 @@ time_reli2(f64_data)
 time_reli2(f64_data)
 time_reli2(f64_data)
 
-println("Benchmarking li2::Float32")
+println("Benchmarking li2::ComplexF32")
 
-map(PolyLog.reli2, f32_data)       # trigger compilation
-time_reli2(f32_data)
-time_reli2(f32_data)
-time_reli2(f32_data)
+map(PolyLog.li2, c32_data)       # trigger compilation
+time_li2(c32_data)
+time_li2(c32_data)
+time_li2(c32_data)
 
 println("Benchmarking li2::ComplexF64")
 
