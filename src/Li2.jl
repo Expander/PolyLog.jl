@@ -184,9 +184,8 @@ function _li2(z::ComplexF32)::ComplexF32
     B = (-1.0f0/4, 1.0f0/36, -1.0f0/3600, 1.0f0/211680)
 
     u2 = u*u
-    u4 = u2*u2
 
-    rest + sgn*(u + u2*(B[1] + u *(B[2] + u2*(B[3] + u2*B[4]))))
+    rest + sgn*(u + u2*(B[1] + u*(B[2] + u2*(B[3] + u2*B[4]))))
 end
 
 
