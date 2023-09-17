@@ -163,7 +163,7 @@ function _li2(z::ComplexF32)::ComplexF32
     else
         nz = abs2(z)
 
-        if nz < eps(Float64)
+        if nz < eps(Float32)
             z*(1.0f0 + 0.25f0*z)
         else
             (u, rest, sgn) = if rz <= 0.5f0
