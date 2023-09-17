@@ -1,4 +1,4 @@
-const zeta2f32 = 1.644934f0
+const zeta2F32 = 1.644934f0      # zeta(2) with Float32 precision
 const zeta2 = 1.6449340668482264
 const zeta3 = 1.2020569031595943
 const zeta4 = 1.0823232337111382

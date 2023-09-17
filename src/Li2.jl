@@ -71,9 +71,9 @@ function _reli2(x::Float32)::Float32
     # transform to [0, 1/2]
     if x < -1.0f0
         l = log(1.0f0 - x)
-        reli2_approx(1.0f0/(1.0f0 - x)) - zeta2f32 + l*(0.5f0*l - log(-x))
+        reli2_approx(1.0f0/(1.0f0 - x)) - zeta2F32 + l*(0.5f0*l - log(-x))
     elseif x == -1.0f0
-        -0.5f0*zeta2f32
+        -0.5f0*zeta2F32
     elseif x < 0.0f0
         -reli2_approx(x/(x - 1.0f0)) - 0.5f0*log1p(-x)^2
     elseif x == 0.0f0
@@ -81,14 +81,14 @@ function _reli2(x::Float32)::Float32
     elseif x < 0.5f0
         reli2_approx(x)
     elseif x < 1.0f0
-        -reli2_approx(1.0f0 - x) + zeta2f32 - log(x)*log1p(-x)
+        -reli2_approx(1.0f0 - x) + zeta2F32 - log(x)*log1p(-x)
     elseif x == 1.0f0
-        zeta2f32
+        zeta2F32
     elseif x < 2.0f0
         l = log(x)
-        reli2_approx(1.0f0 - 1.0f0/x) + zeta2f32 - l*(log(1.0f0 - 1.0f0/x) + 0.5f0*l)
+        reli2_approx(1.0f0 - 1.0f0/x) + zeta2F32 - l*(log(1.0f0 - 1.0f0/x) + 0.5f0*l)
     else
-        -reli2_approx(1.0f0/x) + 2.0f0*zeta2f32 - 0.5f0*log(x)^2
+        -reli2_approx(1.0f0/x) + 2.0f0*zeta2F32 - 0.5f0*log(x)^2
     end
 end
 
@@ -168,16 +168,16 @@ function _li2(z::ComplexF32)::ComplexF32
         else
             (u, rest, sgn) = if rz <= 0.5f0
                 if nz > 1.0f0
-                    (-clog(1.0f0 - inv(z)), -0.5f0*clog(-z)^2 - zeta2f32, -1.0f0)
+                    (-clog(1.0f0 - inv(z)), -0.5f0*clog(-z)^2 - zeta2F32, -1.0f0)
                 else # nz <= 1.
                     (-clog(1.0f0 - z), 0.0f0 + 0.0f0im, 1.0f0)
                 end
             else # rz > 0.5
                 if nz <= 2.0f0*rz
                     l = -clog(z)
-                    (l, l*clog(1.0f0 - z) + zeta2f32, -1.0f0)
+                    (l, l*clog(1.0f0 - z) + zeta2F32, -1.0f0)
                 else # nz > 2.0f0*rz
-                    (-clog(1.0f0 - inv(z)), -0.5f0*clog(-z)^2 - zeta2f32, -1.0f0)
+                    (-clog(1.0f0 - inv(z)), -0.5f0*clog(-z)^2 - zeta2F32, -1.0f0)
                 end
             end
 
