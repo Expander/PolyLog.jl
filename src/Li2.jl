@@ -30,6 +30,29 @@ function reli2_approx(x::Float64)::Float64
 end
 
 
+# rational function approximation of Re[Li2(x)] for x in [0, 1/2]
+function reli2_approx(x::Float32)::Float32
+    cp = (1.00000020f0, -0.780790946f0, 0.0648256871f0)
+    cq = (1.00000000f0, -1.03077545f0, 0.211216710f0)
+
+    x2 = x*x
+
+    p = cp[1] + x * cp[2] + x2 * cp[3]
+    q = cq[1] + x * cq[2] + x2 * cq[3]
+
+    x*p/q
+end
+
+
+# series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
+# in terms of u = -log(1-z)
+function li2_approx(u::ComplexF32)
+    B = (-1.0f0/4, 1.0f0/36, -1.0f0/3600, 1.0f0/211680)
+    u2 = u*u
+    u + u2*(B[1] + u*(B[2] + u2*(B[3] + u2*B[4])))
+end
+
+
 """
     reli2(x::Real)
 
@@ -53,7 +76,31 @@ reli2(x::Real) = _reli2(float(x))
 
 _reli2(x::Float16) = oftype(x, _reli2(Float32(x)))
 
-_reli2(x::Float32) = oftype(x, _reli2(Float64(x)))
+function _reli2(x::Float32)::Float32
+    # transform to [0, 1/2]
+    if x < -1.0f0
+        l = log(1.0f0 - x)
+        reli2_approx(1.0f0/(1.0f0 - x)) - zeta2F32 + l*(0.5f0*l - log(-x))
+    elseif x == -1.0f0
+        -0.5f0*zeta2F32
+    elseif x < 0.0f0
+        -reli2_approx(x/(x - 1.0f0)) - 0.5f0*log1p(-x)^2
+    elseif x == 0.0f0
+        0.0f0
+    elseif x < 0.5f0
+        reli2_approx(x)
+    elseif x < 1.0f0
+        -reli2_approx(1.0f0 - x) + zeta2F32 - log(x)*log1p(-x)
+    elseif x == 1.0f0
+        zeta2F32
+    elseif x < 2.0f0
+        l = log(x)
+        reli2_approx(1.0f0 - 1.0f0/x) + zeta2F32 - l*(log(1.0f0 - 1.0f0/x) + 0.5f0*l)
+    else
+        -reli2_approx(1.0f0/x) + 2.0f0*zeta2F32 - 0.5f0*log(x)^2
+    end
+end
+
 
 function _reli2(x::Float64)::Float64
     # transform to [0, 1/2]
@@ -110,7 +157,43 @@ li2(z::Real) = li2(Complex(z))
 
 _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 
-_li2(z::ComplexF32) = oftype(z, _li2(ComplexF64(z)))
+
+function _li2(z::ComplexF32)::ComplexF32
+    clog(z) = log(abs(z)) + angle(z)*1.0f0im
+
+    rz = real(z)
+    iz = imag(z)
+
+    if iz == 0.0f0
+        if rz <= 1.0f0
+            reli2(rz)
+        else # Re(z) > 1
+            reli2(rz) - pi*clog(rz)*1.0f0im
+        end
+    else
+        nz = abs2(z)
+
+        if nz < eps(Float32)
+            z*(1.0f0 + 0.25f0*z)
+        else
+            if rz <= 0.5f0
+                if nz > 1.0f0
+                    -li2_approx(-clog(1.0f0 - inv(z))) - 0.5f0*clog(-z)^2 - zeta2F32
+                else # |z|^2 <= 1
+                    li2_approx(-clog(1.0f0 - z))
+                end
+            else # Re(z) > 1/2
+                if nz <= 2.0f0*rz
+                    l = -clog(z)
+                    -li2_approx(l) + l*clog(1.0f0 - z) + zeta2F32
+                else # |z|^2 > 2*Re(z)
+                    -li2_approx(-clog(1.0f0 - inv(z))) - 0.5f0*clog(-z)^2 - zeta2F32
+                end
+            end
+        end
+    end
+end
+
 
 function _li2(z::ComplexF64)::ComplexF64
     clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
