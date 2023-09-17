@@ -149,6 +149,8 @@ li2(z::Real) = li2(Complex(z))
 _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 
 function _li2(z::ComplexF32)::ComplexF32
+    clog(z) = log(abs(z)) + angle(z)*1.0f0im
+
     rz = real(z)
     iz = imag(z)
 
@@ -156,7 +158,7 @@ function _li2(z::ComplexF32)::ComplexF32
         if rz <= 1.0f0
             reli2(rz)
         else # rz > 1.
-            reli2(rz) - pi*log(rz)*1.0f0im
+            reli2(rz) - pi*clog(rz)*1.0f0im
         end
     else
         nz = abs2(z)
@@ -166,16 +168,16 @@ function _li2(z::ComplexF32)::ComplexF32
         else
             (u, rest, sgn) = if rz <= 0.5f0
                 if nz > 1.0f0
-                    (-log(1.0f0 - inv(z)), -0.5f0*log(-z)^2 - zeta2f32, -1.0f0)
+                    (-clog(1.0f0 - inv(z)), -0.5f0*clog(-z)^2 - zeta2f32, -1.0f0)
                 else # nz <= 1.
-                    (-log(1.0f0 - z), 0.0f0 + 0.0f0im, 1.0f0)
+                    (-clog(1.0f0 - z), 0.0f0 + 0.0f0im, 1.0f0)
                 end
             else # rz > 0.5
                 if nz <= 2.0f0*rz
-                    l = -log(z)
-                    (l, l*log(1.0f0 - z) + zeta2f32, -1.0f0)
+                    l = -clog(z)
+                    (l, l*clog(1.0f0 - z) + zeta2f32, -1.0f0)
                 else # nz > 2.0f0*rz
-                    (-log(1.0f0 - inv(z)), -0.5f0*log(-z)^2 - zeta2f32, -1.0f0)
+                    (-clog(1.0f0 - inv(z)), -0.5f0*clog(-z)^2 - zeta2f32, -1.0f0)
                 end
             end
 
