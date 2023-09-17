@@ -148,7 +148,47 @@ li2(z::Real) = li2(Complex(z))
 
 _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 
-_li2(z::ComplexF32) = oftype(z, _li2(ComplexF64(z)))
+function _li2(z::ComplexF32)::ComplexF32
+    rz = real(z)
+    iz = imag(z)
+
+    if iz == 0.0f0
+        if rz <= 1.0f0
+            return reli2(rz)
+        else # rz > 1.
+            return reli2(rz) - pi*log(rz)*1.0f0im
+        end
+    end
+
+    nz = abs2(z)
+
+    if nz < eps(Float64)
+        return z*(1.0f0 + 0.25f0*z)
+    end
+
+    (u, rest, sgn) = if rz <= 0.5f0
+        if nz > 1.0f0
+            (-log(1.0f0 - inv(z)), -0.5f0*log(-z)^2 - zeta2, -1.0f0)
+        else # nz <= 1.
+            (-log(1.0f0 - z), 0.0f0 + 0.0f0im, 1.0f0)
+        end
+    else # rz > 0.5
+        if nz <= 2.0f0*rz
+            l = -log(z)
+            (l, l*log(1.0f0 - z) + zeta2, -1.0f0)
+        else # nz > 2.0f0*rz
+            (-log(1.0f0 - inv(z)), -0.5*log(-z)^2 - zeta2, -1.0f0)
+        end
+    end
+
+    B = (-1.0f0/4, 1.0f0/36, -1.0f0/3600, 1.0f0/211680)
+
+    u2 = u*u
+    u4 = u2*u2
+
+    rest + sgn*(u + u2*(B[1] + u *(B[2] + u2*(B[3] + u2*B[4]))))
+end
+
 
 function _li2(z::ComplexF64)::ComplexF64
     clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
