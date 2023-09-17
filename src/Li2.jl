@@ -44,6 +44,15 @@ function reli2_approx(x::Float32)::Float32
 end
 
 
+# series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
+# in terms of u = -log(1-z)
+function li2_approx(u::ComplexF32)
+    B = (-1.0f0/4, 1.0f0/36, -1.0f0/3600, 1.0f0/211680)
+    u2 = u*u
+    u + u2*(B[1] + u*(B[2] + u2*(B[3] + u2*B[4])))
+end
+
+
 """
     reli2(x::Real)
 
@@ -148,6 +157,7 @@ li2(z::Real) = li2(Complex(z))
 
 _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 
+
 function _li2(z::ComplexF32)::ComplexF32
     clog(z) = log(abs(z)) + angle(z)*1.0f0im
 
@@ -157,7 +167,7 @@ function _li2(z::ComplexF32)::ComplexF32
     if iz == 0.0f0
         if rz <= 1.0f0
             reli2(rz)
-        else # rz > 1.
+        else # Re(z) > 1
             reli2(rz) - pi*clog(rz)*1.0f0im
         end
     else
@@ -166,24 +176,20 @@ function _li2(z::ComplexF32)::ComplexF32
         if nz < eps(Float32)
             z*(1.0f0 + 0.25f0*z)
         else
-            (u, rest, sgn) = if rz <= 0.5f0
+            if rz <= 0.5f0
                 if nz > 1.0f0
-                    (-clog(1.0f0 - inv(z)), -0.5f0*clog(-z)^2 - zeta2F32, -1.0f0)
-                else # nz <= 1.
-                    (-clog(1.0f0 - z), 0.0f0 + 0.0f0im, 1.0f0)
+                    -li2_approx(-clog(1.0f0 - inv(z))) - 0.5f0*clog(-z)^2 - zeta2F32
+                else # |z|^2 <= 1
+                    li2_approx(-clog(1.0f0 - z))
                 end
-            else # rz > 0.5
+            else # Re(z) > 1/2
                 if nz <= 2.0f0*rz
                     l = -clog(z)
-                    (l, l*clog(1.0f0 - z) + zeta2F32, -1.0f0)
-                else # nz > 2.0f0*rz
-                    (-clog(1.0f0 - inv(z)), -0.5f0*clog(-z)^2 - zeta2F32, -1.0f0)
+                    -li2_approx(l) + l*clog(1.0f0 - z) + zeta2F32
+                else # |z|^2 > 2*Re(z)
+                    -li2_approx(-clog(1.0f0 - inv(z))) - 0.5f0*clog(-z)^2 - zeta2F32
                 end
             end
-
-            B = (-1.0f0/4, 1.0f0/36, -1.0f0/3600, 1.0f0/211680)
-            u2 = u*u
-            rest + sgn*(u + u2*(B[1] + u*(B[2] + u2*(B[3] + u2*B[4]))))
         end
     end
 end
