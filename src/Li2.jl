@@ -46,10 +46,41 @@ end
 
 # series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
 # in terms of u = -log(1-z)
-function li2_approx(u::ComplexF32)
+function li2_approx(u::ComplexF32)::ComplexF32
     B = (-1.0f0/4, 1.0f0/36, -1.0f0/3600, 1.0f0/211680)
     u2 = u*u
     u + u2*(B[1] + u*(B[2] + u2*(B[3] + u2*B[4])))
+end
+
+
+# series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
+# in terms of u = -log(1-z)
+function li2_approx(u::ComplexF64)::ComplexF64
+    B = (
+        - 1.0/4,
+          1.0/36,
+        - 1.0/3600,
+          1.0/211680,
+        - 1.0/10886400,
+          1.0/526901760,
+        - 4.0647616451442255e-11,
+          8.9216910204564526e-13,
+        - 1.9939295860721076e-14,
+          4.5189800296199182e-16
+    )
+
+    u2 = u*u
+    u4 = u2*u2
+
+    u +
+    u2*(B[1] +
+    u *(B[2] +
+    u2*(
+        B[3] +
+        u2*B[4] +
+        u4*(B[5] + u2*B[6]) +
+        u4*u4*(B[7] + u2*B[8] + u4*(B[9] + u2*B[10]))
+    )))
 end
 
 
@@ -228,31 +259,5 @@ function _li2(z::ComplexF64)::ComplexF64
         end
     end
 
-    B = (
-        - 1.0/4.0,
-          1.0/36.0,
-        - 1.0/3600.0,
-          1.0/211680.0,
-        - 1.0/10886400.0,
-          1.0/526901760.0,
-        - 4.0647616451442255e-11,
-          8.9216910204564526e-13,
-        - 1.9939295860721076e-14,
-          4.5189800296199182e-16
-    )
-
-    u2 = u*u
-    u4 = u2*u2
-
-    rest + sgn*(
-        u +
-        u2*(B[1] +
-        u *(B[2] +
-        u2*(
-            B[3] +
-            u2*B[4] +
-            u4*(B[5] + u2*B[6]) +
-            u4*u4*(B[7] + u2*B[8] + u4*(B[9] + u2*B[10]))
-        )))
-    )
+    rest + sgn*li2_approx(u)
 end
