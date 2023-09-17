@@ -161,8 +161,7 @@ _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 function _li2(z::ComplexF32)::ComplexF32
     clog(z) = log(abs(z)) + angle(z)*1.0f0im
 
-    rz = real(z)
-    iz = imag(z)
+    rz, iz = reim(z)
 
     if iz == 0.0f0
         if rz <= 1.0f0
@@ -198,8 +197,7 @@ end
 function _li2(z::ComplexF64)::ComplexF64
     clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
 
-    rz = real(z)
-    iz = imag(z)
+    rz, iz = reim(z)
 
     if iz == 0.0
         if rz <= 1.0
