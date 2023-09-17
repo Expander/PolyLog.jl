@@ -177,7 +177,7 @@ function _li2(z::ComplexF32)::ComplexF32
             l = -log(z)
             (l, l*log(1.0f0 - z) + zeta2, -1.0f0)
         else # nz > 2.0f0*rz
-            (-log(1.0f0 - inv(z)), -0.5*log(-z)^2 - zeta2, -1.0f0)
+            (-log(1.0f0 - inv(z)), -0.5f0*log(-z)^2 - zeta2, -1.0f0)
         end
     end
 
