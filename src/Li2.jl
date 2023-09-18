@@ -132,7 +132,6 @@ function _reli2(x::Float32)::Float32
     end
 end
 
-
 function _reli2(x::Float64)::Float64
     # transform to [0, 1/2]
     if x < -1.0
@@ -188,7 +187,6 @@ li2(z::Real) = li2(Complex(z))
 
 _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 
-
 function _li2(z::ComplexF32)::ComplexF32
     clog(z) = log(abs(z)) + angle(z)*1.0f0im
 
@@ -224,7 +222,6 @@ function _li2(z::ComplexF32)::ComplexF32
     end
 end
 
-
 function _li2(z::ComplexF64)::ComplexF64
     clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
 
@@ -232,32 +229,30 @@ function _li2(z::ComplexF64)::ComplexF64
 
     if iz == 0.0
         if rz <= 1.0
-            return reli2(rz)
-        else # rz > 1.
-            return reli2(rz) - pi*log(rz)*1.0im
+            reli2(rz)
+        else # Re(z) > 1
+            reli2(rz) - pi*log(rz)*1.0im
+        end
+    else
+        nz = abs2(z)
+
+        if nz < eps(Float64)
+            z*(1.0 + 0.25*z)
+        else
+            if rz <= 0.5
+                if nz > 1.0
+                    -li2_approx(-clog(1.0 - inv(z))) - 0.5*clog(-z)^2 - zeta2
+                else # |z|^2 <= 1
+                    li2_approx(-clog(1.0 - z))
+                end
+            else # Re(z) > 1/2
+                if nz <= 2.0*rz
+                    l = -clog(z)
+                    -li2_approx(l) + l*clog(1.0 - z) + zeta2
+                else # |z|^2 > 2*Re(z)
+                    -li2_approx(-clog(1.0 - inv(z))) - 0.5*clog(-z)^2 - zeta2
+                end
+            end
         end
     end
-
-    nz = abs2(z)
-
-    if nz < eps(Float64)
-        return z*(1.0 + 0.25*z)
-    end
-
-    (u, rest, sgn) = if rz <= 0.5
-        if nz > 1.0
-            (-clog(1.0 - inv(z)), -0.5*clog(-z)^2 - zeta2, -1.0)
-        else # nz <= 1.
-            (-clog(1.0 - z), 0.0 + 0.0im, 1.0)
-        end
-    else # rz > 0.5
-        if nz <= 2.0*rz
-            l = -clog(z)
-            (l, l*clog(1.0 - z) + zeta2, -1.0)
-        else # nz > 2.0*rz
-            (-clog(1.0 - inv(z)), -0.5*clog(-z)^2 - zeta2, -1.0)
-        end
-    end
-
-    rest + sgn*li2_approx(u)
 end
