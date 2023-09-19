@@ -183,7 +183,7 @@ end
 #
 # Li(n,-x) + (-1)^n Li(n,-1/x)
 #    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
-function reli_rem(n::Integer, x::Float64)::Float64
+function reli_rem(n::Integer, x::Real)
     l = log(-x)
     l2 = l*l
     sum = zero(x)
