@@ -29,16 +29,16 @@ _reli(n::Integer, x::Float32) = oftype(x, _reli(n, Float64(x)))
 function _reli(n::Integer, x::Float64)::Float64
     isnan(x) && return NaN
     isinf(x) && return -Inf
-    x == 0.0 && return 0.0
-    x == 1.0 && return zeta(n)
-    x == -1.0 && return neg_eta(n)
+    x == zero(x) && return zero(x)
+    x == one(x) && return zeta(n)
+    x == -one(x) && return neg_eta(n)
 
     if n < 0
-        # arXiv:2010.09860
+        # arXiv:201zero(x)9860
         l2 = ln_sqr(x)
         if (2*pi)^2*x*x < l2
             li_series_naive(n, x)
-        elseif l2 < (0.512*2*pi)^2
+        elseif l2 < (512/1000*2*pi)^2
             real(li_series_unity_neg(n, Complex(x)))
         else
             oddsgn(n)*li_series_naive(n, inv(x))
@@ -55,15 +55,15 @@ function _reli(n::Integer, x::Float64)::Float64
         reli4(x)
     else # n > 4
         # transform x to [-1,1]
-        (x, rest, sgn) = if x < -1.0
+        (x, rest, sgn) = if x < -one(x)
             (inv(x), reli_rem(n, x), oddsgn(n))
-        elseif x < 1.0
-            (x, 0.0, 1.0)
-        else # x > 1.0
+        elseif x < one(x)
+            (x, zero(x), one(x))
+        else # x > one(x)
             (inv(x), real(li_rem(n, Complex(x))), oddsgn(n))
         end
 
-        li = if n < 20 && x > 0.75
+        li = if n < 20 && x > 3/4
             li_series_unity_pos(n, x)
         else
             li_series_naive(n, x)
