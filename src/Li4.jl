@@ -126,17 +126,15 @@ function _reli4(x::Float64)::Float64
         (inv(x), 2*zeta4 + l*(zeta2 - 1/24*l), -1.0)
     end
 
-    app = if x < 0.0
-        reli4_neg(x)
+    if x < 0.0
+        rest + sgn*reli4_neg(x)
     elseif x < 0.5
-        reli4_half(x)
+        rest + sgn*reli4_half(x)
     elseif x < 0.8
-        reli4_mid(x)
+        rest + sgn*reli4_mid(x)
     else # x <= 1.0
-        reli4_one(x)
+        rest + sgn*reli4_one(x)
     end
-
-    rest + sgn*app
 end
 
 """
