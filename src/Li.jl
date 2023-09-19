@@ -164,8 +164,8 @@ function li_rem(n::Integer, z::ComplexF64)::ComplexF64
     l = clog(-z)
     l2 = l*l;
     kmax = iseven(n) ? n÷2 : (n - 1)÷2
-    p = iseven(n) ? 1.0 + 0.0im : l
-    sum = 0.0 + 0.0im
+    p = iseven(n) ? one(z) : l
+    sum = zero(z)
 
     for k in kmax:-1:1
         ifac = inv_fac(n - 2*k)
@@ -186,10 +186,10 @@ end
 function reli_rem(n::Integer, x::Float64)::Float64
     l = log(-x)
     l2 = l*l
-    sum = 0.0
+    sum = zero(x)
 
     if iseven(n)
-        p = 1.0 # collects l^(2u)
+        p = one(x) # collects l^(2u)
         for u in 0:(n÷2 - 1)
             old_sum = sum
             sum += p*inv_fac(2*u)*neg_eta(n - 2*u)
