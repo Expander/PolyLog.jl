@@ -169,7 +169,7 @@ function li_rem(n::Integer, z::Complex{T})::Complex{T} where T
 
     for k in kmax:-1:1
         ifac = inv_fac(n - 2*k)
-        ifac == zero(T) && return 2*sum
+        iszero(ifac) && return 2*sum
         old_sum = sum
         sum += neg_eta(2*k)*ifac*p
         p *= l2
