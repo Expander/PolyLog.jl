@@ -160,7 +160,7 @@ oddsgn(n) = isodd(n) ? 1.0 : -1.0
 #
 # Li(n,-z) + (-1)^n Li(n,-1/z)
 #    = -log(n,z)^n/n! + 2 sum(r=1:(n÷2), log(z)^(n-2r)/(n-2r)! Li(2r,-1))
-function li_rem(n::Integer, z::ComplexF64)::ComplexF64
+function li_rem(n::Integer, z::Complex{T})::Complex{T} where T
     l = clog(-z)
     l2 = l*l;
     kmax = iseven(n) ? n÷2 : (n - 1)÷2
@@ -169,7 +169,7 @@ function li_rem(n::Integer, z::ComplexF64)::ComplexF64
 
     for k in kmax:-1:1
         ifac = inv_fac(n - 2*k)
-        ifac == 0.0 && return 2*sum
+        ifac == zero(T) && return 2*sum
         old_sum = sum
         sum += neg_eta(2*k)*ifac*p
         p *= l2
