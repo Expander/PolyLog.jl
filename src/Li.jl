@@ -41,7 +41,7 @@ function _reli(n::Integer, x::Float64)::Float64
         elseif l2 < (512/1000*2*pi)^2
             real(li_series_unity_neg(n, Complex(x)))
         else
-            oddsgn(n)*li_series_naive(n, inv(x))
+            oddsgn(n, typeof(x))*li_series_naive(n, inv(x))
         end
     elseif n == 0
         li0(x)
@@ -56,11 +56,11 @@ function _reli(n::Integer, x::Float64)::Float64
     else # n > 4
         # transform x to [-1,1]
         (x, rest, sgn) = if x < -one(x)
-            (inv(x), reli_rem(n, x), oddsgn(n))
+            (inv(x), reli_rem(n, x), oddsgn(n, typeof(x)))
         elseif x < one(x)
             (x, zero(x), one(x))
         else # x > one(x)
-            (inv(x), real(li_rem(n, Complex(x))), oddsgn(n))
+            (inv(x), real(li_rem(n, Complex(x))), oddsgn(n, typeof(x)))
         end
 
         li = if n < 20 && x > 3/4
@@ -147,14 +147,14 @@ function _li(n::Integer, z::ComplexF64)::ComplexF64
     elseif abs2(z) <= 0.75^2
         li_series_naive(n, z)
     elseif abs2(z) >= 1.4^2
-        oddsgn(n)*li_series_naive(n, inv(z)) + li_rem(n, z)
+        oddsgn(n, typeof(real(z)))*li_series_naive(n, inv(z)) + li_rem(n, z)
     else
         li_series_unity_pos(n, z)
     end
 end
 
-# returns -(-1)^n
-oddsgn(n) = isodd(n) ? 1.0 : -1.0
+# returns -(-1)^n of type T
+oddsgn(n, T) = isodd(n) ? one(T) : -one(T)
 
 # returns r.h.s. of inversion formula for complex z:
 #
