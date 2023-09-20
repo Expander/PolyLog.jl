@@ -128,7 +128,7 @@ function _li(n::Integer, z::ComplexF64)::ComplexF64
             li_series_unity_neg(n, z)
         else
             sqrtz = sqrt(z)
-            2.0^(n - 1)*(li(n, sqrtz) + li(n, -sqrtz))
+            exp2(n - 1)*(li(n, sqrtz) + li(n, -sqrtz))
         end
     elseif n == 0
         li0(z)
