@@ -257,7 +257,7 @@ end
 #
 # Li(n,z) = gamma(1-n) (-ln(z))^(n-1)
 #           + sum(k=0:Inf, zeta(n-k) ln(z)^k/k!)
-function li_series_unity_neg(n::Integer, z::ComplexF64)::ComplexF64
+function li_series_unity_neg(n::Integer, z::Complex{T})::Complex{T} where T
     l = clog(z)
     l2 = l*l
     sum = fac(-n)*(-l)^(n - 1)
