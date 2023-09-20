@@ -292,7 +292,7 @@ function li_series_naive(n::Integer, z::ComplexOrReal)
     zn = z*z
 
     for k in 2:typemax(n)
-        term = zn/Float64(k)^n
+        term = zn/oftype(real(z), k)^n
         !isfinite(term) && break
         old_sum = sum
         sum += term
