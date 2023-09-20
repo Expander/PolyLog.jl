@@ -124,7 +124,7 @@ function _li(n::Integer, z::ComplexF64)::ComplexF64
         l2 = abs2(log(z))
         if 4*pi^2*abs2(z) < l2
             li_series_naive(n, z)
-        elseif l2 < (0.512*2*pi)^2
+        elseif l2 < (512/1000*2*pi)^2
             li_series_unity_neg(n, z)
         else
             sqrtz = sqrt(z)
@@ -144,9 +144,9 @@ function _li(n::Integer, z::ComplexF64)::ComplexF64
         li5(z)
     elseif n == 6
         li6(z)
-    elseif abs2(z) <= 0.75^2
+    elseif abs2(z) <= (3/4)^2
         li_series_naive(n, z)
-    elseif abs2(z) >= 1.4^2
+    elseif abs2(z) >= (7/5)^2
         oddsgn(n, typeof(real(z)))*li_series_naive(n, inv(z)) + li_rem(n, z)
     else
         li_series_unity_pos(n, z)
