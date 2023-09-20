@@ -26,14 +26,34 @@ end
     )
 
     for ni in nis
-        n    = ni.n
-        eps  = ni.eps
+        n = ni.n
 
-        cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"))
-        real_data = filter_real(cmpl_data)
+        c64_data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"))
+        f64_data = filter_real(c64_data)
 
-        test_function_on_data(z -> PolyLog.li(n, z)  , cmpl_data, eps, eps)
-        test_function_on_data(z -> PolyLog.reli(n, z), real_data, eps, eps)
+        # test li(::Integer, ::ComplexF16)
+        eps16 = ni.eps*eps(Float16)/eps(Float64)
+        test_function_on_data(z -> PolyLog.li(n, z), map(ComplexF32, c64_data), eps16, eps16)
+
+        # test li(::Integer, ::ComplexF32)
+        eps32 = ni.eps*eps(Float32)/eps(Float64)
+        test_function_on_data(z -> PolyLog.li(n, z), map(ComplexF32, c64_data), eps32, eps32)
+
+        # test li(::Integer, ::ComplexF64)
+        eps64 = ni.eps
+        test_function_on_data(z -> PolyLog.li(n, z), c64_data, eps64, eps64)
+
+        # test reli(::Integer, ::Float16)
+        eps16 = ni.eps*eps(Float16)/eps(Float64)
+        test_function_on_data(z -> PolyLog.reli(n, Float16(z)), map(Float16, f64_data), eps16, eps16)
+
+        # test reli(::Integer, ::Float32)
+        eps32 = ni.eps*eps(Float32)/eps(Float64)
+        test_function_on_data(z -> PolyLog.reli(n, Float32(z)), map(Float32, f64_data), eps32, eps32)
+
+        # test reli(::Integer, ::Float64)
+        eps64 = ni.eps
+        test_function_on_data(z -> PolyLog.reli(n, z), f64_data, eps64, eps64)
 
         zeta = PolyLog.zeta(n)
 
