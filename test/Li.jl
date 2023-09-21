@@ -31,29 +31,17 @@ end
         c64_data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"))
         f64_data = filter_real(c64_data)
 
-        # test li(::Integer, ::ComplexF16)
-        eps16 = ni.eps*eps(Float16)/eps(Float64)
-        test_function_on_data(z -> PolyLog.li(n, z), map(ComplexF32, c64_data), eps16, eps16)
+        # test reli(n, z)
+        for T in (Float16, Float32, Float64)
+            ep = ni.eps*eps(T)/eps(Float64)
+            test_function_on_data(z -> PolyLog.reli(n, T(z)), map(T, f64_data), ep, ep)
+        end
 
-        # test li(::Integer, ::ComplexF32)
-        eps32 = ni.eps*eps(Float32)/eps(Float64)
-        test_function_on_data(z -> PolyLog.li(n, z), map(ComplexF32, c64_data), eps32, eps32)
-
-        # test li(::Integer, ::ComplexF64)
-        eps64 = ni.eps
-        test_function_on_data(z -> PolyLog.li(n, z), c64_data, eps64, eps64)
-
-        # test reli(::Integer, ::Float16)
-        eps16 = ni.eps*eps(Float16)/eps(Float64)
-        test_function_on_data(z -> PolyLog.reli(n, Float16(z)), map(Float16, f64_data), eps16, eps16)
-
-        # test reli(::Integer, ::Float32)
-        eps32 = ni.eps*eps(Float32)/eps(Float64)
-        test_function_on_data(z -> PolyLog.reli(n, Float32(z)), map(Float32, f64_data), eps32, eps32)
-
-        # test reli(::Integer, ::Float64)
-        eps64 = ni.eps
-        test_function_on_data(z -> PolyLog.reli(n, z), f64_data, eps64, eps64)
+        # test li(n, z)
+        for T in (Float32, Float64)
+            ep = ni.eps*eps(T)/eps(Float64)
+            test_function_on_data(z -> PolyLog.li(n, z), map(Complex{T}, c64_data), ep, ep)
+        end
 
         zeta = PolyLog.zeta(n)
 
