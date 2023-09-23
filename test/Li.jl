@@ -30,19 +30,33 @@ const max_BigFloat_decimal_digits = ceil(Integer, 40*log(10)/log(2))
     for ni in nis
         n = ni.n
 
-        c64_data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"))
-        f64_data = filter_real(c64_data)
+        complex_data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"), BigFloat)
+        real_data = filter_real(complex_data)
 
         # test reli(n, z)
         for T in (Float16, Float32, Float64)
             ep = ni.eps*eps(T)/eps(Float64)
-            test_function_on_data(z -> PolyLog.reli(n, T(z)), map(T, f64_data), ep, ep)
+            test_function_on_data(z -> PolyLog.reli(n, T(z)), map(T, real_data), ep, ep)
+        end
+
+        # test reli(n, z) with BigFloat precision
+        # @todo(alex): refactor
+        setprecision(BigFloat, max_BigFloat_decimal_digits) do
+            ep = 1e-39
+            for i in 1:size(real_data, 1)
+                z = real_data[i,1]
+                if n > 4 && 0 < z && z < 3/4
+                    x = PolyLog.reli(n, z)
+                    y = real_data[i,2]
+                    @test x ≈ y atol=ep rtol=ep
+                end
+            end
         end
 
         # test li(n, z)
         for T in (Float32, Float64)
             ep = ni.eps*eps(T)/eps(Float64)
-            test_function_on_data(z -> PolyLog.li(n, z), map(Complex{T}, c64_data), ep, ep)
+            test_function_on_data(z -> PolyLog.li(n, z), map(Complex{T}, complex_data), ep, ep)
         end
 
         zeta = PolyLog.zeta(n)
@@ -64,10 +78,6 @@ const max_BigFloat_decimal_digits = ceil(Integer, 40*log(10)/log(2))
         @test PolyLog.li(n, ComplexF16(1.0 + 0.0im)) ≈ zeta
         @test PolyLog.li(n, 1//1 + 0//1im) ≈ zeta
         @test PolyLog.li(n, 1 + 0im) ≈ zeta
-    end
-
-    setprecision(BigFloat, max_BigFloat_decimal_digits) do
-        @test PolyLog.reli(5, BigFloat("0.5")) ≈ BigFloat("0.5084005792422687074591088492585899413195") atol=1e-39 rtol=1e-39
     end
 
     # value close to boundary between series 1 and 2 in arXiv:2010.09860
