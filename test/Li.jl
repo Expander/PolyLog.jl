@@ -3,6 +3,8 @@ struct Ni
     eps::Float64
 end
 
+const max_BigFloat_decimal_digits = ceil(Integer, 40*log(10)/log(2))
+
 @testset "li" begin
     nis = (
         Ni(-10, 1e-09),
@@ -62,6 +64,10 @@ end
         @test PolyLog.li(n, ComplexF16(1.0 + 0.0im)) ≈ zeta
         @test PolyLog.li(n, 1//1 + 0//1im) ≈ zeta
         @test PolyLog.li(n, 1 + 0im) ≈ zeta
+    end
+
+    setprecision(BigFloat, max_BigFloat_decimal_digits) do
+        @test PolyLog.reli(5, BigFloat("0.5")) ≈ BigFloat("0.5084005792422687074591088492585899413195") atol=1e-39 rtol=1e-39
     end
 
     # value close to boundary between series 1 and 2 in arXiv:2010.09860

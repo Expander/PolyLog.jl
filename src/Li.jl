@@ -26,7 +26,7 @@ _reli(n::Integer, x::Float16) = oftype(x, _reli(n, Float32(x)))
 
 _reli(n::Integer, x::Float32) = oftype(x, _reli(n, Float64(x)))
 
-function _reli(n::Integer, x::Float64)::Float64
+function _reli(n::Integer, x::Real)::Real
     isnan(x) && return NaN
     isinf(x) && return -Inf
     x == zero(x) && return zero(x)
