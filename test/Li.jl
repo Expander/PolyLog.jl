@@ -45,7 +45,7 @@ const max_BigFloat_decimal_digits = ceil(Integer, 40*log(10)/log(2))
             ep = 1e-39
             for i in 1:size(real_data, 1)
                 z = real_data[i,1]
-                if n > 4 && 0 < z && z < 3/4
+                if n > 4 && abs(z) < 3/4
                     x = PolyLog.reli(n, z)
                     y = real_data[i,2]
                     @test x ≈ y atol=ep rtol=ep
