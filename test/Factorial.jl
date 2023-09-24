@@ -7,6 +7,9 @@
     @test PolyLog.fac(  4) == 24.0
     @test PolyLog.fac(170) == 7.2574156153079990e306
     @test PolyLog.fac(171) == Inf
+
+    @test PolyLog.fac(  0, BigFloat) == 1.0
+    @test PolyLog.fac(171, BigFloat) == BigFloat(factorial(big(171)))
 end
 
 @testset "inv_fac" begin
@@ -19,4 +22,6 @@ end
     @test PolyLog.inv_fac(176) == 5.0529776809556651e-321
     @test PolyLog.inv_fac(177) == 2.8547896502574379e-323
     @test PolyLog.inv_fac(178) == 0.0
+
+    @test PolyLog.inv_fac(178, BigFloat) == BigFloat(inv(factorial(big(178))))
 end

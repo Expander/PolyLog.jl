@@ -61,22 +61,26 @@ const MINUS_ETA_NEG = (
 )
 
 # returns Li(n,-1) = (2.0^(1 - n) - 1.0)*zeta(n)
-function neg_eta(n::Integer)::Float64
-    if n < 0
-        if iseven(n)
-            0.0
-        elseif (1 - n)÷2 <= length(MINUS_ETA_NEG)
-            MINUS_ETA_NEG[(1 - n)÷2]
-        elseif iseven((1 - n)÷2)
-            Inf
+function neg_eta(n::Integer, T=Float64)
+    if T == Float64
+        if n < 0
+            if iseven(n)
+                0.0
+            elseif (1 - n)÷2 <= length(MINUS_ETA_NEG)
+                MINUS_ETA_NEG[(1 - n)÷2]
+            elseif iseven((1 - n)÷2)
+                Inf
+            else
+                -Inf
+            end
+        elseif n == 0
+            -0.5
+        elseif n <= length(MINUS_ETA_POS)
+            MINUS_ETA_POS[n]
         else
-            -Inf
+            -1.0
         end
-    elseif n == 0
-        -0.5
-    elseif n <= length(MINUS_ETA_POS)
-        MINUS_ETA_POS[n]
     else
-        -1.0
+        (exp2(1 - n) - one(T))*zeta(n, T)
     end
 end

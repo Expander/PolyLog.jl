@@ -30,8 +30,8 @@ function _reli(n::Integer, x::Real)::Real
     isnan(x) && return NaN
     isinf(x) && return -Inf
     x == zero(x) && return zero(x)
-    x == one(x) && return zeta(n)
-    x == -one(x) && return neg_eta(n)
+    x == one(x) && return zeta(n, typeof(x))
+    x == -one(x) && return neg_eta(n, typeof(x))
 
     if n < 0
         # arXiv:201zero(x)9860
@@ -168,15 +168,15 @@ function li_rem(n::Integer, z::Complex{T})::Complex{T} where T
     sum = zero(z)
 
     for k in kmax:-1:1
-        ifac = inv_fac(n - 2*k)
+        ifac = inv_fac(n - 2*k, T)
         iszero(ifac) && return 2*sum
         old_sum = sum
-        sum += neg_eta(2*k)*ifac*p
+        sum += neg_eta(2*k, T)*ifac*p
         p *= l2
         sum == old_sum && break
     end
 
-    2*sum - p*inv_fac(n)
+    2*sum - p*inv_fac(n, T)
 end
 
 # returns r.h.s. of inversion formula for real x < -1:
@@ -192,7 +192,7 @@ function reli_rem(n::Integer, x::Real)
         p = one(x) # collects l^(2u)
         for u in 0:(n÷2 - 1)
             old_sum = sum
-            sum += p*inv_fac(2*u)*neg_eta(n - 2*u)
+            sum += p*inv_fac(2*u, typeof(x))*neg_eta(n - 2*u, typeof(x))
             p *= l2
             sum == old_sum && break
         end
@@ -200,13 +200,13 @@ function reli_rem(n::Integer, x::Real)
         p = l # collects l^(2u + 1)
         for u in 0:((n - 3)÷2)
             old_sum = sum
-            sum += p*inv_fac(2*u + 1)*neg_eta(n - 1 - 2*u)
+            sum += p*inv_fac(2*u + 1, typeof(x))*neg_eta(n - 1 - 2*u, typeof(x))
             p *= l2
             sum == old_sum && break
         end
     end
 
-    2*sum - p*inv_fac(n)
+    2*sum - p*inv_fac(n, typeof(x))
 end
 
 # returns Li(n,z) using the series expansion of Li(n,z) for n > 0 and
@@ -268,11 +268,11 @@ function li_series_unity_neg(n::Integer, z::Complex{T})::Complex{T} where T
     else
         kmin = 2
         lk = l2
-        sum += zeta(n)
+        sum += zeta(n, T)
     end
 
     for k in kmin:2:typemax(n)
-        term = zeta(n - k)*inv_fac(k)*lk
+        term = zeta(n - k, T)*inv_fac(k, T)*lk
         !isfinite(term) && break
         sum_old = sum
         sum += term

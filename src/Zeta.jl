@@ -61,24 +61,42 @@ const ZETA_NEG = (
 )
 
 # Riemann zeta function for integer arguments
-function zeta(n::Integer)::Float64
-    if n < 0
-        if iseven(n)
-            0.0
-        elseif (1 - n)÷2 <= length(ZETA_NEG)
-            ZETA_NEG[(1 - n)÷2]
-        elseif iseven((1 - n)÷2)
+function zeta(n::Integer, T=Float64)
+    if T == Float64
+        if n < 0
+            if iseven(n)
+                0.0
+            elseif (1 - n)÷2 <= length(ZETA_NEG)
+                ZETA_NEG[(1 - n)÷2]
+            elseif iseven((1 - n)÷2)
+                Inf
+            else
+                -Inf
+            end
+        elseif n == 0
+            -0.5
+        elseif n == 1
             Inf
+        elseif n - 1 <= length(ZETA_POS)
+            ZETA_POS[n - 1]
         else
-            -Inf
+            one(Float64)/(one(Float64) - 2.0^(-n))
         end
-    elseif n == 0
-        -0.5
-    elseif n == 1
-        Inf
-    elseif n - 1 <= length(ZETA_POS)
-        ZETA_POS[n - 1]
     else
-        one(Float64)/(one(Float64) - 2.0^(-n))
+        if n < 0
+            throw(DomainError(n, "zeta(n, T=$(T)) not implemented for n < 0"))
+        elseif n == 0
+            BigFloat("-0.5")
+        elseif n == 1
+            BigFloat("Inf")
+        else
+            sum = one(T)
+            for i in 2:typemax(n)
+                old_sum = sum
+                sum += convert(T, i)^(-n)
+                sum == old_sum && break
+            end
+            sum
+        end
     end
 end
