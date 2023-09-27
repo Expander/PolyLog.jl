@@ -93,10 +93,10 @@ function zeta(n::Integer, T=Float64)
             sum = one(T)
             for i in 2:typemax(n)
                 old_sum = sum
-                sum += convert(T, i)^(-n)
+                sum += (-1)^(i+1)*convert(T, i)^(-n)
                 sum == old_sum && break
             end
-            sum
+            sum/(one(T) - exp2(1 - n))
         end
     end
 end
