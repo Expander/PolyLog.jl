@@ -92,19 +92,8 @@ function zeta_f64(n::Integer)::Float64
 end
 
 function zeta_big(n::Integer)::BigFloat
-    if n < 0
-        throw(DomainError(n, "zeta(n, T=$(T)) not implemented for n < 0"))
-    elseif n == 0
-        BigFloat("-0.5")
-    elseif n == 1
-        BigFloat("Inf")
-    else
-        sum = one(T)
-        for i in 2:typemax(n)
-            old_sum = sum
-            sum += (-1)^(i+1)*convert(T, i)^(-n)
-            sum == old_sum && break
-        end
-        sum/(one(T) - exp2(1 - n))
-    end
+    x = BigFloat(n)
+    z = BigFloat()
+    ccall((:mpfr_zeta, :libmpfr), Int32, (Ref{BigFloat}, Ref{BigFloat}, Int32), z, x, ROUNDING_MODE[])
+    return z
 end

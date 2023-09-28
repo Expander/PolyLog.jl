@@ -65,7 +65,7 @@ function neg_eta(n::Integer, T=Float64)
     if T == Float64
         neg_eta_f46(n)
     else
-        (exp2(1 - n) - one(T))*zeta(n, T)
+        neg_eta_big(n)
     end
 end
 
@@ -87,4 +87,8 @@ function neg_eta_f46(n::Integer)::Float64
     else
         -1.0
     end
+end
+
+function neg_eta_big(n::Integer)::BigFloat
+    (exp2(1 - n) - one(T))*zeta(n, T)
 end
