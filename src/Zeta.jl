@@ -1,3 +1,5 @@
+using Base.MPFR: ROUNDING_MODE
+
 # zeta(n) for n = 2,...,33
 const ZETA_POS = (
     zeta2, zeta3, zeta4, zeta5, zeta6,
