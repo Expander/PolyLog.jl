@@ -90,5 +90,9 @@ function neg_eta_f46(n::Integer)::Float64
 end
 
 function neg_eta_big(n::Integer)::BigFloat
-    (exp2(1 - n) - one(BigFloat))*zeta_big(n)
+    if n == 1
+        -log(big(2))
+    else
+        (exp2(1 - n) - one(BigFloat))*zeta_big(n)
+    end
 end
