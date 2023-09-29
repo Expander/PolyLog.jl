@@ -219,33 +219,33 @@ end
 # zeta(1) = -log(-log(z)) + harmonic(n - 1)
 #
 # harmonic(n) = sum(k=1:n, 1/k)
-function li_series_unity_pos(n::Integer, z::ComplexOrReal)
+function li_series_unity_pos(n::Integer, z::ComplexOrReal{T}) where T
     l = clog(z)
-    sum = zeta(n)
+    sum = zeta(n, T)
     p = one(z) # collects l^j/j!
 
     for j in 1:(n - 2)
         p *= l/j
         old_sum = sum;
-        sum += zeta(n - j)*p
+        sum += zeta(n - j, T)*p
         sum == old_sum && break
     end
 
     p *= l/(n - 1)
-    sum += (harmonic(n - 1) - clog(-l))*p
+    sum += (harmonic(n - 1) - clog(-l))*p # todo
 
     p *= l/n
-    sum += zeta(0)*p
+    sum += zeta(0, T)*p
 
     p *= l/(n + 1)
-    sum += zeta(-1)*p
+    sum += zeta(-1, T)*p
 
     l2 = l*l
 
     for j in (n + 3):2:typemax(n)
         p *= l2/((j - 1)*j)
         old_sum = sum
-        sum += zeta(n - j)*p
+        sum += zeta(n - j, T)*p
         sum == old_sum && break
     end
 
@@ -260,7 +260,7 @@ end
 function li_series_unity_neg(n::Integer, z::Complex{T})::Complex{T} where T
     l = clog(z)
     l2 = l*l
-    sum = fac(-n)*(-l)^(n - 1)
+    sum = fac(-n, T)*(-l)^(n - 1)
 
     if iseven(n)
         kmin = 1
