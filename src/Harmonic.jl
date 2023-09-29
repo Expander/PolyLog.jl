@@ -24,7 +24,7 @@ end
 function harmonic_big(n::Integer)
     sum = one(BigFloat)
     for k in 2:n
-        sum += inv(k)
+        sum += inv(big(k))
     end
     sum
 end
