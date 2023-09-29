@@ -232,7 +232,7 @@ function li_series_unity_pos(n::Integer, z::ComplexOrReal{T}) where T
     end
 
     p *= l/(n - 1)
-    sum += (harmonic(n - 1) - clog(-l))*p # todo
+    sum += (harmonic(n - 1, T) - clog(-l))*p
 
     p *= l/n
     sum += zeta(0, T)*p
