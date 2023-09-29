@@ -27,14 +27,14 @@ _reli(n::Integer, x::Float16) = oftype(x, _reli(n, Float32(x)))
 _reli(n::Integer, x::Float32) = oftype(x, _reli(n, Float64(x)))
 
 function _reli(n::Integer, x::Real)::Real
-    isnan(x) && return NaN
-    isinf(x) && return -Inf
+    isnan(x) && return oftype(x, NaN)
+    isinf(x) && return oftype(x, -Inf)
     x == zero(x) && return zero(x)
     x == one(x) && return zeta(n, typeof(x))
     x == -one(x) && return neg_eta(n, typeof(x))
 
     if n < 0
-        # arXiv:201zero(x)9860
+        # arXiv:2010.09860
         l2 = ln_sqr(x)
         if (2*pi)^2*x*x < l2
             li_series_naive(n, x)

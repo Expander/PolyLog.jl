@@ -19,7 +19,7 @@ function reli1(x::Real)
     if x < one(x)
         -log(one(x) - x)
     elseif x == one(x)
-        Inf
+        oftype(x, Inf)
     else # x > 1
         -log(x - one(x))
     end
