@@ -47,11 +47,11 @@ function _reli(n::Integer, x::Real)::Real
         li0(x)
     elseif n == 1
         reli1(x)
-    elseif n == 2
+    elseif issimplefloat(x) && n == 2
         reli2(x)
-    elseif n == 3
+    elseif issimplefloat(x) && n == 3
         reli3(x)
-    elseif n == 4
+    elseif issimplefloat(x) && n == 4
         reli4(x)
     else # n > 4
         # transform x to [-1,1]
@@ -155,6 +155,9 @@ end
 
 # returns -(-1)^n of type T
 oddsgn(n, T) = isodd(n) ? one(T) : -one(T)
+
+# returns true if type of x is Float16, Float32 or Float64
+issimplefloat(x::Real) = (typeof(x) in (Float16, Float32, Float64))
 
 # returns r.h.s. of inversion formula for complex z:
 #
