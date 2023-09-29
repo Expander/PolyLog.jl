@@ -41,7 +41,7 @@ const max_BigFloat_decimal_digits = ceil(Integer, 40*log(10)/log(2))
 
         # test reli(n, z) with BigFloat precision
         # @todo(alex): refactor
-        if n > 4
+        if n > 4 || n < 2
             setprecision(BigFloat, max_BigFloat_decimal_digits) do
                 ep = ni.eps*eps(BigFloat)/eps(Float64)
                 test_function_on_data(z -> PolyLog.reli(n, BigFloat(z)), map(BigFloat, real_data), ep, ep)
