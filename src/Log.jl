@@ -11,6 +11,17 @@ function clog(x::Real)
 end
 
 # returns |ln(x)|^2 for all x
+function ln_sqr(x::Real)::Real
+    if x < zero(x)
+        abs2(log(complex(x)))
+    elseif iszero(x)
+        oftype(x, Inf)
+    else
+        log(x)^2
+    end
+end
+
+# returns |ln(x)|^2 for all x
 function ln_sqr(x::Float64)::Float64
     if x < zero(x)
         log(-x)^2 + pi^2
