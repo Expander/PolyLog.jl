@@ -22,9 +22,13 @@ function harmonic_f64(n::Integer)
 end
 
 function harmonic_big(n::Integer)
-    sum = one(BigFloat)
-    for k in 2:n
-        sum += inv(big(k))
+    if n <= 0
+        throw(DomainError(n, "harmonic not implemented for n <= 0"))
+    else
+        sum = one(BigFloat)
+        for k in 2:n
+            sum += inv(big(k))
+        end
+        sum
     end
-    sum
 end
