@@ -2,14 +2,14 @@
     cmpl_data = read_from(joinpath(@__DIR__, "data", "Li3.txt"), BigFloat)
     real_data = filter_real(cmpl_data)
 
-    test_function_on_data(z -> PolyLog.li3(ComplexF64(z)), cmpl_data, 1e-14, 1e-14)
-    test_function_on_data(z -> PolyLog.reli3(Float64(z)) , real_data, 1e-14, 1e-14)
+    test_function_on_data(PolyLog.li3  , map(ComplexF64, cmpl_data), 1e-14, 1e-14)
+    test_function_on_data(PolyLog.reli3, map(Float64   , real_data), 1e-14, 1e-14)
 
-    test_function_on_data(z -> PolyLog.li3(ComplexF32(z)), cmpl_data, 1e-6, 1e-6)
-    test_function_on_data(z -> PolyLog.reli3(Float32(z) ), real_data, 1e-6, 1e-6)
+    test_function_on_data(PolyLog.li3  , map(ComplexF32, cmpl_data), 1e-6, 1e-6)
+    test_function_on_data(PolyLog.reli3, map(Float32   , real_data), 1e-6, 1e-6)
 
-    test_function_on_data(z -> PolyLog.li3(ComplexF16(z)), filter_ComplexF16(cmpl_data), 1e-2, 1e-2)
-    test_function_on_data(z -> PolyLog.reli3(Float16(z) ), real_data, 1e-2, 1e-2)
+    test_function_on_data(PolyLog.li3  , filter_ComplexF16(map(ComplexF16, cmpl_data)), 1e-2, 1e-2)
+    test_function_on_data(PolyLog.reli3, map(Float16, real_data), 1e-2, 1e-2)
 
     zeta3 = 1.2020569031595943
 

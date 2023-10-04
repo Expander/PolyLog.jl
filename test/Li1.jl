@@ -8,14 +8,14 @@
         test_function_on_data(z -> PolyLog.reli1(z), real_data, ep, ep)
     end
 
-    test_function_on_data(z -> PolyLog.li1(ComplexF64(z)), cmpl_data, 1e-14, 1e-14)
-    test_function_on_data(z -> PolyLog.reli1(Float64(z)) , real_data, 1e-14, 1e-14)
+    test_function_on_data(PolyLog.li1  , map(ComplexF64, cmpl_data), 1e-14, 1e-14)
+    test_function_on_data(PolyLog.reli1, map(Float64   , real_data), 1e-14, 1e-14)
 
-    test_function_on_data(z -> PolyLog.li1(ComplexF32(z)), cmpl_data, 1e-6, 1e-6)
-    test_function_on_data(z -> PolyLog.reli1(Float32(z) ), real_data, 1e-6, 1e-6)
+    test_function_on_data(PolyLog.li1  , map(ComplexF32, cmpl_data), 1e-6, 1e-6)
+    test_function_on_data(PolyLog.reli1, map(Float32   , real_data), 1e-6, 1e-6)
 
-    test_function_on_data(z -> PolyLog.li1(ComplexF16(z)), cmpl_data, 1e-2, 1e-2)
-    test_function_on_data(z -> PolyLog.reli1(Float16(z) ), real_data, 1e-2, 1e-2)
+    test_function_on_data(PolyLog.li1  , map(ComplexF16, cmpl_data), 1e-2, 1e-2)
+    test_function_on_data(PolyLog.reli1, map(Float16   , real_data), 1e-2, 1e-2)
 
     @test PolyLog.reli1(-1.0) ≈ -log(2.0)
     @test PolyLog.reli1(-1.0f0) ≈ -log(2.0f0)

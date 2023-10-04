@@ -34,7 +34,7 @@ end
         # test reli(n, z)
         for T in (Float16, Float32, Float64)
             ep = ni.eps*eps(T)/eps(Float64)
-            test_function_on_data(z -> PolyLog.reli(n, T(z)), map(T, real_data), ep, ep)
+            test_function_on_data(z -> PolyLog.reli(n, z), map(T, real_data), ep, ep)
         end
 
         # test reli(n, z) with BigFloat precision
@@ -42,7 +42,7 @@ end
         if n != 2
             setprecision(BigFloat, MAX_BINARY_DIGITS) do
                 ep = ni.eps*eps(BigFloat)/eps(Float64)
-                test_function_on_data(z -> PolyLog.reli(n, BigFloat(z)), map(BigFloat, real_data), ep, ep)
+                test_function_on_data(z -> PolyLog.reli(n, z), map(BigFloat, real_data), ep, ep)
             end
         end
 
