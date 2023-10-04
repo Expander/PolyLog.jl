@@ -1,9 +1,9 @@
 @testset "li2" begin
-    cmpl_data = read_from(joinpath(@__DIR__, "data", "Li2.txt"))
+    cmpl_data = read_from(joinpath(@__DIR__, "data", "Li2.txt"), BigFloat)
     real_data = filter_real(cmpl_data)
 
-    test_function_on_data(z -> PolyLog.li2(z)  , cmpl_data, 1e-14, 1e-14)
-    test_function_on_data(z -> PolyLog.reli2(z), real_data, 1e-14, 1e-14)
+    test_function_on_data(z -> PolyLog.li2(ComplexF64(z)), cmpl_data, 1e-14, 1e-14)
+    test_function_on_data(z -> PolyLog.reli2(Float64(z)) , real_data, 1e-14, 1e-14)
 
     test_function_on_data(z -> PolyLog.li2(ComplexF32(z)), cmpl_data, 1e-6, 1e-6)
     test_function_on_data(z -> PolyLog.reli2(Float32(z) ), real_data, 1e-6, 1e-6)
