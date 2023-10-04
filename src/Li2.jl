@@ -55,7 +55,7 @@ function reli2_approx(x::BigFloat)::BigFloat
 
     for n in 2:typemax(Int64)
         old_sum = sum
-        sum += p*bernoulli(2*n)/fac(2*n + 1)
+        sum += p*bernoulli(n)/fac(2*n + 1)
         sum == old_sum && break
         p *= u2
     end
@@ -64,16 +64,9 @@ function reli2_approx(x::BigFloat)::BigFloat
 end
 
 
-# Bernoulli number
+# even Bernoulli number B(2n)
 function bernoulli(n)
-    A = Vector{Rational{BigInt}}(undef, n + 1)
-    for m in 0:n
-        A[m + 1] = 1//(m + 1)
-        for j in m:-1:1
-            A[j] = j*(A[j] - A[j + 1])
-        end
-    end
-    A[1]
+    (-1)^(n+1)*2*fac(big(2*n))*zeta(2*n, BigFloat)/(2*big(pi))^(2*n)
 end
 
 
