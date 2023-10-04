@@ -1,9 +1,15 @@
 @testset "li1" begin
-    cmpl_data = read_from(joinpath(@__DIR__, "data", "Li1.txt"))
+    cmpl_data = read_from(joinpath(@__DIR__, "data", "Li1.txt"), BigFloat)
     real_data = filter_real(cmpl_data)
 
-    test_function_on_data(z -> PolyLog.li1(z)  , cmpl_data, 1e-14, 1e-14)
-    test_function_on_data(z -> PolyLog.reli1(z), real_data, 1e-14, 1e-14)
+    setprecision(BigFloat, MAX_BINARY_DIGITS) do
+        ep = 10*eps(BigFloat)
+        test_function_on_data(z -> PolyLog.li1(z)  , cmpl_data, ep, ep)
+        test_function_on_data(z -> PolyLog.reli1(z), real_data, ep, ep)
+    end
+
+    test_function_on_data(z -> PolyLog.li1(ComplexF64(z)), cmpl_data, 1e-14, 1e-14)
+    test_function_on_data(z -> PolyLog.reli1(Float64(z)) , real_data, 1e-14, 1e-14)
 
     test_function_on_data(z -> PolyLog.li1(ComplexF32(z)), cmpl_data, 1e-6, 1e-6)
     test_function_on_data(z -> PolyLog.reli1(Float32(z) ), real_data, 1e-6, 1e-6)
