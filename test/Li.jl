@@ -3,8 +3,6 @@ struct Ni
     eps::Float64
 end
 
-const max_BigFloat_decimal_digits = ceil(Integer, 40*log(10)/log(2))
-
 @testset "li" begin
     nis = (
         Ni(-10, 1e-09),
