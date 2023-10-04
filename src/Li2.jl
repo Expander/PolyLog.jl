@@ -47,7 +47,7 @@ end
 # approximation of Re[Li2(x)] for x in [0, 1/2]
 # todo(alex): benchmark this routine
 function reli2_approx(x::BigFloat)::BigFloat
-    u = -log(one(x) - x)
+    u = -log1p(-x)
     u2 = u*u
 
     p = u2 # powers of u2
