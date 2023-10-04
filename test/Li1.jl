@@ -4,8 +4,8 @@
 
     setprecision(BigFloat, MAX_BINARY_DIGITS) do
         ep = 10*eps(BigFloat)
-        test_function_on_data(z -> PolyLog.li1(z)  , cmpl_data, ep, ep)
-        test_function_on_data(z -> PolyLog.reli1(z), real_data, ep, ep)
+        test_function_on_data(PolyLog.li1  , cmpl_data, ep, ep)
+        test_function_on_data(PolyLog.reli1, real_data, ep, ep)
     end
 
     test_function_on_data(PolyLog.li1  , map(ComplexF64, cmpl_data), 1e-14, 1e-14)
