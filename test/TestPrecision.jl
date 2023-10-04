@@ -1,1 +1,2 @@
-const max_BigFloat_decimal_digits = ceil(Integer, 40*log(10)/log(2))
+const MAX_DECIMAL_DIGITS = 40
+const MAX_BINARY_DIGITS = ceil(Integer, MAX_DECIMAL_DIGITS*log(10)/log(2))
