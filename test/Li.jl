@@ -38,12 +38,9 @@ end
         end
 
         # test reli(n, z) with BigFloat precision
-        # @todo(alex): refactor
-        if n != 2
-            setprecision(BigFloat, MAX_BINARY_DIGITS) do
-                ep = ni.eps*eps(BigFloat)/eps(Float64)
-                test_function_on_data(z -> PolyLog.reli(n, z), map(BigFloat, real_data), ep, ep)
-            end
+        setprecision(BigFloat, MAX_BINARY_DIGITS) do
+            ep = ni.eps*eps(BigFloat)/eps(Float64)
+            test_function_on_data(z -> PolyLog.reli(n, z), map(BigFloat, real_data), ep, ep)
         end
 
         # test li(n, z)

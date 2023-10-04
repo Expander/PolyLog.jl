@@ -3,7 +3,7 @@
     real_data = filter_real(cmpl_data)
 
     setprecision(BigFloat, MAX_BINARY_DIGITS) do
-        ep = 10^3*eps(BigFloat) # @todo(alex): improve test precision
+        ep = 10*eps(BigFloat)
         test_function_on_data(PolyLog.reli2, real_data, ep, ep)
     end
 
