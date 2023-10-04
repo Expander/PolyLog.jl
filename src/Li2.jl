@@ -44,6 +44,39 @@ function reli2_approx(x::Float32)::Float32
 end
 
 
+# approximation of Re[Li2(x)] for x in [0, 1/2]
+# todo(alex): benchmark this routine
+function reli2_approx(x::BigFloat)::BigFloat
+    u = -log(one(x) - x)
+    u2 = u*u
+
+    p = u2 # powers of u2
+    sum = one(x)/36
+
+    for n in 2:typemax(Int64)
+        old_sum = sum
+        sum += p*bernoulli(2*n)/fac(2*n + 1)
+        sum == old_sum && break
+        p *= u2
+    end
+
+    u + u2*(-one(x)/4 + u*sum)
+end
+
+
+# Bernoulli number
+function bernoulli(n)
+    A = Vector{Rational{BigInt}}(undef, n + 1)
+    for m in 0:n
+        A[m + 1] = 1//(m + 1)
+        for j in m:-1:1
+            A[j] = j*(A[j] - A[j + 1])
+        end
+    end
+    A[1]
+end
+
+
 # series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
 # in terms of u = -log(1-z)
 function li2_approx(u::ComplexF32)::ComplexF32
@@ -154,6 +187,33 @@ function _reli2(x::Float64)::Float64
         reli2_approx(1.0 - 1.0/x) + zeta2 - l*(log(1.0 - 1.0/x) + 0.5*l)
     else
         -reli2_approx(1.0/x) + 2.0*zeta2 - 0.5*log(x)^2
+    end
+end
+
+function _reli2(x::BigFloat)::BigFloat
+    # transform to [0, 1/2]
+    if x < -one(x)
+        l = log(one(x) - x)
+        reli2_approx(inv(one(x) - x)) - zeta(2, typeof(x)) + l*(one(x)/2*l - log(-x))
+    elseif x == -one(x)
+        -one(x)/2*zeta(2, typeof(x))
+    elseif x < zero(x)
+        -reli2_approx(x/(x - one(x))) - one(x)/2*log1p(-x)^2
+    elseif iszero(x)
+        zero(x)
+    elseif x < one(x)/2
+        reli2_approx(x)
+    elseif x == one(x)/2
+        BigFloat(pi)^2/12 - log(big(2))^2/2
+    elseif x < one(x)
+        -reli2_approx(one(x) - x) + zeta(2, typeof(x)) - log(x)*log1p(-x)
+    elseif x == one(x)
+        zeta(2, typeof(x))
+    elseif x < 2*one(x)
+        l = log(x)
+        reli2_approx(one(x) - inv(x)) + zeta(2, typeof(x)) - l*(log(one(x) - inv(x)) + one(x)/2*l)
+    else
+        -reli2_approx(inv(x)) + 2*zeta(2, typeof(x)) - one(x)/2*log(x)^2
     end
 end
 

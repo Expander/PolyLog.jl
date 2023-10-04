@@ -2,6 +2,11 @@
     cmpl_data = read_from(joinpath(@__DIR__, "data", "Li2.txt"), BigFloat)
     real_data = filter_real(cmpl_data)
 
+    setprecision(BigFloat, MAX_BINARY_DIGITS) do
+        ep = 10^3*eps(BigFloat) # @todo(alex): improve test precision
+        test_function_on_data(PolyLog.reli2, real_data, ep, ep)
+    end
+
     test_function_on_data(PolyLog.li2  , map(ComplexF64, cmpl_data), 1e-14, 1e-14)
     test_function_on_data(PolyLog.reli2, map(Float64   , real_data), 1e-14, 1e-14)
 
