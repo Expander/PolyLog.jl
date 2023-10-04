@@ -2,6 +2,10 @@
     cmpl_data = read_from(joinpath(@__DIR__, "data", "Li0.txt"), BigFloat)
     real_data = filter_real(cmpl_data)
 
+    setprecision(BigFloat, MAX_BINARY_DIGITS) do
+        test_function_on_data(z -> PolyLog.li0(z), cmpl_data, 1e-39, 1e-39)
+    end
+
     test_function_on_data(z -> PolyLog.li0(ComplexF64(z)), cmpl_data, 1e-14, 1e-14)
     test_function_on_data(z -> PolyLog.li0(Float64(z))   , real_data, 1e-14, 1e-14)
 
