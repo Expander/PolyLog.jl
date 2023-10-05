@@ -192,7 +192,7 @@ function _reli2(x::BigFloat)::BigFloat
     elseif x < one(x)/2
         reli2_approx(x)
     elseif x == one(x)/2
-        BigFloat(pi)^2/12 - log(big(2))^2/2
+        oftype(x, pi)^2/12 - log(oftype(x, 2))^2/2
     elseif x < one(x)
         -reli2_approx(one(x) - x) + zeta(2, typeof(x)) - log(x)*log1p(-x)
     elseif x == one(x)
