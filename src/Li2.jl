@@ -119,6 +119,9 @@ License: MIT
 ```jldoctest; setup = :(using PolyLog)
 julia> reli2(1.0)
 1.6449340668482264
+
+julia> reli2(BigFloat("1.0"))
+1.644934066848226436472415166646025189218949901206798437735558229370007470403202
 ```
 """
 reli2(x::Real) = _reli2(float(x))
@@ -223,7 +226,7 @@ License: MIT
 # Example
 ```jldoctest; setup = :(using PolyLog)
 julia> li2(1.0 + 1.0im)
-0.616850275068085 + 1.4603621167531196im
+0.6168502750680849 + 1.4603621167531196im
 ```
 """
 li2(z::Complex) = _li2(float(z))

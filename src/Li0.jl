@@ -13,6 +13,9 @@ License: MIT
 ```jldoctest; setup = :(using PolyLog)
 julia> li0(0.5)
 1.0
+
+julia> li0(BigFloat("0.5"))
+1.0
 ```
 """
 li0(z::Number) = z/(1 - z)
