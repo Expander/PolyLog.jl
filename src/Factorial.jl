@@ -121,7 +121,7 @@ const INVERSE_FACTORIALS = (
 )
 
 # returns n! for n >= 0
-function fac(n::Integer, T)
+function fac(n::Integer, ::Type{T})::T where T
     if issimplefloat(T)
         convert(T, fac_f64(n))
     else
@@ -148,7 +148,7 @@ function fac_big(n::Integer)::BigFloat
 end
 
 # returns 1/n! for n >= 0
-function inv_fac(n::Integer, T)
+function inv_fac(n::Integer, ::Type{T})::T where T
     if issimplefloat(T)
         convert(T, inv_fac_f64(n))
     else

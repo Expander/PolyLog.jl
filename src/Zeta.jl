@@ -63,7 +63,7 @@ const ZETA_NEG = (
 )
 
 # Riemann zeta function for integer arguments
-function zeta(n::Integer, T)
+function zeta(n::Integer, ::Type{T})::T where T
     if issimplefloat(T)
         convert(T, zeta_f64(n))
     else

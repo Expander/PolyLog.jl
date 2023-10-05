@@ -61,7 +61,7 @@ const MINUS_ETA_NEG = (
 )
 
 # returns Li(n,-1) = (2^(1 - n) - 1)*zeta(n)
-function neg_eta(n::Integer, T)
+function neg_eta(n::Integer, ::Type{T})::T where T
     if issimplefloat(T)
         convert(T, neg_eta_f46(n))
     else

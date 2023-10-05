@@ -29,7 +29,7 @@ _reli(n::Integer, x::Float16) = oftype(x, _reli(n, Float32(x)))
 
 _reli(n::Integer, x::Float32) = oftype(x, _reli(n, Float64(x)))
 
-function _reli(n::Integer, x::Real)::Real
+function _reli(n::Integer, x::Real)
     isnan(x) && return oftype(x, NaN)
     isinf(x) && return oftype(x, -Inf)
     x == zero(x) && return zero(x)
@@ -157,7 +157,9 @@ function _li(n::Integer, z::ComplexF64)::ComplexF64
 end
 
 # returns -(-1)^n of type T
-oddsgn(n, T) = isodd(n) ? one(T) : -one(T)
+function oddsgn(n, ::Type{T})::T where T
+    isodd(n) ? one(T) : -one(T)
+end
 
 # returns r.h.s. of inversion formula for complex z:
 #
