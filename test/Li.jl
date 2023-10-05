@@ -83,4 +83,13 @@ end
     @test isinf(PolyLog.reli(10, BigFloat(Inf)))
     @test isnan(PolyLog.li(10, NaN))
     @test isinf(PolyLog.li(10, Inf))
+
+    # test type stability
+    for T in (Float16, Float32, Float64, BigFloat)
+        for n in -10:10
+            for x in (NaN, Inf, -2, -1, 0, 1, 2, 3)
+                @test typeof(PolyLog.reli(n, convert(T, x))) == T
+            end
+        end
+    end
 end
