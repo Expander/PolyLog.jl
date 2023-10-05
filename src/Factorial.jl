@@ -121,7 +121,7 @@ const INVERSE_FACTORIALS = (
 )
 
 # returns n! for n >= 0
-function fac(n::Integer, T=Float64)
+function fac(n::Integer, T)
     if n < 0
         throw(DomainError(n, "fac not implemented for n < 0"))
     elseif T == Float64
@@ -136,7 +136,7 @@ function fac(n::Integer, T=Float64)
 end
 
 # returns 1/n! for n >= 0
-function inv_fac(n::Integer, T=Float64)
+function inv_fac(n::Integer, T)
     if n < 0
         throw(DomainError(n, "inv_fac not implemented for n < 0"))
     elseif T == Float64
@@ -146,6 +146,6 @@ function inv_fac(n::Integer, T=Float64)
             0.0
         end
     else
-        inv(factorial(big(n)))
+        BigFloat(inv(factorial(big(n))))
     end
 end

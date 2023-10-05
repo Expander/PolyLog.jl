@@ -116,7 +116,7 @@ function _li(n::Integer, z::ComplexF64)::ComplexF64
         if real(z) <= one(typeof(real(z))) || n <= 0
             return Complex(reli(n, real(z)))
         else
-            return Complex(reli(n, real(z)), -pi*inv_fac(n - 1)*log(real(z))^(n - 1))
+            return Complex(reli(n, real(z)), -pi*inv_fac(n - 1, Float64)*log(real(z))^(n - 1))
         end
     end
 
