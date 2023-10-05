@@ -3,6 +3,12 @@
     @test_throws DomainError PolyLog.harmonic(-1, BigFloat)
     @test_throws DomainError PolyLog.harmonic(0, Float64)
     @test_throws DomainError PolyLog.harmonic(0, BigFloat)
+
+    @test typeof(PolyLog.harmonic(1, Float16)) == Float16
+    @test typeof(PolyLog.harmonic(1, Float32)) == Float32
+    @test typeof(PolyLog.harmonic(1, Float64)) == Float64
+    @test typeof(PolyLog.harmonic(1, BigFloat)) == BigFloat
+
     @test PolyLog.harmonic( 1, Float64) == 1.0
     @test PolyLog.harmonic( 2, Float64) == 3/2
     @test PolyLog.harmonic( 3, Float64) == 11/6

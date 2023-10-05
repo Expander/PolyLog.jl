@@ -1,7 +1,7 @@
 # returns n-th harmonic number, n > 0
 function harmonic(n::Integer, T)
-    if T == Float64
-        harmonic_f64(n)
+    if issimplefloat(T)
+        convert(T, harmonic_f64(n))
     else
         harmonic_big(n)
     end
