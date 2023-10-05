@@ -2,6 +2,11 @@
     @test_throws DomainError PolyLog.fac(-1, Float64)
     @test_throws DomainError PolyLog.fac(-1, BigFloat)
 
+    @test typeof(PolyLog.fac(1, Float16)) == Float16
+    @test typeof(PolyLog.fac(1, Float32)) == Float32
+    @test typeof(PolyLog.fac(1, Float64)) == Float64
+    @test typeof(PolyLog.fac(1, BigFloat)) == BigFloat
+
     @test PolyLog.fac(  0, Float64) == 1.0
     @test PolyLog.fac(  1, Float64) == 1.0
     @test PolyLog.fac(  2, Float64) == 2.0
@@ -21,6 +26,11 @@ end
 @testset "inv_fac" begin
     @test_throws DomainError PolyLog.inv_fac(-1, Float64)
     @test_throws DomainError PolyLog.inv_fac(-1, BigFloat)
+
+    @test typeof(PolyLog.inv_fac(1, Float16)) == Float16
+    @test typeof(PolyLog.inv_fac(1, Float32)) == Float32
+    @test typeof(PolyLog.inv_fac(1, Float64)) == Float64
+    @test typeof(PolyLog.inv_fac(1, BigFloat)) == BigFloat
 
     @test PolyLog.inv_fac(  0, Float64) == 1.0
     @test PolyLog.inv_fac(  1, Float64) == 1.0
