@@ -45,26 +45,44 @@ end
 
 
 # approximation of Re[Li2(x)] for x in [0, 1/2]
-# todo(alex): benchmark this routine
 function reli2_approx(x::BigFloat)::BigFloat
-    u = -log1p(-x)
-    u2 = u*u
+    sum = x
+    xn = x*x
 
-    c0 = inv(4*big(pi)^2)
-
-    p = u2*c0^2
-    sum = one(x)/72
-
-    for n in 2:typemax(Int64)
+    for k in 2:typemax(Int64)
+        term = xn/oftype(x, k)^2
+        !isfinite(term) && break
         old_sum = sum
-        sgn = iseven(n) ? -1 : 1
-        sum += sgn*p/(2*n + 1)*zeta(2*n, typeof(x))
+        sum += term
         sum == old_sum && break
-        p *= u2*c0
+        xn *= x
     end
 
-    u + u2*(-one(x)/4 + 2*u*sum)
+    sum
 end
+
+
+# approximation of Li2(z) for 0 < Re(z) < 1/2 and |z| < 1
+# todo(alex): benchmark this routine
+# function li2_approx(x::BigFloat)::BigFloat
+#     u = -log1p(-x)
+#     u2 = u*u
+
+#     c0 = inv(4*big(pi)^2)
+
+#     p = u2*c0^2
+#     sum = one(x)/72
+
+#     for n in 2:typemax(Int64)
+#         old_sum = sum
+#         sgn = iseven(n) ? -1 : 1
+#         sum += sgn*p/(2*n + 1)*zeta(2*n, typeof(x))
+#         sum == old_sum && break
+#         p *= u2*c0
+#     end
+
+#     u + u2*(-one(x)/4 + 2*u*sum)
+# end
 
 
 # series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5

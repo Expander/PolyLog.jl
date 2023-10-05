@@ -47,7 +47,7 @@ function _reli(n::Integer, x::Real)::Real
         li0(x)
     elseif n == 1
         reli1(x)
-    elseif issimplefloat(x) && n == 2
+    elseif n == 2
         reli2(x)
     elseif issimplefloat(x) && n == 3
         reli3(x)
