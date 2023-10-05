@@ -58,7 +58,7 @@ function reli2_approx(x::BigFloat)::BigFloat
     for n in 2:typemax(Int64)
         old_sum = sum
         sgn = iseven(n) ? -1 : 1
-        sum += p*sgn*zeta(2*n, typeof(x))/(2*n + 1)
+        sum += sgn*p/(2*n + 1)*zeta(2*n, typeof(x))
         sum == old_sum && break
         p *= u2*c0
     end
