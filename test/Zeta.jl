@@ -1,4 +1,13 @@
 @testset "zeta" begin
+    @test typeof(PolyLog.zeta(1, Float16)) == Float16
+    @test typeof(PolyLog.zeta(1, Float32)) == Float32
+    @test typeof(PolyLog.zeta(1, Float64)) == Float64
+    @test typeof(PolyLog.zeta(1, BigFloat)) == BigFloat
+    @test typeof(PolyLog.zeta(2, Float16)) == Float16
+    @test typeof(PolyLog.zeta(2, Float32)) == Float32
+    @test typeof(PolyLog.zeta(2, Float64)) == Float64
+    @test typeof(PolyLog.zeta(2, BigFloat)) == BigFloat
+
     @test PolyLog.zeta(-263, Float64) == Inf
     @test PolyLog.zeta(-262, Float64) == 0.0
     @test PolyLog.zeta(-261, Float64) == -Inf

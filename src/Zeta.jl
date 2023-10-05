@@ -64,8 +64,8 @@ const ZETA_NEG = (
 
 # Riemann zeta function for integer arguments
 function zeta(n::Integer, T)
-    if T == Float64
-        zeta_f64(n)
+    if issimplefloat(T)
+        convert(T, zeta_f64(n))
     else
         zeta_big(n)
     end
