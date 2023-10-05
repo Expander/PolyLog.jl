@@ -1,3 +1,5 @@
+using Base.MPFR: ROUNDING_MODE
+
 # zeta(n) for n = 2,...,33
 const ZETA_POS = (
     zeta2, zeta3, zeta4, zeta5, zeta6,
@@ -61,7 +63,15 @@ const ZETA_NEG = (
 )
 
 # Riemann zeta function for integer arguments
-function zeta(n::Integer)::Float64
+function zeta(n::Integer, ::Type{T})::T where T
+    if issimplefloat(T)
+        convert(T, zeta_f64(n))
+    else
+        zeta_big(n)
+    end
+end
+
+function zeta_f64(n::Integer)::Float64
     if n < 0
         if iseven(n)
             0.0
@@ -81,4 +91,11 @@ function zeta(n::Integer)::Float64
     else
         one(Float64)/(one(Float64) - 2.0^(-n))
     end
+end
+
+function zeta_big(n::Integer)::BigFloat
+    x = BigFloat(n)
+    z = BigFloat()
+    ccall((:mpfr_zeta, :libmpfr), Int32, (Ref{BigFloat}, Ref{BigFloat}, Int32), z, x, ROUNDING_MODE[])
+    return z
 end

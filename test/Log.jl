@@ -13,6 +13,8 @@ end
 
 @testset "ln_sqr" begin
     for x in -10:10
-        @test PolyLog.ln_sqr(Float64(x)) == abs2(log(Float64(x) + 0.0im))
+        for T in (Float16, Float32, Float64, BigFloat)
+            @test PolyLog.ln_sqr(T(x)) == abs2(log(complex(T(x))))
+        end
     end
 end

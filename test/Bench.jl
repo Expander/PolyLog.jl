@@ -7,6 +7,7 @@ c64_data = (z_max - z_min)*rand(ComplexF64, n) + z_min*(1.0 + 1.0im)*ones(n)
 c32_data = map(ComplexF32, c64_data)
 f64_data = map(real, c64_data)
 f32_data = map(Float32, f64_data)
+fbig_data = map(BigFloat, f64_data[1:1000])
 
 time_reli2(data) = @time map(PolyLog.reli2, data)
 time_reli3(data) = @time map(PolyLog.reli3, data)
@@ -20,19 +21,26 @@ time_li4(data) = @time map(PolyLog.li4, data)
 time_li5(data) = @time map(PolyLog.li5, data)
 time_li6(data) = @time map(PolyLog.li6, data)
 
-println("Benchmarking li2::Float32")
+println("Benchmarking reli2::Float32")
 
 map(PolyLog.reli2, f32_data)       # trigger compilation
 time_reli2(f32_data)
 time_reli2(f32_data)
 time_reli2(f32_data)
 
-println("Benchmarking li2::Float64")
+println("Benchmarking reli2::Float64")
 
 map(PolyLog.reli2, f64_data)       # trigger compilation
 time_reli2(f64_data)
 time_reli2(f64_data)
 time_reli2(f64_data)
+
+println("Benchmarking reli2::BigFloat")
+
+map(PolyLog.reli2, fbig_data)       # trigger compilation
+time_reli2(fbig_data)
+time_reli2(fbig_data)
+time_reli2(fbig_data)
 
 println("Benchmarking li2::ComplexF32")
 
@@ -48,7 +56,7 @@ time_li2(c64_data)
 time_li2(c64_data)
 time_li2(c64_data)
 
-println("Benchmarking li3::Float64")
+println("Benchmarking reli3::Float64")
 
 map(PolyLog.reli3, f64_data)       # trigger compilation
 time_reli3(f64_data)
@@ -99,11 +107,21 @@ c64_data = (z_max - z_min)*rand(ComplexF64, n) + z_min*(1.0 + 1.0im)*ones(n)
 f64_data = map(real, c64_data)
 
 for k in vcat(collect(-10:2:10), [100, 1000, 1000_000, -100, -1000, -1000_000])
-    println("Benchmarking li($(k),x)::Float64")
+    println("Benchmarking reli($(k),x)::Float64")
     map(x -> PolyLog.reli(k, x), f64_data) # trigger compilation
     time_reli(k, f64_data)                 # trigger compilation
     time_reli(k, f64_data)
     time_reli(k, f64_data)
+end
+
+fbig_data = map(BigFloat, f64_data[1:100])
+
+for k in vcat(collect(-10:2:10), [100, 1000, 1000_000, -100, -1000, -1000_000])
+    println("Benchmarking reli($(k),x)::BigFloat")
+    map(x -> PolyLog.reli(k, x), fbig_data) # trigger compilation
+    time_reli(k, fbig_data)                 # trigger compilation
+    time_reli(k, fbig_data)
+    time_reli(k, fbig_data)
 end
 
 println("Benchmarking li::ComplexF64")

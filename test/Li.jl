@@ -26,22 +26,33 @@ end
     )
 
     for ni in nis
-        n    = ni.n
-        eps  = ni.eps
+        n = ni.n
 
-        cmpl_data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"))
-        real_data = filter_real(cmpl_data)
+        complex_data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"), BigFloat)
+        real_data = filter_real(complex_data)
 
-        test_function_on_data(z -> PolyLog.li(n, z)  , cmpl_data, eps, eps)
-        test_function_on_data(z -> PolyLog.reli(n, z), real_data, eps, eps)
+        # test reli(n, z)
+        setprecision(BigFloat, MAX_BINARY_DIGITS) do
+            for T in (Float16, Float32, Float64, BigFloat)
+                ep = ni.eps*eps(T)/eps(Float64)
+                test_function_on_data(z -> PolyLog.reli(n, z), map(T, real_data), ep, ep)
+            end
+        end
 
-        zeta = PolyLog.zeta(n)
+        # test li(n, z)
+        for T in (Float32, Float64)
+            ep = ni.eps*eps(T)/eps(Float64)
+            test_function_on_data(z -> PolyLog.li(n, z), map(Complex{T}, complex_data), ep, ep)
+        end
+
+        zeta = PolyLog.zeta(n, Float64)
 
         @test PolyLog.reli(n, 1.0) == zeta
         @test PolyLog.reli(n, 1.0f0) ≈ zeta
         @test PolyLog.reli(n, Float16(1.0)) ≈ zeta
         @test PolyLog.reli(n, 1//1) ≈ zeta
         @test PolyLog.reli(n, 1) ≈ zeta
+        @test PolyLog.reli(n, BigFloat("1.0")) == PolyLog.zeta(n, BigFloat)
 
         @test PolyLog.li(n, 1.0) == zeta
         @test PolyLog.li(n, 1.0f0) ≈ zeta
@@ -59,6 +70,7 @@ end
     # value close to boundary between series 1 and 2 in arXiv:2010.09860
     @test PolyLog.li(-2, -0.50001)   ≈ -0.074072592582716422 atol=1e-14
     @test PolyLog.reli(-2, -0.50001) ≈ -0.074072592582716422 atol=1e-14
+    @test PolyLog.reli(-2, BigFloat("-0.50001")) ≈ -0.074072592582716422 atol=1e-14
 
     # value sensitive to proper treatment of 0.0 vs -0.0 in imag(z)
     z = 1.5 + 0.0im
@@ -66,7 +78,18 @@ end
     @test PolyLog.li(10, -z) ≈ -1.4978556954869267594 atol=1e-14
 
     @test isnan(PolyLog.reli(10, NaN))
+    @test isnan(PolyLog.reli(10, BigFloat(NaN)))
     @test isinf(PolyLog.reli(10, Inf))
+    @test isinf(PolyLog.reli(10, BigFloat(Inf)))
     @test isnan(PolyLog.li(10, NaN))
     @test isinf(PolyLog.li(10, Inf))
+
+    # test type stability
+    for T in (Float16, Float32, Float64, BigFloat)
+        for n in -10:10
+            for x in (NaN, Inf, -2, -1, 0, 1, 2, 3)
+                @test typeof(PolyLog.reli(n, convert(T, x))) == T
+            end
+        end
+    end
 end

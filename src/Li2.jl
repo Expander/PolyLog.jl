@@ -44,6 +44,24 @@ function reli2_approx(x::Float32)::Float32
 end
 
 
+# approximation of Re[Li2(x)] for x in [0, 1/2]
+function reli2_approx(x::BigFloat)::BigFloat
+    sum = x
+    xn = x*x
+
+    for k in 2:typemax(Int64)
+        term = xn/oftype(x, k)^2
+        !isfinite(term) && break
+        old_sum = sum
+        sum += term
+        sum == old_sum && break
+        xn *= x
+    end
+
+    sum
+end
+
+
 # series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
 # in terms of u = -log(1-z)
 function li2_approx(u::ComplexF32)::ComplexF32
@@ -101,6 +119,9 @@ License: MIT
 ```jldoctest; setup = :(using PolyLog)
 julia> reli2(1.0)
 1.6449340668482264
+
+julia> reli2(BigFloat("1.0"))
+1.644934066848226436472415166646025189218949901206798437735558229370007470403202
 ```
 """
 reli2(x::Real) = _reli2(float(x))
@@ -157,6 +178,33 @@ function _reli2(x::Float64)::Float64
     end
 end
 
+function _reli2(x::BigFloat)::BigFloat
+    # transform to [0, 1/2]
+    if x < -one(x)
+        l = log(one(x) - x)
+        reli2_approx(inv(one(x) - x)) - zeta(2, typeof(x)) + l*(one(x)/2*l - log(-x))
+    elseif x == -one(x)
+        -one(x)/2*zeta(2, typeof(x))
+    elseif x < zero(x)
+        -reli2_approx(x/(x - one(x))) - one(x)/2*log1p(-x)^2
+    elseif iszero(x)
+        zero(x)
+    elseif x < one(x)/2
+        reli2_approx(x)
+    elseif x == one(x)/2
+        oftype(x, pi)^2/12 - log(oftype(x, 2))^2/2
+    elseif x < one(x)
+        -reli2_approx(one(x) - x) + zeta(2, typeof(x)) - log(x)*log1p(-x)
+    elseif x == one(x)
+        zeta(2, typeof(x))
+    elseif x < 2*one(x)
+        l = log(x)
+        reli2_approx(one(x) - inv(x)) + zeta(2, typeof(x)) - l*(log(one(x) - inv(x)) + one(x)/2*l)
+    else
+        -reli2_approx(inv(x)) + 2*zeta(2, typeof(x)) - one(x)/2*log(x)^2
+    end
+end
+
 
 """
     li2(z::Complex)
@@ -178,7 +226,7 @@ License: MIT
 # Example
 ```jldoctest; setup = :(using PolyLog)
 julia> li2(1.0 + 1.0im)
-0.616850275068085 + 1.4603621167531196im
+0.6168502750680849 + 1.4603621167531196im
 ```
 """
 li2(z::Complex) = _li2(float(z))

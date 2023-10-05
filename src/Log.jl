@@ -2,12 +2,23 @@
 # handles case when imag(z) == -0.0
 function clog(z::Complex)
     ang = angle(z)
-    Complex(0.5*log(abs2(z)), imag(z) == zero(z.re) && ang < zero(z.re) ? -ang : ang)
+    Complex(one(typeof(real(z)))/2*log(abs2(z)), imag(z) == zero(z.re) && ang < zero(z.re) ? -ang : ang)
 end
 
 # returns logarithm of x
 function clog(x::Real)
     log(x)
+end
+
+# returns |ln(x)|^2 for all x
+function ln_sqr(x::Real)::Real
+    if x < zero(x)
+        abs2(log(complex(x)))
+    elseif iszero(x)
+        oftype(x, Inf)
+    else
+        log(x)^2
+    end
 end
 
 # returns |ln(x)|^2 for all x

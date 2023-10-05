@@ -14,6 +14,7 @@ include("Li5.jl")
 include("Li6.jl")
 include("Li.jl")
 include("Log.jl")
+include("Types.jl")
 include("Zeta.jl")
 
 export li0

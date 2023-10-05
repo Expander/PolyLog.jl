@@ -1,6 +1,7 @@
 using Test
 import PolyLog
 
+include("TestPrecision.jl")
 include("DataReader.jl")
 include("DataTester.jl")
 include("Digamma.jl")
