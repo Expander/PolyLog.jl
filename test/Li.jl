@@ -52,6 +52,7 @@ end
         @test PolyLog.reli(n, Float16(1.0)) ≈ zeta
         @test PolyLog.reli(n, 1//1) ≈ zeta
         @test PolyLog.reli(n, 1) ≈ zeta
+        @test PolyLog.reli(n, BigFloat("1.0")) == PolyLog.zeta(n, BigFloat)
 
         @test PolyLog.li(n, 1.0) == zeta
         @test PolyLog.li(n, 1.0f0) ≈ zeta
@@ -69,6 +70,7 @@ end
     # value close to boundary between series 1 and 2 in arXiv:2010.09860
     @test PolyLog.li(-2, -0.50001)   ≈ -0.074072592582716422 atol=1e-14
     @test PolyLog.reli(-2, -0.50001) ≈ -0.074072592582716422 atol=1e-14
+    @test PolyLog.reli(-2, BigFloat("-0.50001")) ≈ -0.074072592582716422 atol=1e-14
 
     # value sensitive to proper treatment of 0.0 vs -0.0 in imag(z)
     z = 1.5 + 0.0im
@@ -76,7 +78,9 @@ end
     @test PolyLog.li(10, -z) ≈ -1.4978556954869267594 atol=1e-14
 
     @test isnan(PolyLog.reli(10, NaN))
+    @test isnan(PolyLog.reli(10, BigFloat(NaN)))
     @test isinf(PolyLog.reli(10, Inf))
+    @test isinf(PolyLog.reli(10, BigFloat(Inf)))
     @test isnan(PolyLog.li(10, NaN))
     @test isinf(PolyLog.li(10, Inf))
 end
