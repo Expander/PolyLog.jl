@@ -50,18 +50,20 @@ function reli2_approx(x::BigFloat)::BigFloat
     u = -log1p(-x)
     u2 = u*u
 
-    p = u2 # powers of u2
-    sum = one(x)/36
+    c0 = inv(4*big(pi)^2)
+
+    p = u2*c0^2
+    sum = one(x)/72
 
     for n in 2:typemax(Int64)
         old_sum = sum
         sgn = iseven(n) ? -1 : 1
-        sum += p*sgn*2*zeta(2*n, typeof(x))/((2*big(pi))^(2*n)*(2*n + 1))
+        sum += p*sgn*zeta(2*n, typeof(x))/(2*n + 1)
         sum == old_sum && break
-        p *= u2
+        p *= u2*c0
     end
 
-    u + u2*(-one(x)/4 + u*sum)
+    u + u2*(-one(x)/4 + 2*u*sum)
 end
 
 
