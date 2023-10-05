@@ -61,7 +61,7 @@ const MINUS_ETA_NEG = (
 )
 
 # returns Li(n,-1) = (2^(1 - n) - 1)*zeta(n)
-function neg_eta(n::Integer, T=Float64)
+function neg_eta(n::Integer, T)
     if T == Float64
         neg_eta_f46(n)
     else
@@ -90,7 +90,15 @@ function neg_eta_f46(n::Integer)::Float64
 end
 
 function neg_eta_big(n::Integer)::BigFloat
-    if n == 1
+    if n < 0
+        if iseven(n)
+            BigFloat("0")
+        else
+            (exp2(1 - n) - one(BigFloat))*zeta_big(n)
+        end
+    elseif n == 0
+        BigFloat("-0.5")
+    elseif n == 1
         -log(big(2))
     else
         (exp2(1 - n) - one(BigFloat))*zeta_big(n)
