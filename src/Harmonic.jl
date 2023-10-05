@@ -7,7 +7,7 @@ function harmonic(n::Integer, T)
     end
 end
 
-function harmonic_f64(n::Integer)
+function harmonic_f64(n::Integer)::Float64
     if n <= 0
         throw(DomainError(n, "harmonic not implemented for n <= 0"))
     elseif n < 20
@@ -21,7 +21,7 @@ function harmonic_f64(n::Integer)
     end
 end
 
-function harmonic_big(n::Integer)
+function harmonic_big(n::Integer)::BigFloat
     if n <= 0
         throw(DomainError(n, "harmonic not implemented for n <= 0"))
     else
