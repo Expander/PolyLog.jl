@@ -49,7 +49,7 @@ end
             test_function_on_data(z -> PolyLog.li(n, z), map(Complex{T}, complex_data), ep, ep)
         end
 
-        zeta = PolyLog.zeta(n)
+        zeta = PolyLog.zeta(n, Float64)
 
         @test PolyLog.reli(n, 1.0) == zeta
         @test PolyLog.reli(n, 1.0f0) ≈ zeta

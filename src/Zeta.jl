@@ -63,7 +63,7 @@ const ZETA_NEG = (
 )
 
 # Riemann zeta function for integer arguments
-function zeta(n::Integer, T=Float64)
+function zeta(n::Integer, T)
     if T == Float64
         zeta_f64(n)
     else
