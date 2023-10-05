@@ -1,4 +1,9 @@
 @testset "eta" begin
+    @test typeof(PolyLog.neg_eta(1, Float16)) == Float16
+    @test typeof(PolyLog.neg_eta(1, Float32)) == Float32
+    @test typeof(PolyLog.neg_eta(1, Float64)) == Float64
+    @test typeof(PolyLog.neg_eta(1, BigFloat)) == BigFloat
+
     @test PolyLog.neg_eta(-222, Float64) ==  0.0
     @test PolyLog.neg_eta(-221, Float64) == -Inf
     @test PolyLog.neg_eta(-220, Float64) ==  0.0

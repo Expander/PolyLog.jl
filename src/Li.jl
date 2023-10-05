@@ -159,9 +159,6 @@ end
 # returns -(-1)^n of type T
 oddsgn(n, T) = isodd(n) ? one(T) : -one(T)
 
-# returns true if type of x is Float16, Float32 or Float64
-issimplefloat(x::Real) = (typeof(x) in (Float16, Float32, Float64))
-
 # returns r.h.s. of inversion formula for complex z:
 #
 # Li(n,-z) + (-1)^n Li(n,-1/z)
