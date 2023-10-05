@@ -1,5 +1,5 @@
 # returns n-th harmonic number, n > 0
-function harmonic(n::Integer, T=Float64)
+function harmonic(n::Integer, T)
     if T == Float64
         harmonic_f64(n)
     else
