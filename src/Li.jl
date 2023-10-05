@@ -18,6 +18,9 @@ License: MIT
 ```jldoctest; setup = :(using PolyLog)
 julia> reli(10, 1.0)
 1.0009945751278182
+
+julia> reli(10, BigFloat("1.0"))
+1.000994575127818085337145958900319017006019531564477517257788994636291465151908
 ```
 """
 reli(n::Integer, x::Real) = _reli(n, float(x))
