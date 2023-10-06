@@ -40,9 +40,13 @@ end
         end
 
         # test li(n, z)
-        for T in (Float32, Float64)
-            ep = ni.eps*eps(T)/eps(Float64)
-            test_function_on_data(z -> PolyLog.li(n, z), map(Complex{T}, complex_data), ep, ep)
+        setprecision(BigFloat, MAX_BINARY_DIGITS) do
+            for T in (Float32, Float64, BigFloat)
+                # @todo(alex): test all n
+                T == BigFloat && (n != 0 && n != 1) && continue
+                ep = ni.eps*eps(T)/eps(Float64)
+                test_function_on_data(z -> PolyLog.li(n, z), map(Complex{T}, complex_data), ep, ep)
+            end
         end
 
         zeta = PolyLog.zeta(n, Float64)

@@ -111,23 +111,23 @@ _li(n::Integer, z::ComplexF16) = oftype(z, _li(n, ComplexF32(z)))
 
 _li(n::Integer, z::ComplexF32) = oftype(z, _li(n, ComplexF64(z)))
 
-function _li(n::Integer, z::ComplexF64)::ComplexF64
-    isnan(z) && return NaN
-    isinf(z) && return -Inf
+function _li(n::Integer, z::Complex{T})::Complex{T} where T
+    isnan(z) && return oftype(z, NaN)
+    isinf(z) && return oftype(z, -Inf)
 
     if iszero(imag(z))
         if real(z) <= one(typeof(real(z))) || n <= 0
             return Complex(reli(n, real(z)))
         else
-            return Complex(reli(n, real(z)), -pi*inv_fac(n - 1, Float64)*log(real(z))^(n - 1))
+            return Complex(reli(n, real(z)), -convert(T, pi)*inv_fac(n - 1, T)*log(real(z))^(n - 1))
         end
     end
 
     if n < 0
         l2 = abs2(log(z))
-        if 4*pi^2*abs2(z) < l2
+        if 4*convert(T, pi)^2*abs2(z) < l2
             li_series_naive(n, z)
-        elseif l2 < (512/1000*2*pi)^2
+        elseif l2 < (512/1000*2*convert(T, pi))^2
             li_series_unity_neg(n, z)
         else
             sqrtz = sqrt(z)
@@ -137,15 +137,15 @@ function _li(n::Integer, z::ComplexF64)::ComplexF64
         li0(z)
     elseif n == 1
         li1(z)
-    elseif n == 2
+    elseif issimplefloat(T) && n == 2
         li2(z)
-    elseif n == 3
+    elseif issimplefloat(T) && n == 3
         li3(z)
-    elseif n == 4
+    elseif issimplefloat(T) && n == 4
         li4(z)
-    elseif n == 5
+    elseif issimplefloat(T) && n == 5
         li5(z)
-    elseif n == 6
+    elseif issimplefloat(T) && n == 6
         li6(z)
     elseif abs2(z) <= (3/4)^2
         li_series_naive(n, z)
