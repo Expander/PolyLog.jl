@@ -236,8 +236,6 @@ li2(z::Real) = li2(Complex(z))
 _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 
 function _li2(z::Complex{T})::Complex{T} where T
-    clog(z) = T == Float64 ? complex(0.5*log(abs2(z)), angle(z)) : complex(log(abs(z)), angle(z))
-
     rz, iz = reim(z)
 
     if iszero(iz)

@@ -2,7 +2,7 @@
 # handles case when imag(z) == -0.0
 function clog(z::Complex)
     ang = angle(z)
-    Complex(one(typeof(real(z)))/2*log(abs2(z)), imag(z) == zero(z.re) && ang < zero(z.re) ? -ang : ang)
+    Complex(log(abs(z)), iszero(imag(z)) && ang < zero(z.re) ? -ang : ang)
 end
 
 # returns logarithm of x
