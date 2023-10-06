@@ -4,6 +4,8 @@
 
     setprecision(BigFloat, MAX_BINARY_DIGITS) do
         ep = 10*eps(BigFloat)
+        # @todo(alex): test imaginary part, too
+        test_function_on_data(z -> real(PolyLog.li2(z)), real_data, ep, ep)
         test_function_on_data(PolyLog.reli2, real_data, ep, ep)
     end
 
