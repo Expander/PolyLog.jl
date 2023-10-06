@@ -235,70 +235,35 @@ li2(z::Real) = li2(Complex(z))
 
 _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 
-function _li2(z::ComplexF32)::ComplexF32
-    clog(z) = log(abs(z)) + angle(z)*1.0f0im
+function _li2(z::Complex{T})::Complex{T} where T
+    clog(z) = T == Float64 ? complex(0.5*log(abs2(z)), angle(z)) : complex(log(abs(z)), angle(z))
 
     rz, iz = reim(z)
 
-    if iz == 0.0f0
-        if rz <= 1.0f0
-            reli2(rz)
+    if iszero(iz)
+        if rz <= one(T)
+            complex(reli2(rz))
         else # Re(z) > 1
-            reli2(rz) - pi*clog(rz)*1.0f0im
+            complex(reli2(rz), -convert(T, pi)*log(rz))
         end
     else
         nz = abs2(z)
 
-        if nz < eps(Float32)
-            z*(1.0f0 + 0.25f0*z)
+        if nz < eps(T)
+            z*(one(T) + one(T)/4*z)
         else
-            if rz <= 0.5f0
-                if nz > 1.0f0
-                    -li2_approx(-clog(1.0f0 - inv(z))) - 0.5f0*clog(-z)^2 - zeta2F32
+            if rz <= one(T)/2
+                if nz > one(T)
+                    -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta_2(T)
                 else # |z|^2 <= 1
-                    li2_approx(-clog(1.0f0 - z))
+                    li2_approx(-clog(one(T) - z))
                 end
             else # Re(z) > 1/2
-                if nz <= 2.0f0*rz
+                if nz <= 2*rz
                     l = -clog(z)
-                    -li2_approx(l) + l*clog(1.0f0 - z) + zeta2F32
+                    -li2_approx(l) + l*clog(one(T) - z) + zeta_2(T)
                 else # |z|^2 > 2*Re(z)
-                    -li2_approx(-clog(1.0f0 - inv(z))) - 0.5f0*clog(-z)^2 - zeta2F32
-                end
-            end
-        end
-    end
-end
-
-function _li2(z::ComplexF64)::ComplexF64
-    clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
-
-    rz, iz = reim(z)
-
-    if iz == 0.0
-        if rz <= 1.0
-            reli2(rz)
-        else # Re(z) > 1
-            reli2(rz) - pi*log(rz)*1.0im
-        end
-    else
-        nz = abs2(z)
-
-        if nz < eps(Float64)
-            z*(1.0 + 0.25*z)
-        else
-            if rz <= 0.5
-                if nz > 1.0
-                    -li2_approx(-clog(1.0 - inv(z))) - 0.5*clog(-z)^2 - zeta2
-                else # |z|^2 <= 1
-                    li2_approx(-clog(1.0 - z))
-                end
-            else # Re(z) > 1/2
-                if nz <= 2.0*rz
-                    l = -clog(z)
-                    -li2_approx(l) + l*clog(1.0 - z) + zeta2
-                else # |z|^2 > 2*Re(z)
-                    -li2_approx(-clog(1.0 - inv(z))) - 0.5*clog(-z)^2 - zeta2
+                    -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta_2(T)
                 end
             end
         end

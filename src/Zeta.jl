@@ -99,3 +99,16 @@ function zeta_big(n::Integer)::BigFloat
     ccall((:mpfr_zeta, :libmpfr), Int32, (Ref{BigFloat}, Ref{BigFloat}, Int32), z, x, ROUNDING_MODE[])
     return z
 end
+
+# returns pre-computed value zeta(2) for given type T
+function zeta_2(::Type{T})::T where T
+    if T == Float16
+        zeta2F16
+    elseif T == Float32
+        zeta2F32
+    elseif T == Float64
+        zeta2
+    else
+        zeta(2, T)
+    end
+end
