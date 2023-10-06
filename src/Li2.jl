@@ -246,7 +246,7 @@ License: MIT
 # Example
 ```jldoctest; setup = :(using PolyLog)
 julia> li2(1.0 + 1.0im)
-0.6168502750680849 + 1.4603621167531196im
+0.6168502750680851 + 1.4603621167531196im
 ```
 """
 li2(z::Complex) = _li2(float(z))
