@@ -140,7 +140,7 @@ function _li(n::Integer, z::Complex{T})::Complex{T} where T
         li0(z)
     elseif n == 1
         li1(z)
-    elseif issimplefloat(T) && n == 2
+    elseif n == 2
         li2(z)
     elseif issimplefloat(T) && n == 3
         li3(z)
