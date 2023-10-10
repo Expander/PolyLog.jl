@@ -104,7 +104,7 @@ end
 
 # series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
 function li2_approx(z::Complex{T})::Complex{T} where T
-    if abs2(z) < (3/4)^2
+    if abs2(z) < (99/100)^2
         li2_approx_naive(z)
     else
         li2_approx_unity(-clog(one(T) - z))
