@@ -103,8 +103,37 @@ end
 
 
 # series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
+function li2_approx(z::Complex{T})::Complex{T} where T
+    if abs2(z) < (3/4)^2
+        li2_approx_naive(z)
+    else
+        li2_approx_unity(-clog(one(T) - z))
+    end
+end
+
+
+# series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
 # in terms of u = -log(1-z)
-function li2_approx(u::Complex{T})::Complex{T} where T
+function li2_approx_naive(z::Complex{T})::Complex{T} where T
+    sum = z
+    zn = z*z
+
+    for k in 2:typemax(Int64)
+        term = zn/convert(T, k)^2
+        !isfinite(term) && break
+        old_sum = sum
+        sum += term
+        sum == old_sum && break
+        zn *= z
+    end
+
+    sum
+end
+
+
+# series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
+# in terms of u = -log(1-z)
+function li2_approx_unity(u::Complex{T})::Complex{T} where T
     u2 = u*u
     c0 = inv(4*big(pi)^2)
     p = u2*c0^2
@@ -285,6 +314,38 @@ function _li2(z::Complex{T})::Complex{T} where T
                     -li2_approx(l) + l*clog(one(T) - z) + zeta_2(T)
                 else # |z|^2 > 2*Re(z)
                     -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta_2(T)
+                end
+            end
+        end
+    end
+end
+
+function _li2(z::Complex{BigFloat})::Complex{BigFloat}
+    rz, iz = reim(z)
+
+    if iszero(iz)
+        if rz <= one(BigFloat)
+            complex(reli2(rz))
+        else # Re(z) > 1
+            complex(reli2(rz), -convert(BigFloat, pi)*log(rz))
+        end
+    else
+        nz = abs2(z)
+
+        if nz < eps(BigFloat)
+            z*(one(BigFloat) + one(BigFloat)/4*z)
+        else
+            if rz <= one(BigFloat)/2
+                if nz > one(BigFloat)
+                    -li2_approx(inv(z)) - one(BigFloat)/2*clog(-z)^2 - zeta_2(BigFloat)
+                else # |z|^2 <= 1
+                    li2_approx(z)
+                end
+            else # Re(z) > 1/2
+                if nz <= 2*rz
+                    -li2_approx(one(BigFloat) - z) - clog(z)*clog(one(BigFloat) - z) + zeta_2(BigFloat)
+                else # |z|^2 > 2*Re(z)
+                    -li2_approx(inv(z)) - one(BigFloat)/2*clog(-z)^2 - zeta_2(BigFloat)
                 end
             end
         end
