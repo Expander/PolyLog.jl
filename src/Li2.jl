@@ -112,8 +112,7 @@ function li2_approx(z::Complex{T})::Complex{T} where T
 end
 
 
-# series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
-# in terms of u = -log(1-z)
+# Taylor series expansion of Li2(z) for |z| < 1
 function li2_approx_naive(z::Complex{T})::Complex{T} where T
     sum = z
     zn = z*z
