@@ -78,9 +78,9 @@ function reli4_one(x::Float64)::Float64
     l = log(x)
     l2 = l*l
 
-    zeta4 +
-    l*(zeta3 +
-    l*(zeta2/2 +
+    ZETA4_F64 +
+    l*(ZETA3_F64 +
+    l*(ZETA2_F64/2 +
     l*(11/36 - 1/6*log(-l) +
     l*(-1/48 +
     l*(-1/1440 +
@@ -114,16 +114,16 @@ function _reli4(x::Float64)::Float64
     # transform to [-1,1]
     (x, rest, sgn) = if x < -1.0
         l = log(-x)^2
-        (inv(x), -7/4*zeta4 + l*(-zeta2/2 - 1/24*l), -1.0)
+        (inv(x), -7/4*ZETA4_F64 + l*(-ZETA2_F64/2 - 1/24*l), -1.0)
     elseif x == -1.0
-        return -7/8*zeta4
+        return -7/8*ZETA4_F64
     elseif x < 1.0
         (x, 0.0, 1.0)
     elseif x == 1.0
-        return zeta4
+        return ZETA4_F64
     else # x > 1.0
         l = log(x)^2
-        (inv(x), 2*zeta4 + l*(zeta2 - 1/24*l), -1.0)
+        (inv(x), 2*ZETA4_F64 + l*(ZETA2_F64 - 1/24*l), -1.0)
     end
 
     if x < 0.0
@@ -193,12 +193,12 @@ function _li4(z::ComplexF64)::ComplexF64
             u2 = u*u
             u4 = u2*u2
             u8 = u4*u4
-            c1 = zeta3
+            c1 = ZETA3_F64
             c2 = 0.82246703342411322
             c3 = 1/6*(11/6 - clog(-u))
             c4 = -1/48
 
-            zeta4 + u2*(c2 + u2*c4) + u*(
+            ZETA4_F64 + u2*(c2 + u2*c4) + u*(
                 c1 +
                 c3*u2 +
                 u4*(C[1] + u2*C[2]) +
@@ -224,7 +224,7 @@ function _li4(z::ComplexF64)::ComplexF64
                 arg = pz > 0.0 ? pz - pi : pz + pi
                 lmz = lnz + arg*im # clog(z)
                 lmz2 = lmz*lmz
-                (-clog(1.0 - inv(z)), -7/4*zeta4 + lmz2*(-0.5*zeta2 - 1/24*lmz2), -1.0)
+                (-clog(1.0 - inv(z)), -7/4*ZETA4_F64 + lmz2*(-0.5*ZETA2_F64 - 1/24*lmz2), -1.0)
             end
 
             u2 = u*u

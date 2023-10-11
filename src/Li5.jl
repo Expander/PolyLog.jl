@@ -27,10 +27,10 @@ function _li5(z::ComplexF64)::ComplexF64
             return 0.0 + 0.0im
         end
         if real(z) == 1.0
-            return zeta5 + 0.0im
+            return ZETA5_F64 + 0.0im
         end
         if real(z) == -1.0
-            return -15/16*zeta5 + 0.0im
+            return -15/16*ZETA5_F64 + 0.0im
         end
     end
 
@@ -49,13 +49,13 @@ function _li5(z::ComplexF64)::ComplexF64
         u2 = u*u
         u4 = u2*u2
         u8 = u4*u4
-        c1 = zeta4
-        c2 = 0.5*zeta3
+        c1 = ZETA4_F64
+        c2 = 0.5*ZETA3_F64
         c3 = 0.27415567780803774
         c4 = 1/24*(25/12 - clog(-u))
         c5 = -1/240
 
-        zeta5 + u*(c1 + u2*(c3 + u2*c5)) +
+        ZETA5_F64 + u*(c1 + u2*(c3 + u2*c5)) +
         u2*c2 + u4*(c4 + u2*C[1]) +
         u8*(C[2] + u2*C[3] + u4*(C[4] + u2*C[5])) +
         u8*u8*C[6]
@@ -79,7 +79,7 @@ function _li5(z::ComplexF64)::ComplexF64
             arg = pz > 0.0 ? pz - pi : pz + pi
             lmz = lnz + arg*im # clog(z)
             lmz2 = lmz*lmz
-            (-clog(1.0 - inv(z)), lmz*(-7/4*zeta4 - lmz2*(1/6*zeta2 + 1/120*lmz2)))
+            (-clog(1.0 - inv(z)), lmz*(-7/4*ZETA4_F64 - lmz2*(1/6*ZETA2_F64 + 1/120*lmz2)))
         end
 
         u2 = u*u

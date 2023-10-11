@@ -2,7 +2,7 @@ using Base.MPFR: ROUNDING_MODE
 
 # zeta(n) for n = 2,...,33
 const ZETA_POS = (
-    zeta2, zeta3, zeta4, zeta5, zeta6,
+    ZETA2_F64, ZETA3_F64, ZETA4_F64, ZETA5_F64, ZETA6_F64,
     1.0083492773819228, 1.0040773561979443, 1.0020083928260822,
     1.0009945751278181, 1.0004941886041195, 1.0002460865533080,
     1.0001227133475785, 1.0000612481350587, 1.0000305882363070,
@@ -103,11 +103,11 @@ end
 # returns pre-computed value zeta(2) for given type T
 function zeta_2(::Type{T})::T where T
     if T == Float16
-        zeta2F16
+        ZETA2_F16
     elseif T == Float32
-        zeta2F32
+        ZETA2_F32
     elseif T == Float64
-        zeta2
+        ZETA2_F64
     else
         zeta(2, T)
     end

@@ -17,7 +17,7 @@ function harmonic_f64(n::Integer)::Float64
         end
         sum
     else
-        eulergamma + digamma(n + 1)
+        EULERGAMMA_F64 + digamma(n + 1)
     end
 end
 

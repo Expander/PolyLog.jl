@@ -27,10 +27,10 @@ function _li6(z::ComplexF64)::ComplexF64
             return 0.0 + 0.0im
         end
         if real(z) == 1.0
-            return zeta6 + 0.0im
+            return ZETA6_F64 + 0.0im
         end
         if real(z) == -1.0
-            return -31/32*zeta6 + 0.0im
+            return -31/32*ZETA6_F64 + 0.0im
         end
     end
 
@@ -48,14 +48,14 @@ function _li6(z::ComplexF64)::ComplexF64
         u  = lnz + pz*im
         u2 = u*u
         u4 = u2*u2
-        c1 = zeta5
+        c1 = ZETA5_F64
         c2 = 0.54116161685556910
         c3 = 0.20034281719326571
         c4 = 0.068538919452009435
         c5 = 1/120*(137/60 - clog(-u))
         c6 = -1/1440
 
-        zeta6 + u2*c2 + u4*(c4 + u2*c6) +
+        ZETA6_F64 + u2*c2 + u4*(c4 + u2*c6) +
         u*(c1 + u2*c3 + u4*(c5 + u2*C[1]) +
            u4*u4*(C[2] + u2*C[3] + u4*(C[4] + u2*C[5])))
     else
@@ -77,7 +77,7 @@ function _li6(z::ComplexF64)::ComplexF64
             arg = pz > 0.0 ? pz - pi : pz + pi
             lmz = lnz + arg*im # clog(z)
             lmz2 = lmz*lmz
-            (-clog(1.0 - inv(z)), -31/16*zeta6 + lmz2*(-7/8*zeta4 + lmz2*(-1/24*zeta2 - 1/720*lmz2)), -1.0)
+            (-clog(1.0 - inv(z)), -31/16*ZETA6_F64 + lmz2*(-7/8*ZETA4_F64 + lmz2*(-1/24*ZETA2_F64 - 1/720*lmz2)), -1.0)
         end
 
         u2 = u*u

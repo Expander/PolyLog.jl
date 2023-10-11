@@ -74,9 +74,9 @@ function _reli3(x::Float64)::Float64
     # transformation to [-1,0] and [0,1/2]
     if x < -1.0
         l = log(-x)
-        reli3_neg(inv(x)) - l*(zeta2 + 1/6*l*l)
+        reli3_neg(inv(x)) - l*(ZETA2_F64 + 1/6*l*l)
     elseif x == -1.0
-        -0.75*zeta3
+        -0.75*ZETA3_F64
     elseif x < 0.0
         reli3_neg(x)
     elseif x == 0.0
@@ -87,15 +87,15 @@ function _reli3(x::Float64)::Float64
         return 0.53721319360804020
     elseif x < 1.0
         l = log(x)
-        -reli3_neg(1.0 - inv(x)) - reli3_pos(1.0 - x) + zeta3 + l*(zeta2 + l*(-0.5*log1p(-x) + 1/6*l))
+        -reli3_neg(1.0 - inv(x)) - reli3_pos(1.0 - x) + ZETA3_F64 + l*(ZETA2_F64 + l*(-0.5*log1p(-x) + 1/6*l))
     elseif x == 1.0
-        zeta3
+        ZETA3_F64
     elseif x < 2.0
         l = log(x)
-        -reli3_neg(1.0 - x) - reli3_pos(1.0 - inv(x)) + zeta3 + l*(zeta2 + l*(-0.5*log(x - 1.0) + 1/6*l))
+        -reli3_neg(1.0 - x) - reli3_pos(1.0 - inv(x)) + ZETA3_F64 + l*(ZETA2_F64 + l*(-0.5*log(x - 1.0) + 1/6*l))
     else # x >= 2.0
         l = log(x)
-        reli3_pos(inv(x)) + l*(2*zeta2 - 1/6*l*l)
+        reli3_pos(inv(x)) + l*(2*ZETA2_F64 - 1/6*l*l)
     end
 end
 
@@ -154,7 +154,7 @@ function _li3(z::ComplexF64)::ComplexF64
             u2 = u*u
             u4 = u2*u2
             u8 = u4*u4
-            c0 = zeta3 + u*(zeta2 - 1/12*u2)
+            c0 = ZETA3_F64 + u*(ZETA2_F64 - 1/12*u2)
             c1 = 0.25*(3.0 - 2.0*clog(-u))
 
             c0 +
@@ -179,7 +179,7 @@ function _li3(z::ComplexF64)::ComplexF64
             else # |z|^2 > 1
                 arg = pz > 0.0 ? pz - pi : pz + pi
                 lmz = lnz + arg*im # clog(z)
-                (-clog(1.0 - inv(z)), -lmz*(1/6*lmz*lmz + zeta2))
+                (-clog(1.0 - inv(z)), -lmz*(1/6*lmz*lmz + ZETA2_F64))
             end
 
             u2 = u*u
