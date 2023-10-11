@@ -101,7 +101,7 @@ function zeta_big(n::Integer)::BigFloat
 end
 
 # returns pre-computed value zeta(2) for given type T
-function zeta_2(::Type{T})::T where T
+function zeta2(::Type{T})::T where T
     if T == Float16
         ZETA2_F16
     elseif T == Float32

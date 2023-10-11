@@ -180,9 +180,9 @@ function _reli2(x::T)::T where T
     # transform to [0, 1/2]
     if x < -one(x)
         l = log(one(x) - x)
-        reli2_approx(inv(one(x) - x)) - zeta_2(typeof(x)) + l*(one(x)/2*l - log(-x))
+        reli2_approx(inv(one(x) - x)) - zeta2(typeof(x)) + l*(one(x)/2*l - log(-x))
     elseif x == -one(x)
-        -one(x)/2*zeta_2(typeof(x))
+        -one(x)/2*zeta2(typeof(x))
     elseif x < zero(x)
         -reli2_approx(x/(x - one(x))) - one(x)/2*log1p(-x)^2
     elseif iszero(x)
@@ -192,14 +192,14 @@ function _reli2(x::T)::T where T
     elseif x == one(x)/2
         oftype(x, pi)^2/12 - log(oftype(x, 2))^2/2
     elseif x < one(x)
-        -reli2_approx(one(x) - x) + zeta_2(typeof(x)) - log(x)*log1p(-x)
+        -reli2_approx(one(x) - x) + zeta2(typeof(x)) - log(x)*log1p(-x)
     elseif x == one(x)
-        zeta_2(typeof(x))
+        zeta2(typeof(x))
     elseif x < 2*one(x)
         l = log(x)
-        reli2_approx(one(x) - inv(x)) + zeta_2(typeof(x)) - l*(log(one(x) - inv(x)) + one(x)/2*l)
+        reli2_approx(one(x) - inv(x)) + zeta2(typeof(x)) - l*(log(one(x) - inv(x)) + one(x)/2*l)
     else
-        -reli2_approx(inv(x)) + 2*zeta_2(typeof(x)) - one(x)/2*log(x)^2
+        -reli2_approx(inv(x)) + 2*zeta2(typeof(x)) - one(x)/2*log(x)^2
     end
 end
 
@@ -253,16 +253,16 @@ function _li2(z::Complex{T})::Complex{T} where T
         else
             if rz <= one(T)/2
                 if nz > one(T)
-                    -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta_2(T)
+                    -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta2(T)
                 else # |z|^2 <= 1
                     li2_approx(-clog(one(T) - z))
                 end
             else # Re(z) > 1/2
                 if nz <= 2*rz
                     l = -clog(z)
-                    -li2_approx(l) + l*clog(one(T) - z) + zeta_2(T)
+                    -li2_approx(l) + l*clog(one(T) - z) + zeta2(T)
                 else # |z|^2 > 2*Re(z)
-                    -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta_2(T)
+                    -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta2(T)
                 end
             end
         end
@@ -286,15 +286,15 @@ function _li2(z::Complex{BigFloat})::Complex{BigFloat}
         else
             if rz <= one(BigFloat)/2
                 if nz > one(BigFloat)
-                    -li2_approx(inv(z)) - one(BigFloat)/2*clog(-z)^2 - zeta_2(BigFloat)
+                    -li2_approx(inv(z)) - one(BigFloat)/2*clog(-z)^2 - zeta2(BigFloat)
                 else # |z|^2 <= 1
                     li2_approx(z)
                 end
             else # Re(z) > 1/2
                 if nz <= 2*rz
-                    -li2_approx(one(BigFloat) - z) - clog(z)*clog(one(BigFloat) - z) + zeta_2(BigFloat)
+                    -li2_approx(one(BigFloat) - z) - clog(z)*clog(one(BigFloat) - z) + zeta2(BigFloat)
                 else # |z|^2 > 2*Re(z)
-                    -li2_approx(inv(z)) - one(BigFloat)/2*clog(-z)^2 - zeta_2(BigFloat)
+                    -li2_approx(inv(z)) - one(BigFloat)/2*clog(-z)^2 - zeta2(BigFloat)
                 end
             end
         end
