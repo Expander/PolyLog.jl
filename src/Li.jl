@@ -40,11 +40,11 @@ function _reli(n::Integer, x::Real)
         # arXiv:2010.09860
         l2 = ln_sqr(x)
         if (2*pi)^2*x*x < l2
-            li_series_naive(n, x)
+            li_series_taylor(n, x)
         elseif l2 < (512/1000*2*pi)^2
             real(li_series_unity_neg(n, Complex(x)))
         else
-            oddsgn(n, typeof(x))*li_series_naive(n, inv(x))
+            oddsgn(n, typeof(x))*li_series_taylor(n, inv(x))
         end
     elseif n == 0
         li0(x)
@@ -69,7 +69,7 @@ function _reli(n::Integer, x::Real)
         li = if n < 20 && x > 3/4
             li_series_unity_pos(n, x)
         else
-            li_series_naive(n, x)
+            li_series_taylor(n, x)
         end
 
         rest + sgn*li
@@ -129,7 +129,7 @@ function _li(n::Integer, z::Complex{T})::Complex{T} where T
     if n < 0
         l2 = abs2(log(z))
         if 4*convert(T, pi)^2*abs2(z) < l2
-            li_series_naive(n, z)
+            li_series_taylor(n, z)
         elseif l2 < (512/1000*2*convert(T, pi))^2
             li_series_unity_neg(n, z)
         else
@@ -151,9 +151,9 @@ function _li(n::Integer, z::Complex{T})::Complex{T} where T
     elseif issimplefloat(T) && n == 6
         li6(z)
     elseif abs2(z) <= (3/4)^2
-        li_series_naive(n, z)
+        li_series_taylor(n, z)
     elseif abs2(z) >= (7/5)^2
-        oddsgn(n, typeof(real(z)))*li_series_naive(n, inv(z)) + li_rem(n, z)
+        oddsgn(n, typeof(real(z)))*li_series_taylor(n, inv(z)) + li_rem(n, z)
     else
         li_series_unity_pos(n, z)
     end
@@ -291,11 +291,11 @@ function li_series_unity_neg(n::Integer, z::Complex{T})::Complex{T} where T
     sum
 end
 
-# returns Li(n,x) using the naive series expansion of Li(n,x)
+# returns Li(n,x) using the Taylor series expansion of Li(n,x)
 # for |x| < 1:
 #
 # Li(n,x) = sum(k=1:Inf, x^k/k^n)
-function li_series_naive(n::Integer, z::ComplexOrReal)
+function li_series_taylor(n::Integer, z::ComplexOrReal)
     sum = z
     zn = z*z
 
