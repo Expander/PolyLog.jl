@@ -1,4 +1,18 @@
 # rational function approximation of Re[Li2(x)] for x in [0, 1/2]
+function reli2_approx(x::Float32)::Float32
+    cp = (1.00000020f0, -0.780790946f0, 0.0648256871f0)
+    cq = (1.00000000f0, -1.03077545f0, 0.211216710f0)
+
+    x2 = x*x
+
+    p = cp[1] + x * cp[2] + x2 * cp[3]
+    q = cq[1] + x * cq[2] + x2 * cq[3]
+
+    x*p/q
+end
+
+
+# rational function approximation of Re[Li2(x)] for x in [0, 1/2]
 function reli2_approx(x::Float64)::Float64
     cp = (
         0.9999999999999999502e+0,
@@ -25,20 +39,6 @@ function reli2_approx(x::Float64)::Float64
         x4 * (cp[5] + x * cp[6])
     q = cq[1] + x * cq[2] + x2 * (cq[3] + x * cq[4]) +
         x4 * (cq[5] + x * cq[6] + x2 * cq[7])
-
-    x*p/q
-end
-
-
-# rational function approximation of Re[Li2(x)] for x in [0, 1/2]
-function reli2_approx(x::Float32)::Float32
-    cp = (1.00000020f0, -0.780790946f0, 0.0648256871f0)
-    cq = (1.00000000f0, -1.03077545f0, 0.211216710f0)
-
-    x2 = x*x
-
-    p = cp[1] + x * cp[2] + x2 * cp[3]
-    q = cq[1] + x * cq[2] + x2 * cq[3]
 
     x*p/q
 end
@@ -102,6 +102,54 @@ function li2_approx(u::ComplexF64)::ComplexF64
 end
 
 
+# series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
+function li2_approx(z::Complex{T})::Complex{T} where T
+    if abs2(z) < (99/100)^2
+        li2_approx_naive(z)
+    else
+        li2_approx_unity(-clog(one(T) - z))
+    end
+end
+
+
+# Taylor series expansion of Li2(z) for |z| < 1
+function li2_approx_naive(z::Complex{T})::Complex{T} where T
+    sum = z
+    zn = z*z
+
+    for k in 2:typemax(Int64)
+        term = zn/convert(T, k)^2
+        !isfinite(term) && break
+        old_sum = sum
+        sum += term
+        sum == old_sum && break
+        zn *= z
+    end
+
+    sum
+end
+
+
+# series expansion of Li2(z) for |z| <= 1 and Re(z) <= 0.5
+# in terms of u = -log(1-z)
+function li2_approx_unity(u::Complex{T})::Complex{T} where T
+    u2 = u*u
+    c0 = inv(4*big(pi)^2)
+    p = u2*c0^2
+    sum = one(T)/72
+
+    for n in 2:typemax(Int64)
+        old_sum = sum
+        sgn = iseven(n) ? -1 : 1
+        sum += sgn*p/(2*n + 1)*zeta(2*n, T)
+        sum == old_sum && break
+        p *= u2*c0
+    end
+
+    u + u2*(-one(T)/4 + 2*u*sum)
+end
+
+
 """
     reli2(x::Real)
 
@@ -128,63 +176,13 @@ reli2(x::Real) = _reli2(float(x))
 
 _reli2(x::Float16) = oftype(x, _reli2(Float32(x)))
 
-function _reli2(x::Float32)::Float32
-    # transform to [0, 1/2]
-    if x < -1.0f0
-        l = log(1.0f0 - x)
-        reli2_approx(1.0f0/(1.0f0 - x)) - zeta2F32 + l*(0.5f0*l - log(-x))
-    elseif x == -1.0f0
-        -0.5f0*zeta2F32
-    elseif x < 0.0f0
-        -reli2_approx(x/(x - 1.0f0)) - 0.5f0*log1p(-x)^2
-    elseif x == 0.0f0
-        0.0f0
-    elseif x < 0.5f0
-        reli2_approx(x)
-    elseif x < 1.0f0
-        -reli2_approx(1.0f0 - x) + zeta2F32 - log(x)*log1p(-x)
-    elseif x == 1.0f0
-        zeta2F32
-    elseif x < 2.0f0
-        l = log(x)
-        reli2_approx(1.0f0 - 1.0f0/x) + zeta2F32 - l*(log(1.0f0 - 1.0f0/x) + 0.5f0*l)
-    else
-        -reli2_approx(1.0f0/x) + 2.0f0*zeta2F32 - 0.5f0*log(x)^2
-    end
-end
-
-function _reli2(x::Float64)::Float64
-    # transform to [0, 1/2]
-    if x < -1.0
-        l = log(1.0 - x)
-        reli2_approx(1.0/(1.0 - x)) - zeta2 + l*(0.5*l - log(-x))
-    elseif x == -1.0
-        -0.5*zeta2
-    elseif x < 0.0
-        -reli2_approx(x/(x - 1.0)) - 0.5*log1p(-x)^2
-    elseif x == 0.0
-        0.0
-    elseif x < 0.5
-        reli2_approx(x)
-    elseif x < 1.0
-        -reli2_approx(1.0 - x) + zeta2 - log(x)*log1p(-x)
-    elseif x == 1.0
-        zeta2
-    elseif x < 2.0
-        l = log(x)
-        reli2_approx(1.0 - 1.0/x) + zeta2 - l*(log(1.0 - 1.0/x) + 0.5*l)
-    else
-        -reli2_approx(1.0/x) + 2.0*zeta2 - 0.5*log(x)^2
-    end
-end
-
-function _reli2(x::BigFloat)::BigFloat
+function _reli2(x::T)::T where T
     # transform to [0, 1/2]
     if x < -one(x)
         l = log(one(x) - x)
-        reli2_approx(inv(one(x) - x)) - zeta(2, typeof(x)) + l*(one(x)/2*l - log(-x))
+        reli2_approx(inv(one(x) - x)) - zeta_2(typeof(x)) + l*(one(x)/2*l - log(-x))
     elseif x == -one(x)
-        -one(x)/2*zeta(2, typeof(x))
+        -one(x)/2*zeta_2(typeof(x))
     elseif x < zero(x)
         -reli2_approx(x/(x - one(x))) - one(x)/2*log1p(-x)^2
     elseif iszero(x)
@@ -194,14 +192,14 @@ function _reli2(x::BigFloat)::BigFloat
     elseif x == one(x)/2
         oftype(x, pi)^2/12 - log(oftype(x, 2))^2/2
     elseif x < one(x)
-        -reli2_approx(one(x) - x) + zeta(2, typeof(x)) - log(x)*log1p(-x)
+        -reli2_approx(one(x) - x) + zeta_2(typeof(x)) - log(x)*log1p(-x)
     elseif x == one(x)
-        zeta(2, typeof(x))
+        zeta_2(typeof(x))
     elseif x < 2*one(x)
         l = log(x)
-        reli2_approx(one(x) - inv(x)) + zeta(2, typeof(x)) - l*(log(one(x) - inv(x)) + one(x)/2*l)
+        reli2_approx(one(x) - inv(x)) + zeta_2(typeof(x)) - l*(log(one(x) - inv(x)) + one(x)/2*l)
     else
-        -reli2_approx(inv(x)) + 2*zeta(2, typeof(x)) - one(x)/2*log(x)^2
+        -reli2_approx(inv(x)) + 2*zeta_2(typeof(x)) - one(x)/2*log(x)^2
     end
 end
 
@@ -226,7 +224,10 @@ License: MIT
 # Example
 ```jldoctest; setup = :(using PolyLog)
 julia> li2(1.0 + 1.0im)
-0.6168502750680849 + 1.4603621167531196im
+0.6168502750680851 + 1.4603621167531196im
+
+julia> li2(BigFloat(1) + 1im)
+0.6168502750680849136771556874922594459571062129525494141508343360137528014012052 + 1.460362116753119547679775739491787597608795299373993707847946932920340157070418im
 ```
 """
 li2(z::Complex) = _li2(float(z))
@@ -235,70 +236,65 @@ li2(z::Real) = li2(Complex(z))
 
 _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 
-function _li2(z::ComplexF32)::ComplexF32
-    clog(z) = log(abs(z)) + angle(z)*1.0f0im
-
+function _li2(z::Complex{T})::Complex{T} where T
     rz, iz = reim(z)
 
-    if iz == 0.0f0
-        if rz <= 1.0f0
-            reli2(rz)
+    if iszero(iz)
+        if rz <= one(T)
+            complex(reli2(rz))
         else # Re(z) > 1
-            reli2(rz) - pi*clog(rz)*1.0f0im
+            complex(reli2(rz), -convert(T, pi)*log(rz))
         end
     else
         nz = abs2(z)
 
-        if nz < eps(Float32)
-            z*(1.0f0 + 0.25f0*z)
+        if nz < eps(T)
+            z*(one(T) + one(T)/4*z)
         else
-            if rz <= 0.5f0
-                if nz > 1.0f0
-                    -li2_approx(-clog(1.0f0 - inv(z))) - 0.5f0*clog(-z)^2 - zeta2F32
+            if rz <= one(T)/2
+                if nz > one(T)
+                    -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta_2(T)
                 else # |z|^2 <= 1
-                    li2_approx(-clog(1.0f0 - z))
+                    li2_approx(-clog(one(T) - z))
                 end
             else # Re(z) > 1/2
-                if nz <= 2.0f0*rz
+                if nz <= 2*rz
                     l = -clog(z)
-                    -li2_approx(l) + l*clog(1.0f0 - z) + zeta2F32
+                    -li2_approx(l) + l*clog(one(T) - z) + zeta_2(T)
                 else # |z|^2 > 2*Re(z)
-                    -li2_approx(-clog(1.0f0 - inv(z))) - 0.5f0*clog(-z)^2 - zeta2F32
+                    -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta_2(T)
                 end
             end
         end
     end
 end
 
-function _li2(z::ComplexF64)::ComplexF64
-    clog(z) = 0.5*log(abs2(z)) + angle(z)*1.0im
-
+function _li2(z::Complex{BigFloat})::Complex{BigFloat}
     rz, iz = reim(z)
 
-    if iz == 0.0
-        if rz <= 1.0
-            reli2(rz)
+    if iszero(iz)
+        if rz <= one(BigFloat)
+            complex(reli2(rz))
         else # Re(z) > 1
-            reli2(rz) - pi*log(rz)*1.0im
+            complex(reli2(rz), -convert(BigFloat, pi)*log(rz))
         end
     else
         nz = abs2(z)
 
-        if nz < eps(Float64)
-            z*(1.0 + 0.25*z)
+        if nz < eps(BigFloat)
+            z*(one(BigFloat) + one(BigFloat)/4*z)
         else
-            if rz <= 0.5
-                if nz > 1.0
-                    -li2_approx(-clog(1.0 - inv(z))) - 0.5*clog(-z)^2 - zeta2
+            if rz <= one(BigFloat)/2
+                if nz > one(BigFloat)
+                    -li2_approx(inv(z)) - one(BigFloat)/2*clog(-z)^2 - zeta_2(BigFloat)
                 else # |z|^2 <= 1
-                    li2_approx(-clog(1.0 - z))
+                    li2_approx(z)
                 end
             else # Re(z) > 1/2
-                if nz <= 2.0*rz
-                    l = -clog(z)
-                    -li2_approx(l) + l*clog(1.0 - z) + zeta2
+                if nz <= 2*rz
+                    -li2_approx(one(BigFloat) - z) - clog(z)*clog(one(BigFloat) - z) + zeta_2(BigFloat)
                 else # |z|^2 > 2*Re(z)
-                    -li2_approx(-clog(1.0 - inv(z))) - 0.5*clog(-z)^2 - zeta2
+                    -li2_approx(inv(z)) - one(BigFloat)/2*clog(-z)^2 - zeta_2(BigFloat)
                 end
             end
         end

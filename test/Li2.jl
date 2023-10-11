@@ -3,6 +3,8 @@
     real_data = filter_real(cmpl_data)
 
     setprecision(BigFloat, MAX_BINARY_DIGITS) do
+        ep = 30*eps(BigFloat)
+        test_function_on_data(PolyLog.li2  , cmpl_data, ep, ep)
         ep = 10*eps(BigFloat)
         test_function_on_data(PolyLog.reli2, real_data, ep, ep)
     end
@@ -38,4 +40,7 @@
 
     @test real(PolyLog.li2(-1.08371e-08 + 1.32716e-24*im)) == -1.0837099970639316e-08
     @test imag(PolyLog.li2(-1.08371e-08 + 1.32716e-24*im)) ==  1.3271599928087172e-24
+
+    # test value that causes overflow if squared
+    @test real(PolyLog.li2(1e300 + 1im)) ≈ real(-238582.12510339421 - 2170.13532372464im) rtol=eps(Float64)
 end

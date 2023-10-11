@@ -39,3 +39,12 @@
     @test PolyLog.zeta(   8, BigFloat) ≈ big(pi)^8/9450    rtol=10*eps(BigFloat)
     @test PolyLog.zeta(  10, BigFloat) ≈ big(pi)^10/93555  rtol=10*eps(BigFloat)
 end
+
+@testset "zeta_2" begin
+    zeta2F64 = 1.6449340668482264
+
+    @test PolyLog.zeta_2(Float16) == Float16(zeta2F64)
+    @test PolyLog.zeta_2(Float32) == Float32(zeta2F64)
+    @test PolyLog.zeta_2(Float64) == zeta2F64
+    @test PolyLog.zeta_2(BigFloat) == PolyLog.zeta(2, BigFloat)
+end
