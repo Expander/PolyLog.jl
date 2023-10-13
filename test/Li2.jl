@@ -43,4 +43,5 @@
 
     # test value that causes overflow if squared
     @test real(PolyLog.li2(1e300 + 1im)) ≈ real(-238582.12510339421 - 2170.13532372464im) rtol=eps(Float64)
+    @test real(PolyLog.li2(1.0 + 1e300im)) ≈ real(-238585.82620504462 + 1085.06766186232im) rtol=eps(Float64)
 end

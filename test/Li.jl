@@ -85,6 +85,7 @@ end
 
     # test value that causes overflow if squared
     @test real(PolyLog.li(7, 1e300 + 1im)) ≈ real(-1.4886831990993457e16 - 4.74066248802866e14im) rtol=2*eps(Float64)
+    @test real(PolyLog.li(7, 1.0 + 1e300im)) ≈ real(-1.489168315226607e16 + 2.3705150998401e14im) rtol=2*eps(Float64)
 
     @test isnan(PolyLog.reli(10, NaN))
     @test isnan(PolyLog.reli(10, BigFloat(NaN)))
