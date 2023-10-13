@@ -138,9 +138,9 @@ function _li3(z::ComplexF64)::ComplexF64
             reli3(real(z)) - pi*log(real(z))^2*0.5im
         end
     else # Im(z) != 0
-        nz::Float64  = abs2(z)
+        nz::Float64  = abs(z)
         pz::Float64  = angle(z)
-        lnz::Float64 = 0.5*log(nz)
+        lnz::Float64 = log(nz)
 
         if lnz*lnz + pz*pz < 1.0 # |log(z)| < 1
             C = (

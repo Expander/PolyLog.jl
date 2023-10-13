@@ -12,4 +12,7 @@
     @test PolyLog.li5(ComplexF16(1.0 + 0.0im)) ≈ zeta5
     @test PolyLog.li5(1//1 + 0//1im) ≈ zeta5
     @test PolyLog.li5(1 + 0im) ≈ zeta5
+
+    # test value that causes overflow if squared
+    @test real(PolyLog.li5(1e300 + 1im)) ≈ real(-1.3105197831948743e12 - 2.980481322754618e10im) rtol=eps(Float64)
 end

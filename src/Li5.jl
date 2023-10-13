@@ -34,9 +34,9 @@ function _li5(z::ComplexF64)::ComplexF64
         end
     end
 
-    nz::Float64  = abs2(z)
+    nz::Float64  = abs(z)
     pz::Float64  = angle(z)
-    lnz::Float64 = 0.5*log(nz)
+    lnz::Float64 = log(nz)
 
     if lnz*lnz + pz*pz < 1.0 # |log(z)| < 1
         C = (

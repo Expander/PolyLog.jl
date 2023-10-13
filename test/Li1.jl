@@ -37,4 +37,7 @@
     @test PolyLog.li1(-1//1 + 0//1im) ≈ -log(2.0)
     @test PolyLog.li1(-1 + 0im) ≈ -log(2.0)
     @test PolyLog.li1(1.0 + 0.0im) == Inf
+
+    # test value that causes overflow if squared
+    @test real(PolyLog.li1(1e300 + 1im)) ≈ real(-690.77552789821371 - 3.14159265358979im) rtol=eps(Float64)
 end

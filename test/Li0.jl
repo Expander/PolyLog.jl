@@ -30,4 +30,7 @@
 
     @test PolyLog.li0(1.0) == Inf
     @test isnan(PolyLog.li0(1.0 + 0.0im))
+
+    # test value that causes overflow if squared
+    @test real(PolyLog.li0(1e300 + 1im)) ≈ -1.0 rtol=eps(Float64)
 end

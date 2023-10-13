@@ -177,9 +177,9 @@ function _li4(z::ComplexF64)::ComplexF64
             reli4(real(z)) - pi/6*log(real(z))^3*1.0im
         end
     else
-        nz::Float64  = abs2(z)
+        nz::Float64  = abs(z)
         pz::Float64  = angle(z)
-        lnz::Float64 = 0.5*log(nz)
+        lnz::Float64 = log(nz)
 
         if lnz*lnz + pz*pz < 1.0 # |log(z)| < 1
             C = (
