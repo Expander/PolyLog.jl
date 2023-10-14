@@ -79,7 +79,7 @@ function _reli3(x::Float64)::Float64
         -0.75*ZETA3_F64
     elseif x < 0.0
         reli3_neg(x)
-    elseif x == 0.0
+    elseif iszero(x)
         0.0
     elseif x < 0.5
         reli3_pos(x)
@@ -131,7 +131,7 @@ _li3(z::ComplexF16) = oftype(z, _li3(ComplexF32(z)))
 _li3(z::ComplexF32) = oftype(z, _li3(ComplexF64(z)))
 
 function _li3(z::ComplexF64)::ComplexF64
-    if imag(z) == 0.0
+    if iszero(imag(z))
         if real(z) <= 1.0
             reli3(real(z)) + 0.0im
         else

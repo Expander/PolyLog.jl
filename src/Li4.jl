@@ -170,7 +170,7 @@ _li4(z::ComplexF16) = oftype(z, _li4(ComplexF32(z)))
 _li4(z::ComplexF32) = oftype(z, _li4(ComplexF64(z)))
 
 function _li4(z::ComplexF64)::ComplexF64
-    if imag(z) == 0.0
+    if iszero(imag(z))
         if real(z) <= 1.0
             reli4(real(z)) + 0.0im
         else

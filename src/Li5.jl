@@ -22,8 +22,8 @@ _li5(z::ComplexF16) = oftype(z, _li5(ComplexF32(z)))
 _li5(z::ComplexF32) = oftype(z, _li5(ComplexF64(z)))
 
 function _li5(z::ComplexF64)::ComplexF64
-    if imag(z) == 0.0
-        if real(z) == 0.0
+    if iszero(imag(z))
+        if iszero(real(z))
             return 0.0 + 0.0im
         end
         if real(z) == 1.0

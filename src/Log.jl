@@ -25,7 +25,7 @@ end
 function ln_sqr(x::Float64)::Float64
     if x < zero(x)
         log(-x)^2 + pi^2
-    elseif x == zero(x)
+    elseif iszero(x)
         Inf
     else
         log(x)^2
