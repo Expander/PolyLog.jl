@@ -23,9 +23,10 @@
     @test PolyLog.neg_eta(  55, Float64) == -1.0
     @test PolyLog.neg_eta(  56, Float64) == -1.0
 
-    @test PolyLog.neg_eta(-2, BigFloat) == BigFloat("0")
-    @test PolyLog.neg_eta(-1, BigFloat) == (big(2)^2 - one(BigFloat))*PolyLog.zeta(-1, BigFloat)
-    @test PolyLog.neg_eta( 0, BigFloat) == BigFloat("-0.5")
-    @test PolyLog.neg_eta( 1, BigFloat) == -log(big(2))
-    @test PolyLog.neg_eta( 2, BigFloat) == (inv(big(2)) - one(BigFloat))*PolyLog.zeta(2, BigFloat)
+    @test PolyLog.neg_eta(  -2, BigFloat) == BigFloat("0")
+    @test PolyLog.neg_eta(  -1, BigFloat) == (big(2)^2 - one(BigFloat))*PolyLog.zeta(-1, BigFloat)
+    @test PolyLog.neg_eta(   0, BigFloat) == BigFloat("-0.5")
+    @test PolyLog.neg_eta(   1, BigFloat) == -log(big(2))
+    @test PolyLog.neg_eta(   2, BigFloat) == (inv(big(2)) - one(BigFloat))*PolyLog.zeta(2, BigFloat)
+    @test PolyLog.neg_eta(10^4, BigFloat) == (inv(big(2)^big(10^4 - 1)) - one(BigFloat))*PolyLog.zeta(10^4, BigFloat)
 end

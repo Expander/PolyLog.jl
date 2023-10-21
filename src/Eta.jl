@@ -94,13 +94,13 @@ function neg_eta_big(n::Integer)::BigFloat
         if iseven(n)
             BigFloat("0")
         else
-            (exp2(1 - n) - one(BigFloat))*zeta_big(n)
+            (exp2(big(1) - big(n)) - one(BigFloat))*zeta_big(n)
         end
     elseif n == 0
         BigFloat("-0.5")
     elseif n == 1
         -log(big(2))
     else
-        (exp2(1 - n) - one(BigFloat))*zeta_big(n)
+        (exp2(big(1) - big(n)) - one(BigFloat))*zeta_big(n)
     end
 end
