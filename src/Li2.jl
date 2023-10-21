@@ -156,8 +156,9 @@ end
 Returns the real dilogarithm ``\\Re[\\operatorname{Li}_2(x)]`` of a
 real number ``x`` of type `Real`.
 
-Implemented as rational function approximation with a maximum error of
-`5e-17` [[arXiv:2201.01678](https://arxiv.org/abs/2201.01678)].
+For ``x`` of type `Float16`, `Float32` or `Float64` the implementation
+is an adaptation of
+[[arXiv:2201.01678](https://arxiv.org/abs/2201.01678)].
 
 Author: Alexander Voigt
 
