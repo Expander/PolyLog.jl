@@ -21,6 +21,7 @@ reli3(1.0)          # Re[Li_3(x)] (trilogarithm)
 reli4(1.0)          # Re[Li_4(x)]
 reli(10, 1.0)       # Re[Li_n(x)] for all integers n (here: n = 10)
 reli(10, big"1.0")  # Re[Li_n(x)] for all integers n (here: n = 10)
+reli(-2, 1.0)       # Re[Li_n(x)] for all integers n (here: n = -2)
 
 # complex polylogarithms for real or complex arguments
 li0(1.0 + 1.0im)       # Li_0(z)
@@ -32,6 +33,7 @@ li5(1.0 + 1.0im)       # Li_5(z)
 li6(1.0 + 1.0im)       # Li_6(z)
 li(10, 1.0 + 1.0im)    # Li_n(z) for all integers n (here: n = 10)
 li(10, big"1.0" + 1im) # Li_n(z) for all integers n (here: n = 10)
+li(-2, 1.0 + 1.0im)    # Li_n(z) for all integers n (here: n = -2)
 ```
 
 
