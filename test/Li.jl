@@ -36,7 +36,10 @@ end
         setprecision(BigFloat, MAX_BINARY_DIGITS) do
             for T in (Float16, Float32, Float64, BigFloat)
                 ep = ni.eps*eps(T)/eps(Float64)
-                test_function_on_data(z -> PolyLog.reli(n, z), map(T, real_data), ep, ep)
+                for TN in (Int16, Int32, Int64, Int128)
+                    (n > typemax(TN) || n < typemin(TN)) && continue
+                    test_function_on_data(z -> PolyLog.reli(TN(n), z), map(T, real_data), ep, ep)
+                end
             end
         end
 
@@ -45,7 +48,10 @@ end
             for T in (Float32, Float64, BigFloat)
                 T == BigFloat && (n < 0 || n > 2) && continue # tests take too long
                 ep = ni.eps*eps(T)/eps(Float64)
-                test_function_on_data(z -> PolyLog.li(n, z), map(Complex{T}, complex_data), ep, ep)
+                for TN in (Int16, Int32, Int64, Int128)
+                    (n > typemax(TN) || n < typemin(TN)) && continue
+                    test_function_on_data(z -> PolyLog.li(TN(n), z), map(Complex{T}, complex_data), ep, ep)
+                end
             end
         end
 
