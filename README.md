@@ -2,6 +2,7 @@ PolyLog.jl
 ==========
 
 [![test](https://github.com/Expander/PolyLog.jl/actions/workflows/build.yml/badge.svg)](https://github.com/Expander/PolyLog.jl/actions/workflows/build.yml)
+[![coverage](https://coveralls.io/repos/github/Expander/PolyLog.jl/badge.svg)](https://coveralls.io/github/Expander/PolyLog.jl)
 
 The PolyLog.jl package provides Julia implementations of real and
 complex polylogarithms, including the real and complex dilogarithm and
