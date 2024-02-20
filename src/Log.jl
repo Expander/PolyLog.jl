@@ -10,6 +10,12 @@ function clog(x::Real)
     log(x)
 end
 
+# returns complex logarithm of 1+z;
+# handles case when imag(z) == -0.0
+function clog1p(z::Complex)
+    clog(one(z) + z)
+end
+
 # returns |ln(x)|^2 for all x
 function ln_sqr(x::Real)::Real
     if x < zero(x)

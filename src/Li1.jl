@@ -55,6 +55,6 @@ julia> li1(BigFloat("1.0") + 1im)
 -0.0 + 1.570796326794896619231321691639751442098584699687552910487472296153908203143099im
 ```
 """
-li1(z::Complex) = -clog(one(z) - z)
+li1(z::Complex) = -clog1p(-z)
 
 li1(z::Real) = li1(Complex(z))

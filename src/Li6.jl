@@ -72,12 +72,12 @@ function _li6(z::ComplexF64)::ComplexF64
         )
 
         (u, rest, sgn) = if nz <= 1.0
-            (-clog(1.0 - z), 0.0 + 0.0im, 1.0)
+            (-clog1p(-z), 0.0 + 0.0im, 1.0)
         else # nz > 1.0
             arg = pz > 0.0 ? pz - pi : pz + pi
             lmz = lnz + arg*im # clog(z)
             lmz2 = lmz*lmz
-            (-clog(1.0 - inv(z)), -31/16*ZETA6_F64 + lmz2*(-7/8*ZETA4_F64 + lmz2*(-1/24*ZETA2_F64 - 1/720*lmz2)), -1.0)
+            (-clog1p(-inv(z)), -31/16*ZETA6_F64 + lmz2*(-7/8*ZETA4_F64 + lmz2*(-1/24*ZETA2_F64 - 1/720*lmz2)), -1.0)
         end
 
         u2 = u*u
