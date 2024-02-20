@@ -179,11 +179,11 @@ function _li3(z::ComplexF64)::ComplexF64
             )
 
             (u, rest) = if nz <= 1.0
-                (-clog(1.0 - z), 0.0 + 0.0im)
+                (-clog1p(-z), 0.0 + 0.0im)
             else # |z|^2 > 1
                 arg = pz > 0.0 ? pz - pi : pz + pi
                 lmz = lnz + arg*im # clog(z)
-                (-clog(1.0 - inv(z)), -lmz*(1/6*lmz*lmz + ZETA2_F64))
+                (-clog1p(-inv(z)), -lmz*(1/6*lmz*lmz + ZETA2_F64))
             end
 
             u2 = u*u

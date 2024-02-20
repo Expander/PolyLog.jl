@@ -107,7 +107,7 @@ function li2_approx(z::Complex{T})::Complex{T} where T
     if abs2(z) < (99/100)^2
         li2_approx_taylor(z)
     else
-        li2_approx_unity(-clog(one(T) - z))
+        li2_approx_unity(-clog1p(-z))
     end
 end
 
@@ -254,16 +254,16 @@ function _li2(z::Complex{T})::Complex{T} where T
         else
             if rz <= one(T)/2
                 if nz > one(T)
-                    -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta2(T)
+                    -li2_approx(-clog1p(-inv(z))) - one(T)/2*clog(-z)^2 - zeta2(T)
                 else # |z|^2 <= 1
-                    li2_approx(-clog(one(T) - z))
+                    li2_approx(-clog1p(-z))
                 end
             else # Re(z) > 1/2
                 if nz <= 2*rz
                     l = -clog(z)
-                    -li2_approx(l) + l*clog(one(T) - z) + zeta2(T)
+                    -li2_approx(l) + l*clog1p(-z) + zeta2(T)
                 else # |z|^2 > 2*Re(z)
-                    -li2_approx(-clog(one(T) - inv(z))) - one(T)/2*clog(-z)^2 - zeta2(T)
+                    -li2_approx(-clog1p(-inv(z))) - one(T)/2*clog(-z)^2 - zeta2(T)
                 end
             end
         end
@@ -293,7 +293,7 @@ function _li2(z::Complex{BigFloat})::Complex{BigFloat}
                 end
             else # Re(z) > 1/2
                 if nz <= 2*rz
-                    -li2_approx(one(BigFloat) - z) - clog(z)*clog(one(BigFloat) - z) + zeta2(BigFloat)
+                    -li2_approx(one(BigFloat) - z) - clog(z)*clog1p(-z) + zeta2(BigFloat)
                 else # |z|^2 > 2*Re(z)
                     -li2_approx(inv(z)) - one(BigFloat)/2*clog(-z)^2 - zeta2(BigFloat)
                 end
