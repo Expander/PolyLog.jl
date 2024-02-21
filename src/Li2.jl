@@ -187,7 +187,7 @@ function _reli2(x::T)::T where T
     elseif x < zero(x)
         -reli2_approx(x/(x - one(x))) - one(x)/2*log1p(-x)^2
     elseif iszero(x)
-        zero(x)
+        x
     elseif x < one(x)/2
         reli2_approx(x)
     elseif x == one(x)/2

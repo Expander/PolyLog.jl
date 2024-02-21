@@ -17,6 +17,8 @@ julia> li6(1.0 + 1.0im)
 """
 li6(z::Complex) = _li6(float(z))
 
+li6(z::Real) = li6(Complex(z))
+
 _li6(z::ComplexF16) = oftype(z, _li6(ComplexF32(z)))
 
 _li6(z::ComplexF32) = oftype(z, _li6(ComplexF64(z)))
@@ -24,13 +26,13 @@ _li6(z::ComplexF32) = oftype(z, _li6(ComplexF64(z)))
 function _li6(z::ComplexF64)::ComplexF64
     if iszero(imag(z))
         if iszero(real(z))
-            return 0.0 + 0.0im
+            return z
         end
         if real(z) == 1.0
-            return ZETA6_F64 + 0.0im
+            return complex(ZETA6_F64)
         end
         if real(z) == -1.0
-            return -31/32*ZETA6_F64 + 0.0im
+            return complex(-31/32*ZETA6_F64)
         end
     end
 

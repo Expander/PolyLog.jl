@@ -16,6 +16,14 @@
     test_function_on_data(PolyLog.li0, map(ComplexF16, cmpl_data), 1e-2, 1e-2)
     test_function_on_data(PolyLog.li0, map(Float16   , real_data), 1e-2, 1e-2)
 
+    # test signbit for 0.0 and -0.0 arguments
+    for T in (Float16, Float32, Float64, BigFloat)
+        @test  signbit(real(PolyLog.li0(T(-0.0))))
+        @test !signbit(imag(PolyLog.li0(T(-0.0))))
+        @test !signbit(real(PolyLog.li0(T( 0.0))))
+        @test !signbit(imag(PolyLog.li0(T( 0.0))))
+    end
+
     @test PolyLog.li0(2.0) ≈ -2.0
     @test PolyLog.li0(2.0f0) ≈ -2.0f0
     @test PolyLog.li0(Float16(2.0)) ≈ Float16(-2.0)

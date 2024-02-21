@@ -17,6 +17,8 @@ julia> li5(1.0 + 1.0im)
 """
 li5(z::Complex) = _li5(float(z))
 
+li5(z::Real) = li5(Complex(z))
+
 _li5(z::ComplexF16) = oftype(z, _li5(ComplexF32(z)))
 
 _li5(z::ComplexF32) = oftype(z, _li5(ComplexF64(z)))
@@ -24,13 +26,13 @@ _li5(z::ComplexF32) = oftype(z, _li5(ComplexF64(z)))
 function _li5(z::ComplexF64)::ComplexF64
     if iszero(imag(z))
         if iszero(real(z))
-            return 0.0 + 0.0im
+            return z
         end
         if real(z) == 1.0
-            return ZETA5_F64 + 0.0im
+            return complex(ZETA5_F64)
         end
         if real(z) == -1.0
-            return -15/16*ZETA5_F64 + 0.0im
+            return complex(-15/16*ZETA5_F64)
         end
     end
 

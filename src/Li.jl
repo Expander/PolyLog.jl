@@ -32,7 +32,7 @@ _reli(n::Integer, x::Float32) = oftype(x, _reli(n, Float64(x)))
 function _reli(n::Integer, x::Real)
     isnan(x) && return oftype(x, NaN)
     isinf(x) && return oftype(x, -Inf)
-    iszero(x) && return zero(x)
+    iszero(x) && return x
     x == one(x) && return zeta(n, typeof(x))
     x == -one(x) && return neg_eta(n, typeof(x))
 

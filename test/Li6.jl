@@ -5,6 +5,14 @@
     test_function_on_data(PolyLog.li6, map(ComplexF32, cmpl_data), 1e-6, 1e-6)
     test_function_on_data(PolyLog.li6, map(ComplexF16, cmpl_data), 1e-2, 1e-2)
 
+    # test signbit for 0.0 and -0.0 arguments
+    for T in (Float16, Float32, Float64)
+        @test  signbit(real(PolyLog.li6(T(-0.0))))
+        @test !signbit(imag(PolyLog.li6(T(-0.0))))
+        @test !signbit(real(PolyLog.li6(T( 0.0))))
+        @test !signbit(imag(PolyLog.li6(T( 0.0))))
+    end
+
     zeta6 = 1.0173430619844491
 
     @test PolyLog.li6(1.0 + 0.0im) == zeta6

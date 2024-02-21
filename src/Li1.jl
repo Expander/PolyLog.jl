@@ -19,7 +19,9 @@ julia> reli1(BigFloat("0.5"))
 ```
 """
 function reli1(x::Real)
-    if x < one(x)
+    if x == zero(x)
+        x
+    elseif x < one(x)
         -log(one(x) - x)
     elseif x == one(x)
         oftype(x, Inf)
@@ -55,6 +57,12 @@ julia> li1(BigFloat("1.0") + 1im)
 -0.0 + 1.570796326794896619231321691639751442098584699687552910487472296153908203143099im
 ```
 """
-li1(z::Complex) = -clog1p(-z)
+function li1(z::Complex)
+    if iszero(z)
+        z
+    else
+        -clog1p(-z)
+    end
+end
 
 li1(z::Real) = li1(Complex(z))

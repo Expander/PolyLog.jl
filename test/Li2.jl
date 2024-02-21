@@ -18,6 +18,16 @@
     test_function_on_data(PolyLog.li2  , filter_ComplexF16(map(ComplexF16, cmpl_data)), 1e-2, 1e-2)
     test_function_on_data(PolyLog.reli2, map(Float16, real_data), 1e-2, 1e-2)
 
+    # test signbit for 0.0 and -0.0 arguments
+    for T in (Float16, Float32, Float64, BigFloat)
+        @test  signbit(PolyLog.reli2(T(-0.0)))
+        @test !signbit(PolyLog.reli2(T( 0.0)))
+        @test  signbit(real(PolyLog.li2(T(-0.0))))
+        @test !signbit(imag(PolyLog.li2(T(-0.0))))
+        @test !signbit(real(PolyLog.li2(T( 0.0))))
+        @test !signbit(imag(PolyLog.li2(T( 0.0))))
+    end
+
     zeta2 = 1.6449340668482264
 
     @test PolyLog.reli2(1.0) == zeta2
