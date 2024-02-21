@@ -41,6 +41,10 @@
     @test real(PolyLog.li2(-1.08371e-08 + 1.32716e-24*im)) == -1.0837099970639316e-08
     @test imag(PolyLog.li2(-1.08371e-08 + 1.32716e-24*im)) ==  1.3271599928087172e-24
 
+    # test value close to zero
+    @test real(PolyLog.li2(4.831285545908206e-6 + 0.004396919500211628im)) ≈ -1.94166578202937687444628936853e-9 rtol=1e-12
+    @test imag(PolyLog.li2(4.831285545908206e-6 + 0.004396919500211628im)) ≈  0.00439692067657240512726530759719387623 rtol=1e-14
+
     # test value that causes overflow if squared
     @test PolyLog.li2(1e300 + 1im) ≈ -238582.12510339421 + 2170.13532372464im rtol=eps(Float64)
     @test PolyLog.li2(1.0 + 1e300im) ≈ -238585.82620504462 + 1085.06766186232im rtol=eps(Float64)

@@ -1,8 +1,15 @@
+# converts -0.0 to 0.0
+function convert_minus_0(z)
+    Complex(
+        real(z) == -0.0 ? 0.0 : real(z),
+        imag(z) == -0.0 ? 0.0 : imag(z)
+    )
+end
+
 # returns complex logarithm of z;
 # handles case when imag(z) == -0.0
 function clog(z::Complex)
-    ang = angle(z)
-    Complex(log(abs(z)), iszero(imag(z)) && ang < zero(z.re) ? -ang : ang)
+    log(convert_minus_0(z))
 end
 
 # returns logarithm of x
@@ -13,7 +20,7 @@ end
 # returns complex logarithm of 1+z;
 # handles case when imag(z) == -0.0
 function clog1p(z::Complex)
-    clog(one(z) + z)
+    log1p(convert_minus_0(z))
 end
 
 # returns |ln(x)|^2 for all x
