@@ -9,7 +9,13 @@ end
 # returns complex logarithm of z;
 # handles case when imag(z) == -0.0
 function clog(z::Complex)
-    log(convert_minus_0(z))
+    if iszero(imag(z)) && real(z) > zero(real(z))
+        Complex(log(real(z)), zero(real(z)))
+    elseif iszero(imag(z))
+        Complex(log(real(-z)), convert(typeof(real(z)),pi))
+    else
+        log(z)
+    end
 end
 
 # returns logarithm of x
