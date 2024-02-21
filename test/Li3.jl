@@ -19,6 +19,14 @@
         @test !signbit(imag(PolyLog.li3(T(-0.0))))
         @test !signbit(real(PolyLog.li3(T( 0.0))))
         @test !signbit(imag(PolyLog.li3(T( 0.0))))
+        @test !signbit(real(PolyLog.li3(Complex{T}(0.0, 0.0))))
+        @test !signbit(imag(PolyLog.li3(Complex{T}(0.0, 0.0))))
+        @test  signbit(real(PolyLog.li3(Complex{T}(-0.0, 0.0))))
+        @test !signbit(imag(PolyLog.li3(Complex{T}(-0.0, 0.0))))
+        @test !signbit(real(PolyLog.li3(Complex{T}(0.0, -0.0))))
+        @test  signbit(imag(PolyLog.li3(Complex{T}(0.0, -0.0))))
+        @test  signbit(real(PolyLog.li3(Complex{T}(-0.0, -0.0))))
+        @test  signbit(imag(PolyLog.li3(Complex{T}(-0.0, -0.0))))
     end
 
     zeta3 = 1.2020569031595943

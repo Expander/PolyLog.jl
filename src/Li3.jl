@@ -137,9 +137,9 @@ _li3(z::ComplexF32) = oftype(z, _li3(ComplexF64(z)))
 function _li3(z::ComplexF64)::ComplexF64
     if iszero(imag(z))
         if real(z) <= 1.0
-            complex(reli3(real(z)))
+            Complex(reli3(real(z)), imag(z))
         else
-            complex(reli3(real(z)), -0.5*pi*log(real(z))^2)
+            Complex(reli3(real(z)), -0.5*pi*log(real(z))^2)
         end
     else # Im(z) != 0
         nz::Float64  = abs(z)

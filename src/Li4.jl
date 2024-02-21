@@ -174,9 +174,9 @@ _li4(z::ComplexF32) = oftype(z, _li4(ComplexF64(z)))
 function _li4(z::ComplexF64)::ComplexF64
     if iszero(imag(z))
         if real(z) <= 1.0
-            complex(reli4(real(z)))
+            Complex(reli4(real(z)), imag(z))
         else
-            complex(reli4(real(z)), -pi/6*log(real(z))^3)
+            Complex(reli4(real(z)), -pi/6*log(real(z))^3)
         end
     else
         nz::Float64  = abs(z)

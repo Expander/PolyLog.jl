@@ -61,6 +61,14 @@ end
             @test !signbit(imag(PolyLog.li(n, T(-0.0))))
             @test !signbit(real(PolyLog.li(n, T( 0.0))))
             @test !signbit(imag(PolyLog.li(n, T( 0.0))))
+            @test !signbit(real(PolyLog.li(n, Complex{T}(0.0, 0.0))))
+            @test !signbit(imag(PolyLog.li(n, Complex{T}(0.0, 0.0))))
+            @test  signbit(real(PolyLog.li(n, Complex{T}(-0.0, 0.0))))
+            @test !signbit(imag(PolyLog.li(n, Complex{T}(-0.0, 0.0))))
+            @test !signbit(real(PolyLog.li(n, Complex{T}(0.0, -0.0))))
+            @test  signbit(imag(PolyLog.li(n, Complex{T}(0.0, -0.0))))
+            @test  signbit(real(PolyLog.li(n, Complex{T}(-0.0, -0.0))))
+            @test  signbit(imag(PolyLog.li(n, Complex{T}(-0.0, -0.0))))
         end
 
         zeta = PolyLog.zeta(n, Float64)

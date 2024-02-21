@@ -22,6 +22,14 @@
         @test !signbit(imag(PolyLog.li0(T(-0.0))))
         @test !signbit(real(PolyLog.li0(T( 0.0))))
         @test !signbit(imag(PolyLog.li0(T( 0.0))))
+        @test !signbit(real(PolyLog.li0(Complex{T}(0.0, 0.0))))
+        @test !signbit(imag(PolyLog.li0(Complex{T}(0.0, 0.0))))
+        @test  signbit(real(PolyLog.li0(Complex{T}(-0.0, 0.0))))
+        @test !signbit(imag(PolyLog.li0(Complex{T}(-0.0, 0.0))))
+        @test !signbit(real(PolyLog.li0(Complex{T}(0.0, -0.0))))
+        @test  signbit(imag(PolyLog.li0(Complex{T}(0.0, -0.0))))
+        @test  signbit(real(PolyLog.li0(Complex{T}(-0.0, -0.0))))
+        @test  signbit(imag(PolyLog.li0(Complex{T}(-0.0, -0.0))))
     end
 
     @test PolyLog.li0(2.0) ≈ -2.0

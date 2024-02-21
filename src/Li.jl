@@ -120,7 +120,7 @@ function _li(n::Integer, z::Complex{T})::Complex{T} where T
 
     if iszero(imag(z))
         if real(z) <= one(typeof(real(z))) || n <= 0
-            return Complex(reli(n, real(z)))
+            return Complex(reli(n, real(z)), imag(z))
         else
             return Complex(reli(n, real(z)), -convert(T, pi)*inv_fac(n - 1, T)*log(real(z))^(n - 1))
         end

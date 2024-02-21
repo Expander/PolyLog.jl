@@ -242,9 +242,9 @@ function _li2(z::Complex{T})::Complex{T} where T
 
     if iszero(iz)
         if rz <= one(T)
-            complex(reli2(rz))
+            Complex(reli2(rz), iz)
         else # Re(z) > 1
-            complex(reli2(rz), -convert(T, pi)*log(rz))
+            Complex(reli2(rz), -convert(T, pi)*log(rz))
         end
     else
         nz = abs2(z)
@@ -275,9 +275,9 @@ function _li2(z::Complex{BigFloat})::Complex{BigFloat}
 
     if iszero(iz)
         if rz <= one(BigFloat)
-            complex(reli2(rz))
+            Complex(reli2(rz), iz)
         else # Re(z) > 1
-            complex(reli2(rz), -convert(BigFloat, pi)*log(rz))
+            Complex(reli2(rz), -convert(BigFloat, pi)*log(rz))
         end
     else
         nz = abs2(z)
