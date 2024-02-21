@@ -128,6 +128,8 @@ function _reli4(x::Float64)::Float64
 
     if x < 0.0
         rest + sgn*reli4_neg(x)
+    elseif iszero(x)
+        x
     elseif x < 0.5
         rest + sgn*reli4_half(x)
     elseif x < 0.8
@@ -172,9 +174,9 @@ _li4(z::ComplexF32) = oftype(z, _li4(ComplexF64(z)))
 function _li4(z::ComplexF64)::ComplexF64
     if iszero(imag(z))
         if real(z) <= 1.0
-            reli4(real(z)) + 0.0im
+            Complex(reli4(real(z)), imag(z))
         else
-            reli4(real(z)) - pi/6*log(real(z))^3*1.0im
+            Complex(reli4(real(z)), -pi/6*log(real(z))^3)
         end
     else
         nz::Float64  = abs(z)

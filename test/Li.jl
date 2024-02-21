@@ -55,6 +55,22 @@ end
             end
         end
 
+        # test signbit for 0.0 and -0.0 arguments
+        for T in (Float16, Float32, Float64)
+            @test  signbit(real(PolyLog.li(n, T(-0.0))))
+            @test !signbit(imag(PolyLog.li(n, T(-0.0))))
+            @test !signbit(real(PolyLog.li(n, T( 0.0))))
+            @test !signbit(imag(PolyLog.li(n, T( 0.0))))
+            @test !signbit(real(PolyLog.li(n, Complex{T}(0.0, 0.0))))
+            @test !signbit(imag(PolyLog.li(n, Complex{T}(0.0, 0.0))))
+            @test  signbit(real(PolyLog.li(n, Complex{T}(-0.0, 0.0))))
+            @test !signbit(imag(PolyLog.li(n, Complex{T}(-0.0, 0.0))))
+            @test !signbit(real(PolyLog.li(n, Complex{T}(0.0, -0.0))))
+            @test  signbit(imag(PolyLog.li(n, Complex{T}(0.0, -0.0))))
+            @test  signbit(real(PolyLog.li(n, Complex{T}(-0.0, -0.0))))
+            @test  signbit(imag(PolyLog.li(n, Complex{T}(-0.0, -0.0))))
+        end
+
         zeta = PolyLog.zeta(n, Float64)
 
         @test PolyLog.reli(n, 1.0) == zeta

@@ -32,7 +32,7 @@ _reli(n::Integer, x::Float32) = oftype(x, _reli(n, Float64(x)))
 function _reli(n::Integer, x::Real)
     isnan(x) && return oftype(x, NaN)
     isinf(x) && return oftype(x, -Inf)
-    iszero(x) && return zero(x)
+    iszero(x) && return x
     x == one(x) && return zeta(n, typeof(x))
     x == -one(x) && return neg_eta(n, typeof(x))
 
@@ -120,7 +120,7 @@ function _li(n::Integer, z::Complex{T})::Complex{T} where T
 
     if iszero(imag(z))
         if real(z) <= one(typeof(real(z))) || n <= 0
-            return Complex(reli(n, real(z)))
+            return Complex(reli(n, real(z)), imag(z))
         else
             return Complex(reli(n, real(z)), -convert(T, pi)*inv_fac(n - 1, T)*log(real(z))^(n - 1))
         end

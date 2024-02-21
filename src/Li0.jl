@@ -18,4 +18,10 @@ julia> li0(BigFloat("0.25"))
 0.3333333333333333333333333333333333333333333333333333333333333333333333333333348
 ```
 """
-li0(z::Number) = z/(1 - z)
+function li0(z::Number)
+    if iszero(z)
+        z
+    else
+        z/(1 - z)
+    end
+end

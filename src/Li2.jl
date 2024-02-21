@@ -187,7 +187,7 @@ function _reli2(x::T)::T where T
     elseif x < zero(x)
         -reli2_approx(x/(x - one(x))) - one(x)/2*log1p(-x)^2
     elseif iszero(x)
-        zero(x)
+        x
     elseif x < one(x)/2
         reli2_approx(x)
     elseif x == one(x)/2
@@ -242,9 +242,9 @@ function _li2(z::Complex{T})::Complex{T} where T
 
     if iszero(iz)
         if rz <= one(T)
-            complex(reli2(rz))
+            Complex(reli2(rz), iz)
         else # Re(z) > 1
-            complex(reli2(rz), -convert(T, pi)*log(rz))
+            Complex(reli2(rz), -convert(T, pi)*log(rz))
         end
     else
         nz = abs2(z)
@@ -275,9 +275,9 @@ function _li2(z::Complex{BigFloat})::Complex{BigFloat}
 
     if iszero(iz)
         if rz <= one(BigFloat)
-            complex(reli2(rz))
+            Complex(reli2(rz), iz)
         else # Re(z) > 1
-            complex(reli2(rz), -convert(BigFloat, pi)*log(rz))
+            Complex(reli2(rz), -convert(BigFloat, pi)*log(rz))
         end
     else
         nz = abs2(z)
