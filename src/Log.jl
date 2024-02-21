@@ -26,7 +26,11 @@ end
 # returns complex logarithm of 1+z;
 # handles case when imag(z) == -0.0
 function clog1p(z::Complex)
-    log1p(convert_minus_0(z))
+    if iszero(imag(z)) && real(z) > -one(real(z))
+        Complex(log1p(real(z)), zero(real(z)))
+    else
+        log1p(convert_minus_0(z))
+    end
 end
 
 # returns |ln(x)|^2 for all x
