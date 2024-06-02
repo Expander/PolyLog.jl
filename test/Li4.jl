@@ -54,5 +54,5 @@
     @test PolyLog.li4(1.0 + 1e300im) ≈ -9.4872648206269765e9 + 8.62951114411071e7im rtol=eps(Float64)
 
     #ForwardDiff Test
-    @test ForwardDiff.derivative(PolyLog.reli4,float(pi)) == reli3(float(pi))/float(pi)
+    @test ForwardDiff.derivative(PolyLog.reli4,float(pi)) == ForwardDiff.reli3(float(pi))/float(pi)
 end
