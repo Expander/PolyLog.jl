@@ -59,4 +59,7 @@
     # test value that causes overflow if squared
     @test PolyLog.li1(1e300 + 1im) ≈ -690.77552789821371 + 3.14159265358979im rtol=eps(Float64)
     @test PolyLog.li1(1.0 + 1e300im) ≈ -690.77552789821371 + 1.5707963267948966im rtol=eps(Float64)
+
+    #ForwardDiff Test
+    @test ForwardDiff.derivative(PolyLog.reli1,float(pi)) == 1/(1 - pi)
 end

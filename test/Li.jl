@@ -128,4 +128,7 @@ end
             end
         end
     end
+
+    #ForwardDiff Test
+    @test ForwardDiff.derivative(Base.Fix1(PolyLog.reli,6),float(pi)) == PolyLog.reli(5,float(pi))
 end

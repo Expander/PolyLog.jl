@@ -1,5 +1,6 @@
 using Test
 import PolyLog
+import ForwardDiff
 
 include("TestPrecision.jl")
 include("DataReader.jl")
