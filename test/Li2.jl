@@ -68,6 +68,8 @@
     @test PolyLog.li2(1.0 + 1e300im) ≈ -238585.82620504462 + 1085.06766186232im rtol=eps(Float64)
 
     #ForwardDiff Test
-    @test ForwardDiff.derivative(PolyLog.reli2,float(pi)) == PolyLog.reli1(float(pi))/float(pi)
-    @test ForwardDiff.derivative(PolyLog.reli2,0.0) == 1.0
+    if isdefined(Base,:get_extension)
+        @test ForwardDiff.derivative(PolyLog.reli2,float(pi)) == PolyLog.reli1(float(pi))/float(pi)
+        @test ForwardDiff.derivative(PolyLog.reli2,0.0) == 1.0
+    end
 end
