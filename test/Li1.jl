@@ -62,4 +62,5 @@
 
     #ForwardDiff Test
     @test ForwardDiff.derivative(PolyLog.reli1,float(pi)) == 1/(1 - pi)
+    @test ForwardDiff.derivative(PolyLog.reli1,0.0) == 1.0
 end

@@ -94,7 +94,9 @@ end
         @test PolyLog.li(n, 1 + 0im) ≈ zeta
         @test PolyLog.li(n, BigFloat("1.0") + 0im) == PolyLog.zeta(n, BigFloat)
 
+        #ForwardDiff Test
         @test ForwardDiff.derivative(Base.Fix1(PolyLog.reli,n),float(pi)) == PolyLog.reli(n,float(pi))/float(pi)
+        @test ForwardDiff.derivative(Base.Fix1(PolyLog.reli,n),0.0) == 1.0
     end
 
     # value close to boundary between series 1 and 2 in arXiv:2010.09860
@@ -129,8 +131,5 @@ end
                 @test typeof(PolyLog.reli(n, convert(T, x))) == T
             end
         end
-    end
-
-    #ForwardDiff Test
-    
+    end    
 end
