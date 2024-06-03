@@ -33,7 +33,7 @@ end
 
 function PolyLog.reli(n::Integer,d::Dual{T}) where T
     val = ForwardDiff.value(d)
-    x = reli(val)
+    x = reli(n,val)
     dx = PolyLog.reli(n-1,val)/val
     return Dual{T}(x, dx*partials(d))
 end
