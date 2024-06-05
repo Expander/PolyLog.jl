@@ -135,5 +135,5 @@ end
                 @test typeof(PolyLog.reli(n, convert(T, x))) == T
             end
         end
-    end    
+    end
 end
