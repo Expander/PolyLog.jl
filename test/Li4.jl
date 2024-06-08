@@ -53,11 +53,11 @@
     @test PolyLog.li4(1e300 + 1im) ≈ -9.4863817894708364e9 + 1.725875455850714e8im rtol=eps(Float64)
     @test PolyLog.li4(1.0 + 1e300im) ≈ -9.4872648206269765e9 + 8.62951114411071e7im rtol=eps(Float64)
 
-    #ForwardDiff Test
-    if isdefined(Base,:get_extension)
-        @test ForwardDiff.derivative(PolyLog.reli4,float(pi)) == PolyLog.reli3(float(pi))/float(pi)
-        @test ForwardDiff.derivative(PolyLog.reli4,0.0) == 1.0
+    # ForwardDiff Test
+    if isdefined(Base, :get_extension)
+        @test ForwardDiff.derivative(PolyLog.reli4, pi) == PolyLog.reli3(pi)/pi
+        @test ForwardDiff.derivative(PolyLog.reli4, 0.0) == 1.0
         ChainRulesTestUtils.test_frule(PolyLog.reli4, 0.0)
-        ChainRulesTestUtils.test_rrule(PolyLog.reli4, float(pi))
+        ChainRulesTestUtils.test_rrule(PolyLog.reli4, pi)
     end
 end
