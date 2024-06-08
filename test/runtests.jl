@@ -1,5 +1,9 @@
 using Test
 import PolyLog
+if isdefined(Base,:get_extension)
+    import ForwardDiff
+    import ChainRulesTestUtils
+end
 
 include("TestPrecision.jl")
 include("DataReader.jl")
