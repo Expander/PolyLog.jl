@@ -50,4 +50,11 @@
     # test value that causes overflow if squared
     @test PolyLog.li0(1e300 + 1im) ≈ -1.0 rtol=eps(Float64)
     @test PolyLog.li0(1.0 + 1e300im) ≈ -1.0 rtol=eps(Float64)
+
+    # ForwardDiff Test
+    if isdefined(Base, :get_extension)
+        @test ForwardDiff.derivative(PolyLog.li0, float(pi)) == 1/(1 - pi)^2
+        @test ForwardDiff.derivative(PolyLog.li0, 0.0) == 1
+        @test ForwardDiff.derivative(PolyLog.li0, 1.0) == Inf
+    end
 end
