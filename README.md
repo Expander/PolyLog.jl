@@ -61,6 +61,13 @@ The implementation of the general n-th order polylogarithm is an
 adaptation of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 
 
+Contributors
+------------
+
+* Andrés Riedemann (@longemen3000): Extensions for `ForwardDiff` and
+  `ChainRules`.
+
+
 Copying
 -------
 
