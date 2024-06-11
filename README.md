@@ -80,9 +80,9 @@ adaptation of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 Contributors
 ------------
 
-* Andrés Riedemann (@longemen3000): Extensions for `ForwardDiff`
+* Andrés Riedemann (@longemen3000): Extensions for
   [ForwardDiff.jl](https://github.com/JuliaDiff/ForwardDiff.jl) and
-  `ChainRules` [ChainRules.jl](https://github.com/JuliaDiff/ChainRules.jl).
+  [ChainRules.jl](https://github.com/JuliaDiff/ChainRules.jl).
 
 
 Copying
