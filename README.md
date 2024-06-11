@@ -38,6 +38,22 @@ li(-2, 1.0 + 1.0im)    # Li_n(z) for all integers n (here: n = -2)
 ```
 
 
+Example using ForwardDiff
+-------------------------
+
+```.jl
+using ForwardDiff,PolyLog
+
+ForwardDiff.derivative(PolyLog.reli1, 0.5)                 # Re[Li_1]'(x)
+ForwardDiff.derivative(PolyLog.reli2, 0.5)                 # Re[Li_2]'(x)
+ForwardDiff.derivative(PolyLog.reli3, 0.5)                 # Re[Li_3]'(x)
+ForwardDiff.derivative(PolyLog.reli4, 0.5)                 # Re[Li_4]'(x)
+ForwardDiff.derivative(x -> PolyLog.reli(10, x), 0.5)      # Re[Li_n]'(x) for n = 10
+ForwardDiff.derivative(x -> PolyLog.reli(10, x), big"0.5") # Re[Li_n]'(x) for n = 10
+ForwardDiff.derivative(x -> PolyLog.reli(-2, x), 0.5)      # Re[Li_n]'(x) for n = -2
+```
+
+
 Documentation
 -------------
 
