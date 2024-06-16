@@ -96,8 +96,8 @@ end
 
         # ForwardDiff Test
         if isdefined(Base, :get_extension)
-            @test ForwardDiff.derivative(Base.Fix1(PolyLog.reli, n), float(pi)) == PolyLog.reli(n - 1, pi)/pi
-            @test ForwardDiff.derivative(Base.Fix1(PolyLog.reli, n), 0.0) == 1.0
+            @test ForwardDiff.derivative(z -> PolyLog.reli(n, z), float(pi)) == PolyLog.reli(n - 1, pi)/pi
+            @test ForwardDiff.derivative(z -> PolyLog.reli(n, z), 0.0) == 1.0
             ChainRulesTestUtils.test_frule(PolyLog.reli, n, 0.0)
             ChainRulesTestUtils.test_rrule(PolyLog.reli, n, float(pi))
         end
