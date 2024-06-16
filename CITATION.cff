@@ -5,7 +5,7 @@ authors:
   given-names: "Alexander"
   orcid: "https://orcid.org/0000-0001-8963-6512"
 title: "PolyLog.jl"
-version: 2.4.2
-date-released: 2024-02-21
+version: 2.5.0
+date-released: 2024-06-16
 url: "https://github.com/Expander/PolyLog.jl"
 license: MIT
