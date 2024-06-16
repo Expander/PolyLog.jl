@@ -42,15 +42,15 @@ Example using ForwardDiff
 -------------------------
 
 ```.jl
-using ForwardDiff,PolyLog
+using ForwardDiff, PolyLog
 
-ForwardDiff.derivative(PolyLog.reli1, 0.5)                 # Re[Li_1]'(x)
-ForwardDiff.derivative(PolyLog.reli2, 0.5)                 # Re[Li_2]'(x)
-ForwardDiff.derivative(PolyLog.reli3, 0.5)                 # Re[Li_3]'(x)
-ForwardDiff.derivative(PolyLog.reli4, 0.5)                 # Re[Li_4]'(x)
-ForwardDiff.derivative(x -> PolyLog.reli(10, x), 0.5)      # Re[Li_n]'(x) for n = 10
-ForwardDiff.derivative(x -> PolyLog.reli(10, x), big"0.5") # Re[Li_n]'(x) for n = 10
-ForwardDiff.derivative(x -> PolyLog.reli(-2, x), 0.5)      # Re[Li_n]'(x) for n = -2
+ForwardDiff.derivative(reli1, 0.5)                 # Re[Li_1]'(x)
+ForwardDiff.derivative(reli2, 0.5)                 # Re[Li_2]'(x)
+ForwardDiff.derivative(reli3, 0.5)                 # Re[Li_3]'(x)
+ForwardDiff.derivative(reli4, 0.5)                 # Re[Li_4]'(x)
+ForwardDiff.derivative(x -> reli(10, x), 0.5)      # Re[Li_n]'(x) for n = 10
+ForwardDiff.derivative(x -> reli(10, x), big"0.5") # Re[Li_n]'(x) for n = 10
+ForwardDiff.derivative(x -> reli(-2, x), 0.5)      # Re[Li_n]'(x) for n = -2
 ```
 
 
