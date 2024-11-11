@@ -139,6 +139,8 @@ function _reli4(x::Float64)::Float64
     end
 end
 
+reli4(::Missing) = missing
+
 """
     li4(z::Complex)
 
@@ -244,3 +246,5 @@ function _li4(z::ComplexF64)::ComplexF64
         end
     end
 end
+
+li4(::Missing) = missing

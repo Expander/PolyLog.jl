@@ -1,4 +1,7 @@
 @testset "li4" begin
+    @test ismissing(PolyLog.li4(missing))
+    @test ismissing(PolyLog.reli4(missing))
+
     cmpl_data = read_from(joinpath(@__DIR__, "data", "Li4.txt"), BigFloat)
     real_data = filter_real(cmpl_data)
 

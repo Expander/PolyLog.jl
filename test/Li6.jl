@@ -1,4 +1,6 @@
 @testset "li6" begin
+    @test ismissing(PolyLog.li6(missing))
+
     cmpl_data = read_from(joinpath(@__DIR__, "data", "Li6.txt"), BigFloat)
 
     test_function_on_data(PolyLog.li6, map(ComplexF64, cmpl_data), 1e-14, 1e-14)

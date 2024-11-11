@@ -30,6 +30,8 @@ function reli1(x::Real)
     end
 end
 
+reli1(::Missing) = missing
+
 """
     li1(z::Complex)
 
@@ -66,3 +68,5 @@ function li1(z::Complex)
 end
 
 li1(z::Real) = li1(Complex(z))
+
+li1(::Missing) = missing

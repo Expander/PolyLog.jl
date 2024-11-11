@@ -204,6 +204,8 @@ function _reli2(x::T)::T where T
     end
 end
 
+reli2(::Missing) = missing
+
 
 """
     li2(z::Complex)
@@ -301,3 +303,5 @@ function _li2(z::Complex{BigFloat})::Complex{BigFloat}
         end
     end
 end
+
+li2(::Missing) = missing
