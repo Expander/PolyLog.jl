@@ -25,5 +25,3 @@ function li0(z::Number)
         z/(1 - z)
     end
 end
-
-li0(::Missing) = missing

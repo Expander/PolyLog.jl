@@ -96,5 +96,3 @@ function _li6(z::ComplexF64)::ComplexF64
         )
     end
 end
-
-li6(::Missing) = missing
