@@ -76,8 +76,6 @@ function _reli(n::Integer, x::Real)
     end
 end
 
-reli(::Integer, ::Missing) = missing
-
 """
     li(n::Integer, z::Complex)
 
@@ -160,8 +158,6 @@ function _li(n::Integer, z::Complex{T})::Complex{T} where T
         li_series_unity_pos(n, z)
     end
 end
-
-li(::Integer, ::Missing) = missing
 
 # returns -(-1)^n of type T
 function oddsgn(n, ::Type{T})::T where T

@@ -103,8 +103,6 @@ function _reli3(x::Float64)::Float64
     end
 end
 
-reli3(::Missing) = missing
-
 """
     li3(z::Complex)
 
@@ -202,5 +200,3 @@ function _li3(z::ComplexF64)::ComplexF64
         end
     end
 end
-
-li3(::Missing) = missing

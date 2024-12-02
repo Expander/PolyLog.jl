@@ -29,9 +29,6 @@ end
     for ni in nis
         n = ni.n
 
-        @test ismissing(PolyLog.li(n, missing))
-        @test ismissing(PolyLog.reli(n, missing))
-
         complex_data = read_from(joinpath(@__DIR__, "data", "Li$(n).txt"), BigFloat)
         real_data = filter_real(complex_data)
 

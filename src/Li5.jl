@@ -97,5 +97,3 @@ function _li5(z::ComplexF64)::ComplexF64
         u8*u8*(B[16] + u*B[17] + u2*(B[18] + u*B[19]))
     end
 end
-
-li5(::Missing) = missing
