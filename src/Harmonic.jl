@@ -10,12 +10,10 @@ end
 function harmonic_f64(n::Integer)::Float64
     if n <= 0
         throw(DomainError(n, "harmonic not implemented for n <= 0"))
+    elseif n == 1
+        one(Float64)
     elseif n < 20
-        sum = one(Float64)
-        for k in 2:n
-            sum += inv(k)
-        end
-        sum
+        one(Float64) + sum(inv, 2:n)
     else
         EULERGAMMA_F64 + digamma(n + 1)
     end
@@ -24,11 +22,9 @@ end
 function harmonic_big(n::Integer)::BigFloat
     if n <= 0
         throw(DomainError(n, "harmonic not implemented for n <= 0"))
+    elseif n == 1
+        one(BigFloat)
     else
-        sum = one(BigFloat)
-        for k in 2:n
-            sum += inv(big(k))
-        end
-        sum
+        one(BigFloat) + sum(x -> inv(big(x)), 2:n)
     end
 end
