@@ -122,26 +122,14 @@ const INVERSE_FACTORIALS = (
 
 # returns n! for n >= 0
 function fac(n::Integer, ::Type{T})::T where T
-    if issimplefloat(T)
-        convert(T, fac_f64(n))
-    else
-        fac_big(n)
-    end
-end
-
-function fac_f64(n::Integer)::Float64
     if n < 0
         throw(DomainError(n, "fac not implemented for n < 0"))
-    elseif n + 1 <= length(FACTORIALS)
-        FACTORIALS[n + 1]
-    else
-        Inf
-    end
-end
-
-function fac_big(n::Integer)::BigFloat
-    if n < 0
-        throw(DomainError(n, "fac not implemented for n < 0"))
+    elseif issimplefloat(T)
+        if n + 1 <= length(FACTORIALS)
+            convert(T, FACTORIALS[n + 1])
+        else
+            convert(T, Inf)
+        end
     else
         float(factorial(big(n)))
     end
