@@ -128,7 +128,7 @@ function fac(n::Integer, ::Type{T})::T where T
         if n + 1 <= length(FACTORIALS)
             convert(T, FACTORIALS[n + 1])
         else
-            convert(T, Inf)
+            T(Inf)
         end
     else
         float(factorial(big(n)))
@@ -137,26 +137,14 @@ end
 
 # returns 1/n! for n >= 0
 function inv_fac(n::Integer, ::Type{T})::T where T
-    if issimplefloat(T)
-        convert(T, inv_fac_f64(n))
-    else
-        inv_fac_big(n)
-    end
-end
-
-function inv_fac_f64(n::Integer)::Float64
     if n < 0
         throw(DomainError(n, "inv_fac not implemented for n < 0"))
-    elseif n + 1 <= length(INVERSE_FACTORIALS)
-        INVERSE_FACTORIALS[n + 1]
-    else
-        0.0
-    end
-end
-
-function inv_fac_big(n::Integer)::BigFloat
-    if n < 0
-        throw(DomainError(n, "inv_fac not implemented for n < 0"))
+    elseif issimplefloat(T)
+        if n + 1 <= length(INVERSE_FACTORIALS)
+            convert(T, INVERSE_FACTORIALS[n + 1])
+        else
+            zero(T)
+        end
     else
         float(inv(factorial(big(n))))
     end
