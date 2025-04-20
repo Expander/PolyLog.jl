@@ -143,7 +143,7 @@ function fac_big(n::Integer)::BigFloat
     if n < 0
         throw(DomainError(n, "fac not implemented for n < 0"))
     else
-        BigFloat(factorial(big(n)))
+        float(factorial(big(n)))
     end
 end
 
@@ -170,6 +170,6 @@ function inv_fac_big(n::Integer)::BigFloat
     if n < 0
         throw(DomainError(n, "inv_fac not implemented for n < 0"))
     else
-        BigFloat(inv(factorial(big(n))))
+        float(inv(factorial(big(n))))
     end
 end
