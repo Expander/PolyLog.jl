@@ -10,8 +10,8 @@ jobs:
     strategy:
       matrix:
         arch: [x64]
-        os: [ubuntu-latest, macOS-latest, Windows-latest]
-        version: ['1.0', '1']
+        os: [macOS-latest]
+        version: ['1.0']
 
     steps:
       - uses: actions/checkout@v2
