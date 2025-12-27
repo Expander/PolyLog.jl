@@ -1,3 +1,5 @@
+using Base.MPFR: ROUNDING_MODE
+
 # Accelerated series expansion of Li2(x) for x with |x| < 1
 # from [Ginsberg, Zaborowski, "The Dilogarithm Function of a Real Argument"]
 function li2_accel(x::T)::T where T
@@ -20,6 +22,14 @@ function li2_accel(x::T)::T where T
 end
 
 
+# Li2 from MPFR
+function li2_mpfr(x::BigFloat)::BigFloat
+    z = BigFloat()
+    ccall((:mpfr_li2, :libmpfr), Int32, (Ref{BigFloat}, Ref{BigFloat}, Int32), z, x, ROUNDING_MODE[])
+    return z
+end
+
+
 function filter_small(data, limit)
     z1 = [data[i,1] for i in 1:size(data,1) if abs2(data[i,1]) < limit]
     z2 = [data[i,2] for i in 1:size(data,1) if abs2(data[i,1]) < limit]
@@ -39,6 +49,7 @@ end
         test_function_on_data(li2_accel    , cmpl_data_less_1, ep, ep)
         ep = 10*eps(BigFloat)
         test_function_on_data(PolyLog.reli2, real_data, ep, ep)
+        test_function_on_data(li2_mpfr     , real_data, ep, ep)
         test_function_on_data(li2_accel    , real_data_less_1, ep, ep)
     end
 
