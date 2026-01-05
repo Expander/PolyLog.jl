@@ -40,6 +40,7 @@ end
                     (n > typemax(TN) || n < typemin(TN)) && continue
                     test_function_on_data(z -> PolyLog.reli(TN(n), z), map(T, real_data), ep, ep)
                 end
+                test_function_on_data(z -> PolyLog.reli(big(n), z), map(T, real_data), ep, ep)
             end
         end
 
@@ -52,6 +53,7 @@ end
                     (n > typemax(TN) || n < typemin(TN)) && continue
                     test_function_on_data(z -> PolyLog.li(TN(n), z), map(Complex{T}, complex_data), ep, ep)
                 end
+                test_function_on_data(z -> PolyLog.li(big(n), z), map(Complex{T}, complex_data), ep, ep)
             end
         end
 
