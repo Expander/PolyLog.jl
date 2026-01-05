@@ -250,7 +250,7 @@ function li_series_unity_pos(n::Integer, z::ComplexOrReal{T}) where T
 
     l2 = l*l
 
-    for j in (n + 3):2:typemax(promote_type(typeof(n), Int64))
+    for j in (n + 3):2:max_n(typeof(n))
         p *= l2/((j - 1)*j)
         old_sum = sum
         sum += zeta(n - j, T)*p
@@ -279,7 +279,7 @@ function li_series_unity_neg(n::Integer, z::Complex{T})::Complex{T} where T
         sum += zeta(n, T)
     end
 
-    for k in kmin:2:typemax(promote_type(typeof(n), Int64))
+    for k in kmin:2:max_n(typeof(n))
         term = zeta(n - k, T)*inv_fac(k, T)*lk
         !isfinite(term) && break
         sum_old = sum
@@ -299,7 +299,7 @@ function li_series_taylor(n::Integer, z::ComplexOrReal)
     sum = z
     zn = z*z
 
-    for k in 2:typemax(promote_type(typeof(n), Int64))
+    for k in 2:max_n(typeof(n))
         term = zn/oftype(real(z), k)^n
         !isfinite(term) && break
         old_sum = sum
@@ -309,4 +309,13 @@ function li_series_taylor(n::Integer, z::ComplexOrReal)
     end
 
     sum
+end
+
+# returns upper bound on iteration index
+function max_n(::Type{T}) where T
+    if T in (Int8, Int16, Int32, Int64, Int128)
+        typemax(promote_type(T, Int64))
+    else
+        typemax(Int64)
+    end
 end
