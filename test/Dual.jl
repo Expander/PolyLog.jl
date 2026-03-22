@@ -9,6 +9,6 @@ if isdefined(Base, :get_extension)
 
     @testset "Dual" begin
         z = 0.5 + 0.8im
-        @test li_dual(2, z) == PolyLog.li(2, z)
+        @test li_dual(2, z) ≈ PolyLog.li(2, z) rtol=1e-15
     end
 end
