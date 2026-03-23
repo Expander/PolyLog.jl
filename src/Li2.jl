@@ -237,7 +237,8 @@ li2(z::Real) = li2(Complex(z))
 
 _li2(z::ComplexF16) = oftype(z, _li2(ComplexF32(z)))
 
-function _li2(z::Complex{T})::Complex{T} where T
+# overload for complex types for which li2_approx uses pre-computed Bernoulli numbers
+function _li2(z::Complex{T})::Complex{T} where {T<:Union{Float32, Float64}}
     rz, iz = reim(z)
 
     if iszero(iz)
@@ -270,7 +271,8 @@ function _li2(z::Complex{T})::Complex{T} where T
     end
 end
 
-function _li2(z::Complex{BigFloat})::Complex{BigFloat}
+# overload for generic complex types
+function _li2(z::Complex{T})::Complex{T} where T
     rz, iz = reim(z)
 
     if iszero(iz)
