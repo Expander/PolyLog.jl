@@ -1,9 +1,5 @@
 using Test
 import PolyLog
-if isdefined(Base, :get_extension)
-    import ForwardDiff
-    import ChainRulesTestUtils
-end
 
 include("TestPrecision.jl")
 include("DataReader.jl")
@@ -12,6 +8,7 @@ include("Digamma.jl")
 include("Dual.jl")
 include("Eta.jl")
 include("Factorial.jl")
+include("ForwardDiff.jl")
 include("Harmonic.jl")
 include("Li0.jl")
 include("Li1.jl")
