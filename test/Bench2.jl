@@ -27,3 +27,17 @@ for n in vcat(collect(2:4), [100, 1000, 1000_000])
     benchmark_and_print(x -> PolyLog.li(n, x),  0.4, "li($(n), 0.4)::Float64")
     benchmark_and_print(x -> PolyLog.li(n, x),  1.5, "li($(n), 1.5)::Float64")
 end
+
+const MAX_DECIMAL_DIGITS = 40
+const MAX_BINARY_DIGITS = ceil(Integer, MAX_DECIMAL_DIGITS*log(10)/log(2))
+
+setprecision(BigFloat, ceil(Integer, MAX_BINARY_DIGITS)) do
+    for n in [-1000_000, -1000, -100, -10, -2, -1, 0, 1, 2, 3, 4, 5, 6, 10, 100, 1000, 1000_000]
+        for z in [BigFloat("0.5") + BigFloat("0.5")*1im,
+                  BigFloat("1.1") + BigFloat("1.1")*1im]
+            x = real(z)
+            benchmark_and_print(x -> PolyLog.li(n, x), x, "li($(n), $(x))::BigFloat")
+            benchmark_and_print(z -> PolyLog.li(n, z), z, "li($(n), $(z))::Complex{BigFloat}")
+        end
+    end
+end
