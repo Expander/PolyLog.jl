@@ -1,8 +1,8 @@
 # converts -0.0 to 0.0
 function convert_minus_0(z)
     Complex(
-        real(z) == -0.0 ? 0.0 : real(z),
-        imag(z) == -0.0 ? 0.0 : imag(z)
+        real(z) == -0.0 ? zero(real(z)) : real(z),
+        imag(z) == -0.0 ? zero(imag(z)) : imag(z)
     )
 end
 
