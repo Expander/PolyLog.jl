@@ -25,7 +25,7 @@ end
 # Li2 from MPFR
 function li2_mpfr(x::BigFloat)::BigFloat
     z = BigFloat()
-    ccall((:mpfr_li2, :libmpfr), Int32, (Ref{BigFloat}, Ref{BigFloat}, Int32), z, x, ROUNDING_MODE[])
+    ccall((:mpfr_li2, PolyLog.libmpfr), Int32, (Ref{BigFloat}, Ref{BigFloat}, Int32), z, x, ROUNDING_MODE[])
     return z
 end
 

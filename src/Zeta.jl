@@ -1,5 +1,8 @@
 using Base.MPFR: ROUNDING_MODE
 
+# `Base.MPFR.libmpfr` was added in Julia 1.9
+const libmpfr = isdefined(Base.MPFR, :libmpfr) ? Base.MPFR.libmpfr : :libmpfr
+
 # zeta(n) for n = 2,...,33
 const ZETA_POS = (
     ZETA2_F64, ZETA3_F64, ZETA4_F64, ZETA5_F64, ZETA6_F64,
@@ -96,7 +99,7 @@ end
 function zeta_big(n::Integer)::BigFloat
     x = BigFloat(n)
     z = BigFloat()
-    ccall((:mpfr_zeta, :libmpfr), Int32, (Ref{BigFloat}, Ref{BigFloat}, Int32), z, x, ROUNDING_MODE[])
+    ccall((:mpfr_zeta, libmpfr), Int32, (Ref{BigFloat}, Ref{BigFloat}, Int32), z, x, ROUNDING_MODE[])
     return z
 end
 
